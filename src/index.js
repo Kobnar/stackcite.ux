@@ -16,7 +16,7 @@ import './css/skeleton/skeleton.css';
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      {routes}
+      { routes }
     </Router>
   </Provider>,
   document.getElementById('root')
