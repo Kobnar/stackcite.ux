@@ -1,6 +1,6 @@
-import deepFreeze from 'deep-freeze';
-import * as actions from '../actions';
-import auth from '../reducers';
+import deepFreeze from 'deep-freeze'
+import * as actions from '../actions'
+import auth from '../reducers'
 
 describe('auth', () => {
 

@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch'
 
 const authEndpoint = 'http://api.localhost/v0/auth/'
 

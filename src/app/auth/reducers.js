@@ -1,19 +1,8 @@
-import { combineReducers } from 'redux';
-import deepFreeze from 'deep-freeze';
+import { combineReducers } from 'redux'
+import deepFreeze from 'deep-freeze'
 
-import * as actions from './actions';
-
-const initialState = {
-    loading: false,
-    user: {
-        id: ''
-    },
-    token: {
-        key: '',
-        issued: null,
-        touched: null
-    }
-}
+import initialState from './state'
+import * as actions from './actions'
 
 const loading = (state = initialState.loading, action) => {
     switch(action.type) {
