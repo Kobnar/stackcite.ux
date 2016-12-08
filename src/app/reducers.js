@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 
 import auth from './auth/reducers'
 import initialState from './state'
@@ -16,6 +17,7 @@ const ux = (state = initialState.ux, action) => {
                 ...state,
                 mobileNavMenuVisible: true
             }
+        case LOCATION_CHANGE:
         case actions.HIDE_MOBILE_NAV_MENU:
             return {
                 ...state,
