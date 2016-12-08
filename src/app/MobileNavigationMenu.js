@@ -21,14 +21,14 @@ const MobileNavigationMenu = ({ isLoggedIn, menuVisible, logoutHandler, navClick
     var accountLink = (
             <li key='m-account-li' className="mobile-nav-item" onClick={() => {navClickHandler("/account")}}>
                 <div className="container">
-                    <Link to="/account" className="mobile-nav-link" activeClassName="active"><span className="glyphicon glyphicon-pencil"/>Account</Link>
+                    <Link to="/account" className="mobile-nav-link" activeClassName="active"><span className="glyphicon glyphicon-cog"/>Account</Link>
                 </div>
             </li>)
 
     var logoutLink = (
-            <li key='m-logout-li' className="mobile-nav-item" onClick={() => {navClickHandler("/logout")}}>
+            <li key='m-logout-li' className="mobile-nav-item" onClick={() => {navClickHandler("/")}}>
                 <div className="container">
-                    <Link to="/logout" className="mobile-nav-link" activeClassName="active" onClick={logoutHandler}><span className="glyphicon glyphicon-log-in"/>Log out</Link>
+                    <Link to="/" className="mobile-nav-link" onClick={logoutHandler}><span className="glyphicon glyphicon-log-out"/>Log out</Link>
                 </div>
             </li>)
 
