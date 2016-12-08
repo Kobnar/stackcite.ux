@@ -1,16 +1,15 @@
-// System dependencies
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { browserHistory } from 'react-router';
 import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
-// StackCite locak dependencies
-//import app from './app/reducers';
+
+import app from './app/reducers';
 
 // Combine the root reducer
 const rootReducer = combineReducers({
     routing: routerReducer,
-    //app
+    app
 })
 
 // Instantiate logger and router middleware
