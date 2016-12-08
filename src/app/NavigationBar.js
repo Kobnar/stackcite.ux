@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
 import * as actions from './actions'
 import * as authActions from './auth/actions'
@@ -33,7 +34,8 @@ class NavigationBar extends Component
                 <MobileNavigationMenu
                     isLoggedIn={isLoggedIn}
                     logoutHandler={this.props.logout}
-                    menuVisible={this.props.mobileNavMenuVisible} />
+                    menuVisible={this.props.mobileNavMenuVisible}
+                    navClickHandler={this.props.navClickHandler} />
             </div>
         )
     }
@@ -47,7 +49,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     logout() { dispatch(authActions.logout()) },
     toggleMobileNavMenu() { dispatch(actions.toggleMobileNavMenu()) },
-    hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) }
+    hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) },
+    navClickHandler(target) { dispatch(push(target)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
