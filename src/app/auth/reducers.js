@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import deepFreeze from 'deep-freeze'
 
 import initialState from './state'
 import * as actions from './actions'
