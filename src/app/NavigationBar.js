@@ -1,15 +1,53 @@
-import React from 'react'
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
+
+import * as actions from './actions'
+import * as authActions from './auth/actions'
 
 import MainNavigationMenu from './MainNavigationMenu'
 import MobileNavigationMenu from './MobileNavigationMenu'
 
 import './css/nav.css'
 
-const NavigationBar = () => (
-    <div className="navbar-contaner">
-        <MainNavigationMenu />
-        <MobileNavigationMenu />
-    </div>
-)
+class NavigationBar extends Component
+{
+    handleClick(event) {
+        var domNode = ReactDOM.findDOMNode(this)
+        if (this.props.mobileNavMenuVisible & !domNode.contains(event.target)) {
+            this.props.hideMobileNavMenu()
+        }
+    }
 
-export default NavigationBar
+    componentDidMount() { window.addEventListener('click', this.handleClick.bind(this), false) }
+    componentWillUnount() { window.removeEventListener('click', this.handleClick.bind(this), false) }
+
+    render () {
+        var isLoggedIn = !!this.props.user.id
+        return (
+            <div className="navbar-contaner">
+                <MainNavigationMenu
+                    isLoggedIn={isLoggedIn}
+                    logoutHandler={this.props.logout}
+                    menuToggleHandler={this.props.toggleMobileNavMenu} />
+                <MobileNavigationMenu
+                    isLoggedIn={isLoggedIn}
+                    logoutHandler={this.props.logout}
+                    menuVisible={this.props.mobileNavMenuVisible} />
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = (state) => ({
+    user: state.app.auth.user,
+    mobileNavMenuVisible: state.app.ux.mobileNavMenuVisible
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    logout() { dispatch(authActions.logout()) },
+    toggleMobileNavMenu() { dispatch(actions.toggleMobileNavMenu()) },
+    hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)

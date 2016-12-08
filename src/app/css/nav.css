@@ -42,7 +42,7 @@
     margin: 0 20px 0 5px; }
 .navbar-link, .mobile-nav-link {
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: 1.1rem;
     font-weight: 600;
     letter-spacing: .2rem;
     line-height: 6.5rem;
@@ -58,13 +58,12 @@
     color: #00a3cc; }
 .navbar-title {
     text-transform: uppercase;
-    font-size: 11px;
     font-weight: 600;
     letter-spacing: .2rem;
     line-height: 6.5rem;
     text-decoration: none;
     margin: 0 20px 0 0;
-    font-size: 16px; }
+    font-size: 1.6rem; }
 .navbar-auth-link {
     text-align: right; }
 #mobile-nav-button {
@@ -82,6 +81,8 @@
 @media (max-width: 750px) {
     .navbar-link {
         display: none; }
+    .navbar-title {
+        display: block; }
     .mobile-nav.visible {
         display: block; }
 }
