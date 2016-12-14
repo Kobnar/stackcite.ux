@@ -13,6 +13,7 @@ import './css/nav.css'
 
 class NavigationBar extends Component
 {
+    // Checks if an event was triggerd anywhere on the NavigationBar component
     handleClick(event) {
         var domNode = ReactDOM.findDOMNode(this)
         if (this.props.mobileNavMenuVisible & !domNode.contains(event.target)) {
@@ -20,6 +21,7 @@ class NavigationBar extends Component
         }
     }
 
+    // Establishes a click-event listener to capture clicks away from the nav bar
     componentDidMount() { window.addEventListener('click', this.handleClick.bind(this), false) }
     componentWillUnount() { window.removeEventListener('click', this.handleClick.bind(this), false) }
 
@@ -27,10 +29,12 @@ class NavigationBar extends Component
         var isLoggedIn = !!this.props.user.id
         return (
             <div className="navbar-contaner">
+                {/** The main navigation menu */}
                 <MainNavigationMenu
                     isLoggedIn={isLoggedIn}
                     logoutHandler={this.props.logout}
                     menuToggleHandler={this.props.toggleMobileNavMenu} />
+                {/** The mobile navigation menu */}
                 <MobileNavigationMenu
                     isLoggedIn={isLoggedIn}
                     logoutHandler={this.props.logout}
