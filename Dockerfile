@@ -1,6 +1,17 @@
 FROM node
 MAINTAINER Konrad R.K. Ludwig <konrad.rk.ludwig@gmail.com>
-COPY . /stackcite_ux
+
+# Create app directory and install dependencies
+RUN mkdir /stackcite_ux
 WORKDIR /stackcite_ux
+
+# Install dependencies
+COPY package.json /stackcite_ux
 RUN npm install
-CMD npm start
+
+# Bundle and build app source
+COPY . /stackcite_ux
+COPY npm run build
+
+# Start Node.js server
+CMD node server
