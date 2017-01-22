@@ -4,7 +4,7 @@ import { Router } from 'react-router'
 import { Provider } from 'react-redux'
 
 import { store, history } from './init.js'
-import routes from './app/routes'
+import routes from './ux/routes'
 
 import './css/skeleton/normalize.css'
 import './css/skeleton/skeleton.css'

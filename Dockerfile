@@ -11,7 +11,7 @@ RUN npm install
 
 # Bundle and build app source
 COPY . /stackcite_ux
-COPY npm run build
+RUN npm run build
 
 # Start Node.js server
 CMD node server

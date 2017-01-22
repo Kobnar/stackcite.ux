@@ -46,7 +46,7 @@ class SignupForm extends Component
 }
 
 const mapStateToProps = (state) => ({
-    loading: state.app.auth.loading
+    loading: state.api.users.loading
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

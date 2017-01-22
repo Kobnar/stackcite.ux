@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
-import * as actions from './actions'
+import * as actions from '../../api/users/auth/actions'
 
 class LoginForm extends Component
 {
@@ -46,7 +46,8 @@ class LoginForm extends Component
 }
 
 const mapStateToProps = (state) => ({
-    loading: state.app.auth.loading
+    loading: state.api.users.auth.loading,
+    errors: state.api.users.auth.errors
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

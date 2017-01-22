@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 
 import SignupForm from './SignupForm'
 
-import './css/auth.css'
-
-class Login extends Component
+class Signup extends Component
 {
     render () {
         return (
@@ -16,4 +14,4 @@ class Login extends Component
     }
 }
 
-export default Login
+export default Signup

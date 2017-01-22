@@ -17,7 +17,7 @@ const loading = (state = initialState.loading, action) => {
         case actions.LOGOUT_FAILURE:
         case actions.TOUCH_TOKEN_SUCCESS:
         case actions.TOUCH_TOKEN_FAILURE:
-            return initialState.loading
+            return false
 
         default:
             return state
@@ -31,7 +31,7 @@ const user = (state = initialState.user, action) => {
         case actions.TOUCH_TOKEN_SUCCESS:
             return { 
                 ...state,
-                id: action.user.id
+                ...action.user
             }
 
         case actions.LOGIN_FAILURE:
@@ -52,9 +52,7 @@ const token = (state = initialState.token, action) => {
         case actions.TOUCH_TOKEN_SUCCESS:
             return {
                 ...state,
-                key: action.token.key,
-                issued: action.token.issued,
-                touched: action.token.touched
+                ...action.token
             }
 
         case actions.LOGIN_FAILURE:

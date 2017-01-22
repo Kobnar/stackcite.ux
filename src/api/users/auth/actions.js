@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
-const authEndpoint = 'http://api.localhost/v0/auth/'
+// TODO: Abstract general endpoint URI
+const authEndpoint = 'http://api.localhost/v0/users/auth/'
 
 // Maps API response from /v0/auth/ to the standard dispatch action pattern
 const mapAuthApiResponseToAction = (response) => ({
@@ -10,12 +11,6 @@ const mapAuthApiResponseToAction = (response) => ({
         issued: response.issued,
         touched: response.touched
     }
-})
-
-// Maps an API error from /v0/auth/ to the standard dispach action pattern
-const mapAuthApiErrorToAction = (error) => ({
-    status: error.response.status,
-    text: error.response.statusText
 })
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
@@ -35,25 +30,7 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 const loginFailure = (error) => {
     return {
         type: LOGIN_FAILURE,
-        ...mapAuthApiErrorToAction(error)
-    }
-}
-
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
-const logoutRequest = () => {
-    return { type: LOGOUT_REQUEST }
-}
-
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
-const logoutSuccess = () => {
-    return { type: LOGOUT_SUCCESS }
-}
-
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
-const logoutFailure = (error) => {
-    return {
-        type: LOGOUT_FAILURE,
-        ...mapAuthApiErrorToAction(error)
+        ...error
     }
 }
 
@@ -74,18 +51,23 @@ export const TOUCH_TOKEN_FAILURE = 'TOUCH_TOKEN_FAILURE'
 const touchTokenFailure = (error) => {
     return {
         type: TOUCH_TOKEN_FAILURE,
-        ...mapAuthApiErrorToAction(error)
+        ...error
     }
 }
 
-const checkStatus = (response) => {
-    if (response.ok) {
-        return response
-    } else {
-        var error = new Error(response.statusText)
-        error.response = response
-        throw error
-    }
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
+const logoutRequest = () => {
+    return { type: LOGOUT_REQUEST }
+}
+
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+const logoutSuccess = () => {
+    return { type: LOGOUT_SUCCESS }
+}
+
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
+const logoutFailure = () => {
+    return { type: LOGOUT_FAILURE }
 }
 
 export const login = (email, password) => {
@@ -96,26 +78,16 @@ export const login = (email, password) => {
             headers: new Headers({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ email, password })
         })
-            .then(checkStatus)
-            .then(response => response.json())
+            // Insert promises for success/fail
+            .then(response => {
+                if (response.status === 201) {
+                    return Promise.resolve(response.json())
+                } else {
+                    return Promise.reject(response.json())
+                }
+            })
             .then(data => dispatch(loginSuccess(data)))
             .catch(error => dispatch(loginFailure(error)))
-    }
-}
-
-export const logout = (apiToken) => {
-    return (dispatch) => {
-        dispatch(logoutRequest())
-        return fetch(authEndpoint, {
-            method: 'DELETE',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': 'key '.concat(apiToken)
-            })
-        })
-            .then(checkStatus)
-            .then(response => dispatch(logoutSuccess()))
-            .catch(error => dispatch(logoutFailure(error)))
     }
 }
 
@@ -129,9 +101,35 @@ export const touchToken = (apiToken) => {
                 'Authorization': 'key '.concat(apiToken)
             })
         })
-            .then(checkStatus)
-            .then(response => response.json())
+            // Insert promises for success/fail
+            .then(response => {
+                if (response.status === 200) {
+                    return Promise.resolve(response.json())
+                } else {
+                    return Promise.reject(response.json())
+                }
+            })
             .then(data => dispatch(touchTokenSuccess(data)))
             .catch(error => dispatch(touchTokenFailure(error)))
+    }
+}
+
+export const logout = (apiToken) => {
+    return (dispatch) => {
+        dispatch(logoutRequest())
+        return fetch(authEndpoint, {
+            method: 'DELETE',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': 'key '.concat(apiToken)
+            })
+        })
+            .then(response => {
+                if (response.status === 204) {
+                    dispatch(logoutSuccess())
+                } else {
+                    dispatch(logoutFailure())
+                }
+            })
     }
 }

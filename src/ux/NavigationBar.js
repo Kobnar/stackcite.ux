@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
 import * as actions from './actions'
-import * as authActions from './auth/actions'
+import * as authActions from '../api/users/auth/actions'
 
 import MainNavigationMenu from './MainNavigationMenu'
 import MobileNavigationMenu from './MobileNavigationMenu'
@@ -46,8 +46,8 @@ class NavigationBar extends Component
 }
 
 const mapStateToProps = (state) => ({
-    user: state.app.auth.user,
-    mobileNavMenuVisible: state.app.ux.mobileNavMenuVisible
+    user: state.api.users.auth.user,
+    mobileNavMenuVisible: state.ux.mobileNavMenuVisible
 })
 
 const mapDispatchToProps = (dispatch) => ({
