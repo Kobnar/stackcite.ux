@@ -5,34 +5,22 @@ const usersEndpoint = 'http://api.localhost/v0/users/'
 const confEndpoint = usersEndpoint + 'conf/'
 
 export const CREATE_CONFIRM_TOKEN_REQUEST = 'CREATE_CONFIRM_TOKEN_REQUEST'
-const createConfirmTokenRequest = () => {
-    return { type: CREATE_CONFIRM_TOKEN_REQUEST }
-}
+const createConfirmTokenRequest = () => ({ type: CREATE_CONFIRM_TOKEN_REQUEST })
 
 export const CREATE_CONFIRM_TOKEN_SUCCESS = 'CREATE_CONFIRM_TOKEN_SUCCESS'
-const createConfirmTokenSuccess = () => {
-    return { type: CREATE_CONFIRM_TOKEN_SUCCESS }
-}
+const createConfirmTokenSuccess = () => ({ type: CREATE_CONFIRM_TOKEN_SUCCESS })
 
 export const CREATE_CONFIRM_TOKEN_FAILURE = 'CREATE_CONFIRM_TOKEN_FAILURE'
-const createConfirmTokenFailure = () => {
-    return { type: CREATE_CONFIRM_TOKEN_FAILURE }
-}
+const createConfirmTokenFailure = () => ({ type: CREATE_CONFIRM_TOKEN_FAILURE })
 
 export const CONFIRM_ACCOUNT_REQUEST = 'CONFIRM_ACCOUNT_REQUEST'
-const confirmAccountRequest = () => {
-    return { type: CONFIRM_ACCOUNT_REQUEST }
-}
+const confirmAccountRequest = () => ({ type: CONFIRM_ACCOUNT_REQUEST })
 
 export const CONFIRM_ACCOUNT_SUCCESS = 'CONFIRM_ACCOUNT_SUCCESS'
-const confirmAccountSuccess = () => {
-    return { type: CONFIRM_ACCOUNT_SUCCESS }
-}
+const confirmAccountSuccess = () => ({ type: CONFIRM_ACCOUNT_SUCCESS })
 
 export const CONFIRM_ACCOUNT_FAILURE = 'CONFIRM_ACCOUNT_FAILURE'
-const confirmAccountFailure = () => {
-    return { type: CONFIRM_ACCOUNT_FAILURE }
-}
+const confirmAccountFailure = (error) => ({ type: CONFIRM_ACCOUNT_FAILURE })
 
 export const createConfirmToken = (email) => {
     return (dispatch) => {

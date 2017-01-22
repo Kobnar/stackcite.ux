@@ -14,61 +14,43 @@ const mapAuthApiResponseToAction = (response) => ({
 })
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
-const loginRequest = () => {
-    return { type: LOGIN_REQUEST }
-}
+const loginRequest = () => ({ type: LOGIN_REQUEST  })
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-const loginSuccess = (response) => {
-    return {
+const loginSuccess = (response) => ({
         type: LOGIN_SUCCESS,
         ...mapAuthApiResponseToAction(response)
-    }
-}
+})
 
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
-const loginFailure = (error) => {
-    return {
+const loginFailure = (error) => ({
         type: LOGIN_FAILURE,
-        ...error
-    }
-}
+        errors: {...error.detail}
+})
 
 export const TOUCH_TOKEN_REQUEST = 'TOUCH_TOKEN_REQUEST'
-const touchTokenRequest = () => {
-    return { type: TOUCH_TOKEN_REQUEST }
-}
+const touchTokenRequest = () => ({ type: TOUCH_TOKEN_REQUEST })
 
 export const TOUCH_TOKEN_SUCCESS = 'TOUCH_TOKEN_SUCCESS'
-const touchTokenSuccess = (response) => {
-    return {
+const touchTokenSuccess = (response) => ({
         type: TOUCH_TOKEN_SUCCESS,
         ...mapAuthApiResponseToAction(response)
-    }
-}
+})
 
 export const TOUCH_TOKEN_FAILURE = 'TOUCH_TOKEN_FAILURE'
-const touchTokenFailure = (error) => {
-    return {
+const touchTokenFailure = (error) => ({
         type: TOUCH_TOKEN_FAILURE,
-        ...error
-    }
-}
+        errors: {...error.detail}
+})
 
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
-const logoutRequest = () => {
-    return { type: LOGOUT_REQUEST }
-}
+const logoutRequest = () => ({ type: LOGOUT_REQUEST })
 
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
-const logoutSuccess = () => {
-    return { type: LOGOUT_SUCCESS }
-}
+const logoutSuccess = () => ({ type: LOGOUT_SUCCESS })
 
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
-const logoutFailure = () => {
-    return { type: LOGOUT_FAILURE }
-}
+const logoutFailure = () => ({ type: LOGOUT_FAILURE })
 
 export const login = (email, password) => {
     return (dispatch) => {
