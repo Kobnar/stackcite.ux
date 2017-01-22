@@ -1,7 +1,8 @@
 import auth from './auth/state'
 import conf from './conf/state'
 
-initialState = {
+const initialState = {
+    loading: false,
     auth,
     conf
 }
