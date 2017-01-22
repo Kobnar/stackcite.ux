@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import * as actions from './actions'
 import initialState from './state'
 
-const mobileNavMenuVisible = (state = false, action) => {
+const mobileNavMenuVisible = (state = initialState.mobileNavMenuVisible, action) => {
     switch(action.type) {
 
         case actions.SHOW_MOBILE_NAV_MENU:
