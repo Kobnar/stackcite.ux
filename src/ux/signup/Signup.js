@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import SignupForm from './SignupForm'
 
+import '../css/auth.css'
+
 class Signup extends Component
 {
     render () {

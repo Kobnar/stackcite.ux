@@ -1,0 +1,16 @@
+/* Devices larger than a phone */
+@media (max-width: 550px) {
+  .auth-container {
+    width: 90%;
+    margin: auto;
+    padding: 0; }
+}
+
+/* Devices smaller than a phone */
+@media (min-width: 550px) {
+  .auth-container {
+    /* 90% of Phablet size */
+    max-width: 495px;
+    margin: auto;
+    padding: 0; }
+}

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import LoginForm from './LoginForm'
 
+import '../css/auth.css'
+
 class Login extends Component
 {
     render () {
