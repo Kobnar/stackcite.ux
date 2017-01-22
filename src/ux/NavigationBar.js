@@ -33,7 +33,8 @@ class NavigationBar extends Component
                 <MainNavigationMenu
                     isLoggedIn={isLoggedIn}
                     logoutHandler={this.props.logout}
-                    menuToggleHandler={this.props.toggleMobileNavMenu} />
+                    hideMenuHandler={this.props.hideMobileNavMenu}
+                    toggleMenuHandler={this.props.toggleMobileNavMenu} />
                 {/** The mobile navigation menu */}
                 <MobileNavigationMenu
                     isLoggedIn={isLoggedIn}
@@ -54,7 +55,10 @@ const mapDispatchToProps = (dispatch) => ({
     logout() { dispatch(authActions.logout()) },
     toggleMobileNavMenu() { dispatch(actions.toggleMobileNavMenu()) },
     hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) },
-    navClickHandler(target) { dispatch(push(target)) }
+    navClickHandler(target) {
+        dispatch(push(target))
+        dispatch(actions.hideMobileNavMenu())
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)

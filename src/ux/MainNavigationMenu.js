@@ -3,7 +3,7 @@ import { IndexLink, Link } from 'react-router'
 
 import './css/nav.css'
 
-const MainNavigationMenu = ({isLoggedIn, logoutHandler, menuToggleHandler}) => {
+const MainNavigationMenu = ({isLoggedIn, logoutHandler, toggleMenuHandler, hideMenuHandler}) => {
     var signupLink = (
         <li key="login-li" className="navbar-item u-pull-right">
             <Link to="/login" className="navbar-link navbar-auth-link desktop" activeClassName="active">Log in</Link>
@@ -31,7 +31,7 @@ const MainNavigationMenu = ({isLoggedIn, logoutHandler, menuToggleHandler}) => {
 
                     {/** Website header */}
                     <li className="navbar-item">
-                        <IndexLink to="/" className="navbar-link navbar-title" activeClassName="active">StackCite</IndexLink>
+                        <IndexLink to="/" className="navbar-link navbar-title" activeClassName="active" onClick={hideMenuHandler}>StackCite</IndexLink>
                     </li>
 
                     {/** Main page links */}
@@ -53,7 +53,7 @@ const MainNavigationMenu = ({isLoggedIn, logoutHandler, menuToggleHandler}) => {
                     
                     {/** Responsive menu button */}
                     <li className="navbar-item u-pull-right" >
-                        <button id="mobile-nav-button" className="button" onClick={menuToggleHandler}><span className="glyphicon glyphicon-menu-hamburger" /></button>
+                        <button id="mobile-nav-button" className="button" onClick={toggleMenuHandler}><span className="glyphicon glyphicon-menu-hamburger" /></button>
                     </li>
                 </ul>
             </div>
@@ -64,7 +64,8 @@ const MainNavigationMenu = ({isLoggedIn, logoutHandler, menuToggleHandler}) => {
 MainNavigationMenu.propTypes = {
     isLoggedIn: React.PropTypes.bool.isRequired,
     logoutHandler: React.PropTypes.func.isRequired,
-    menuToggleHandler: React.PropTypes.func.isRequired
+    hideMenuHandler: React.PropTypes.func.isRequired,
+    toggleMenuHandler: React.PropTypes.func.isRequired
 }
 
 export default MainNavigationMenu
