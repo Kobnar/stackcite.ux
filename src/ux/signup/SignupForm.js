@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
-import * as userActions from '../../api/users/actions'
+import * as actions from '../../api/users/actions'
 
 class SignupForm extends Component
 {
@@ -67,8 +67,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     signup(email, password) {
-        dispatch(userActions.signup(email, password))
-            // .then(dispatch(push(ownProps.redirectTarget)))
+        dispatch(actions.signup(email, password))
+            .then((action) => {
+                if (action.type === actions.SIGNUP_SUCCESS) {
+                    dispatch(push(ownProps.redirectTarget))
+                }
+            })
     }
 })
 

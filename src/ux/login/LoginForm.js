@@ -67,7 +67,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
     login(email, password) {
         dispatch(actions.login(email, password))
-            // .then(dispatch(push(ownProps.redirectTarget)))
+            .then((action) => {
+                if (action.type === actions.LOGIN_SUCCESS) {
+                    dispatch(push(ownProps.redirectTarget))
+                }
+            })
         }
 })
 
