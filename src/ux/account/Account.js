@@ -17,7 +17,7 @@ class Account extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.app.auth.user
+    user: state.api.users.auth.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
