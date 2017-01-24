@@ -57,7 +57,7 @@ describe('signup', () => {
         const expected = [
             { type: actions.SIGNUP_REQUEST },
             {
-                type: actions.SIGNUP_SUCCESS,
+                type: actions.SIGNUP_FAILURE,
                 errors: {
                     email: 'Not a valid email address.'
                 }

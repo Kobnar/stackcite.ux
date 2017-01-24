@@ -14,3 +14,11 @@
     margin: auto;
     padding: 0; }
 }
+
+input.has-error {
+  border-color: #a94442 !important;
+}
+
+p.has-error {
+  color: #a94442 !important;
+}

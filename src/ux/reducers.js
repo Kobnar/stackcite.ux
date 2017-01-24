@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux'
 
+import login from './login/reducers'
+import signup from './signup/reducers'
+
 import * as actions from './actions'
 import initialState from './state'
 
@@ -21,5 +24,7 @@ const mobileNavMenuVisible = (state = initialState.mobileNavMenuVisible, action)
 }
 
 export default combineReducers({
-    mobileNavMenuVisible
+    mobileNavMenuVisible,
+    login,
+    signup
 })

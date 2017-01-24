@@ -13,6 +13,8 @@ const mapAuthApiResponseToAction = (response) => ({
     }
 })
 
+const authFailedMsg = { auth: ['Authentication failed.'] }
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 const loginRequest = () => ({ type: LOGIN_REQUEST  })
 
@@ -25,7 +27,7 @@ const loginSuccess = (response) => ({
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 const loginFailure = (error) => ({
         type: LOGIN_FAILURE,
-        errors: {...error.detail}
+        errors: authFailedMsg
 })
 
 export const TOUCH_TOKEN_REQUEST = 'TOUCH_TOKEN_REQUEST'
@@ -40,7 +42,7 @@ const touchTokenSuccess = (response) => ({
 export const TOUCH_TOKEN_FAILURE = 'TOUCH_TOKEN_FAILURE'
 const touchTokenFailure = (error) => ({
         type: TOUCH_TOKEN_FAILURE,
-        errors: {...error.detail}
+        errors: authFailedMsg
 })
 
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
@@ -60,16 +62,15 @@ export const login = (email, password) => {
             headers: new Headers({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ email, password })
         })
-            // Insert promises for success/fail
             .then(response => {
-                if (response.status === 201) {
-                    return Promise.resolve(response.json())
+                if (response.ok) {
+                    return response.json()
+                        .then(data => dispatch(loginSuccess(data)))
                 } else {
-                    return Promise.reject(response.json())
+                    return response.json()
+                        .then(error => dispatch(loginFailure(error)))
                 }
             })
-            .then(data => dispatch(loginSuccess(data)))
-            .catch(error => dispatch(loginFailure(error)))
     }
 }
 
@@ -83,16 +84,15 @@ export const touchToken = (apiToken) => {
                 'Authorization': 'key '.concat(apiToken)
             })
         })
-            // Insert promises for success/fail
             .then(response => {
-                if (response.status === 200) {
-                    return Promise.resolve(response.json())
+                if (response.ok) {
+                    return response.json()
+                        .then(data => dispatch(touchTokenSuccess(data)))
                 } else {
-                    return Promise.reject(response.json())
+                    return response.json()
+                        .then(error => dispatch(touchTokenFailure(error)))
                 }
             })
-            .then(data => dispatch(touchTokenSuccess(data)))
-            .catch(error => dispatch(touchTokenFailure(error)))
     }
 }
 
@@ -107,10 +107,12 @@ export const logout = (apiToken) => {
             })
         })
             .then(response => {
-                if (response.status === 204) {
-                    dispatch(logoutSuccess())
+                if (response.ok) {
+                    return response.json()
+                        .then(data => dispatch(logoutSuccess(data)))
                 } else {
-                    dispatch(logoutFailure())
+                    return response.json()
+                        .then(error => dispatch(logoutFailure(error)))
                 }
             })
     }

@@ -25,24 +25,30 @@ class SignupForm extends Component
     }
 
     render () {
+        var emailErrorMsg = this.props.errors.email
+        var passwordErrorMsg = this.props.errors.password
+
         return (
             <form onSubmit={this.handleSubmission.bind(this)}>
+
                 <label htmlFor="email">Email address:</label>
                 <input
                     id="email"
                     type="email"
-                    className="u-full-width"
+                    className={ emailErrorMsg ? "u-full-width has-error" : "u-full-width"}
                     placeholder="user@example.com"
                     value={this.state.email}
                     onChange={this.handleEmailChange.bind(this)}/>
+                { emailErrorMsg ? <p className="has-error">{emailErrorMsg}</p> : null }
 
                 <label htmlFor="password">Password:</label>
                 <input
                     id="password"
                     type="password"
-                    className="u-full-width"
+                    className={ passwordErrorMsg ? "u-full-width has-error" : "u-full-width"}
                     value={this.state.password}
                     onChange={(this.handlePasswordChange.bind(this))} />
+                { passwordErrorMsg ? <p className="has-error">{passwordErrorMsg}</p> : null }
 
                 <input
                     type="submit"
@@ -50,19 +56,19 @@ class SignupForm extends Component
                     value="Submit"
                     disabled={this.props.loading} />
             </form>
-        );
+        )
     }
 }
 
 const mapStateToProps = (state) => ({
-    loading: state.api.users.loading
+    loading: state.api.users.loading,
+    errors: state.ux.signup.errors
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     signup(email, password) {
-        console.log(ownProps)
         dispatch(userActions.signup(email, password))
-            .then(dispatch(push(ownProps.redirectTarget)))
+            // .then(dispatch(push(ownProps.redirectTarget)))
     }
 })
 

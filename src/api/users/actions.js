@@ -10,10 +10,19 @@ export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
 const signupSuccess = () => ({ type: SIGNUP_SUCCESS })
 
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
-const signupFailure = (error) => ({
-    type: SIGNUP_FAILURE,
-    errors: error.detail
-})
+const signupFailure = (error) => {
+    if (error.code === 409) {
+        return {
+            type: SIGNUP_FAILURE,
+            errors: { email: ['This email address is already registered.'] }
+        }
+    } else {
+        return {
+            type: SIGNUP_FAILURE,
+            errors: { password: ['This is an invalid password.'] }
+        }
+    }
+}
 
 export const signup = (email, password) => {
     return (dispatch) => {
@@ -23,15 +32,15 @@ export const signup = (email, password) => {
             headers: new Headers({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ email, password })
         })
-            // Insert promises for success/fail
             .then(response => {
-                if (response.status === 201) {
-                    return Promise.resolve(response.json())
+                if (response.ok) {
+                    return response.json()
+                        .then(data => dispatch(signupSuccess(data)))
                 } else {
-                    return Promise.reject(response.json())
+                    return response.json()
+                        .then(error => dispatch(signupFailure(error)))
                 }
+    
             })
-            .then(data => dispatch(signupSuccess(data)))
-            .catch(error => dispatch(signupFailure(error)))
     }
 }

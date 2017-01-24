@@ -25,13 +25,16 @@ class LoginForm extends Component
     }
 
     render () {
+        var authErrorMsg = this.props.errors.auth
+
         return (
             <form onSubmit={this.handleSubmission.bind(this)}>
+
                 <label htmlFor="email">Email address:</label>
                 <input
                     id="email"
                     type="email"
-                    className="u-full-width"
+                    className={ authErrorMsg ? "u-full-width has-error" : "u-full-width"}
                     placeholder="user@example.com"
                     value={this.state.email}
                     onChange={this.handleEmailChange.bind(this)}/>
@@ -40,9 +43,11 @@ class LoginForm extends Component
                 <input
                     id="password"
                     type="password"
-                    className="u-full-width"
+                    className={ authErrorMsg ? "u-full-width has-error" : "u-full-width"}
                     value={this.state.password}
                     onChange={(this.handlePasswordChange.bind(this))} />
+                
+                { authErrorMsg ? <p className="has-error">{authErrorMsg}</p> : null }
 
                 <input
                     type="submit"
@@ -50,19 +55,19 @@ class LoginForm extends Component
                     value="Submit"
                     disabled={this.props.loading} />
             </form>
-        );
+        )
     }
 }
 
 const mapStateToProps = (state) => ({
     loading: state.api.users.auth.loading,
-    errors: state.api.users.auth.errors
+    errors: state.ux.login.errors
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     login(email, password) {
         dispatch(actions.login(email, password))
-            .then(dispatch(push(ownProps.redirectTarget)))
+            // .then(dispatch(push(ownProps.redirectTarget)))
         }
 })
 
