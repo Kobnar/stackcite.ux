@@ -108,11 +108,9 @@ export const logout = (apiToken) => {
         })
             .then(response => {
                 if (response.ok) {
-                    return response.json()
-                        .then(data => dispatch(logoutSuccess(data)))
+                    return dispatch(logoutSuccess())
                 } else {
-                    return response.json()
-                        .then(error => dispatch(logoutFailure(error)))
+                    return dispatch(logoutFailure())
                 }
             })
     }

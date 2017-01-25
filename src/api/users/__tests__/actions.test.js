@@ -50,7 +50,7 @@ describe('signup', () => {
                 'code': 400,
                 'title': 'Bad Request',
                 'detail': {
-                    email: 'Not a valid email address.'
+                    email: ['Not a valid email address.']
                 }
             })
 
@@ -59,7 +59,7 @@ describe('signup', () => {
             {
                 type: actions.SIGNUP_FAILURE,
                 errors: {
-                    email: 'Not a valid email address.'
+                    email: ['Not a valid email address.']
                 }
             }
         ]

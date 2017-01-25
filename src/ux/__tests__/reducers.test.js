@@ -1,4 +1,5 @@
 import deepFreeze from 'deep-freeze'
+import { LOCATION_CHANGE } from 'react-router-redux'
 
 import ux from '../reducers'
 import initialState from '../state'
@@ -35,6 +36,20 @@ describe('ux', () => {
             mobileNavMenuVisible: true
         }
         var newState = ux(prevState, action)
+        expect(newState.mobileNavMenuVisible).toBe(false)
+    })
+
+})
+
+describe('react-router-redux', () => {
+
+    it('hides nav menu for any location change', () => {
+        var action = { type: LOCATION_CHANGE }
+        var prevState = {
+            ...initialState,
+            mobileNavMenuVisible: true
+        }
+        var newState = ux(undefined, action)
         expect(newState.mobileNavMenuVisible).toBe(false)
     })
 

@@ -4,15 +4,20 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
 import * as actions from './actions'
-import * as authActions from '../api/users/auth/actions'
 
 import MainNavigationMenu from './MainNavigationMenu'
 import MobileNavigationMenu from './MobileNavigationMenu'
 
 import './css/nav.css'
 
-class NavigationBar extends Component
-{
+class NavigationBar extends Component {
+
+    // A generalized event handler for logout links
+    handleLogout(event) {
+        event.preventDefault()
+        this.props.logout(this.props.tokenKey)
+    }
+
     // Checks if an event was triggerd anywhere on the NavigationBar component
     handleClick(event) {
         var domNode = ReactDOM.findDOMNode(this)
@@ -26,39 +31,33 @@ class NavigationBar extends Component
     componentWillUnount() { window.removeEventListener('click', this.handleClick.bind(this), false) }
 
     render () {
-        var isLoggedIn = !!this.props.user.id
+        var isLoggedIn = !!this.props.tokenKey
         return (
             <div className="navbar-contaner">
-                {/** The main navigation menu */}
                 <MainNavigationMenu
                     isLoggedIn={isLoggedIn}
-                    logoutHandler={this.props.logout}
-                    hideMenuHandler={this.props.hideMobileNavMenu}
-                    toggleMenuHandler={this.props.toggleMobileNavMenu} />
-                {/** The mobile navigation menu */}
+                    toggleMobileNavMenu={this.props.toggleMobileNavMenu}
+                    logout={this.handleLogout.bind(this)}/>
                 <MobileNavigationMenu
                     isLoggedIn={isLoggedIn}
-                    logoutHandler={this.props.logout}
-                    menuVisible={this.props.mobileNavMenuVisible}
-                    navClickHandler={this.props.navClickHandler} />
+                    isVisible={this.props.mobileNavMenuVisible}
+                    push={this.props.push}
+                    logout={this.handleLogout.bind(this)}/>
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    user: state.api.users.auth.user,
+    tokenKey: state.api.users.auth.token.key,
     mobileNavMenuVisible: state.ux.mobileNavMenuVisible
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    logout() { dispatch(authActions.logout()) },
     toggleMobileNavMenu() { dispatch(actions.toggleMobileNavMenu()) },
     hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) },
-    navClickHandler(target) {
-        dispatch(push(target))
-        dispatch(actions.hideMobileNavMenu())
-    }
+    push(target) { dispatch(push(target)) },
+    logout(tokenKey) { dispatch(actions.logout(tokenKey)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)

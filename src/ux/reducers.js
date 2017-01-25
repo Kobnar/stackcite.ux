@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { LOCATION_CHANGE } from 'react-router-redux'
 
 import login from './login/reducers'
 import signup from './signup/reducers'
@@ -13,6 +14,7 @@ const mobileNavMenuVisible = (state = initialState.mobileNavMenuVisible, action)
             return true
 
         case actions.HIDE_MOBILE_NAV_MENU:
+        case LOCATION_CHANGE:
             return false
 
         case actions.TOGGLE_MOBILE_NAV_MENU:

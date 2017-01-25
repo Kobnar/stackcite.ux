@@ -20,7 +20,7 @@ class LoginForm extends Component
     handleEmailChange(event) { this.setState({email: event.target.value}) }
     handlePasswordChange(event) { this.setState({password: event.target.value}) }
     handleSubmission(event) {
-        event.preventDefault();
+        event.preventDefault()
         this.props.login(this.state.email, this.state.password)
     }
 
