@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { LOCATION_CHANGE } from 'react-router-redux'
 
+import account from './account/reducers'
 import login from './login/reducers'
 import signup from './signup/reducers'
 
@@ -27,6 +28,7 @@ const mobileNavMenuVisible = (state = initialState.mobileNavMenuVisible, action)
 
 export default combineReducers({
     mobileNavMenuVisible,
+    account,
     login,
     signup
 })

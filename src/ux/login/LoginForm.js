@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
-import * as actions from '../../api/users/auth/actions'
+import * as authActions from '../../api/users/auth/actions'
+import * as actions from './actions'
 
 class LoginForm extends Component
 {
@@ -15,6 +16,8 @@ class LoginForm extends Component
             password: ''
         }
     }
+
+    componentDidMount() { this.props.clearErrors() }
 
     // Input event handlers
     handleEmailChange(event) { this.setState({email: event.target.value}) }
@@ -66,13 +69,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     login(email, password) {
-        dispatch(actions.login(email, password))
+        dispatch(authActions.login(email, password))
             .then((action) => {
-                if (action.type === actions.LOGIN_SUCCESS) {
+                if (action.type === authActions.LOGIN_SUCCESS) {
                     dispatch(push(ownProps.redirectTarget))
                 }
             })
-        }
+        },
+    clearErrors() { dispatch(actions.clearLoginErrors()) }
 })
 
 LoginForm = connect(mapStateToProps, mapDispatchToProps)(LoginForm)

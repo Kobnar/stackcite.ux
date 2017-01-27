@@ -1,13 +1,17 @@
 import { combineReducers } from 'redux'
 
-import * as actions from '../../api/users/auth/actions'
+import * as authActions from '../../api/users/auth/actions'
+import * as actions from './actions'
 import initialState from './state'
 
 const errors = (state = initialState.errors, action) => {
     switch(action.type) {
 
-        case actions.LOGIN_FAILURE:
+        case authActions.LOGIN_FAILURE:
             return {...action.errors}
+
+        case actions.CLEAR_LOGIN_ERRORS:
+            return {...initialState.errors}
         
         default:
             return state
