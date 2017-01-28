@@ -36,6 +36,30 @@ const getUserSuccess = (data) => ({
 export const GET_USER_FAILURE = 'GET_USER_FAILURE'
 const getUserFailure = (error) => ({ type: GET_USER_FAILURE })
 
+export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST'
+const updateUserRequest = () => ({ type: UPDATE_USER_REQUEST })
+
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
+const updateUserSuccess = (data) => ({
+    type: UPDATE_USER_SUCCESS,
+    user: data
+})
+
+export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE'
+const updateUserFailure = (error) => {
+    if (error.code === 409) {
+        return {
+            type: UPDATE_USER_FAILURE,
+            errors: { email: ['This email address is already registered.'] }
+        }
+    } else {
+        return {
+            type: UPDATE_USER_FAILURE,
+            errors: {...error.detail}
+        }
+    }
+}
+
 export const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST'
 const deleteUserRequest = () => ({ type: DELETE_USER_REQUEST })
 
@@ -84,6 +108,30 @@ export const getUser = (tokenKey, userId) => {
                 } else {
                     return response.json()
                         .then(error => dispatch(getUserFailure(error)))
+                }
+            })
+    }
+}
+
+export const updateUser = (tokenKey, userId, data) => {
+    return (dispatch) => {
+        var userEndpoint = usersEndpoint + userId + "/"
+        dispatch(updateUserRequest())
+        return fetch(userEndpoint, {
+            method: 'PUT',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': 'key '.concat(tokenKey)
+            }),
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                        .then(data => dispatch(updateUserSuccess(data)))
+                } else {
+                    return response.json()
+                        .then(error => dispatch(updateUserFailure(error)))
                 }
             })
     }
