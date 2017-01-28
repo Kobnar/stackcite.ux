@@ -12,8 +12,22 @@ const errors = (state = initialState.errors, action) => {
         case userActions.SIGNUP_FAILURE:
             return {...action.errors}
 
-        case actions.CLEAR_SIGNUP_ERRORS:
-            return {...initialState.errors}
+        case actions.CLEAR_SIGNUP_FORM:
+            return {}
+        
+        default:
+            return state
+    }
+}
+
+const complete = (state = initialState.complete, action) => {
+    switch(action.type) {
+
+        case userActions.SIGNUP_SUCCESS:
+            return true
+        
+        case actions.CLEAR_SIGNUP_FORM:
+            return false
         
         default:
             return state
@@ -22,5 +36,6 @@ const errors = (state = initialState.errors, action) => {
 
 export default combineReducers({
     errors,
+    complete,
     confirm
 })

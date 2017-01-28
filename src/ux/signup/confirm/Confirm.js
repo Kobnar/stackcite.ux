@@ -6,28 +6,32 @@ import * as actions from './actions'
 
 class Confirm extends Component {
 
-    componentWillMount () {
+    componentDidMount () {
         if (this.props.confirmKey)
             this.props.confirmAccount(this.props.confirmKey)
     }
 
-    _Processing = (
-        <p>Processing account confirmation...</p>
-    )
+    _processing = () => {
+        return (
+            <p>Processing account confirmation...</p>
+        )
+    }
 
-    _Failed = (
-        <div>
-            <h5>Confirmation Failed</h5>
-            <p>The confirmation token you provided has either expired or it is invalid.</p>
-        </div>
-    )
+    _failed = () => {
+        return (
+            <div>
+                <h5>Confirmation Failed</h5>
+                <p>The confirmation token you provided has either expired or it is invalid.</p>
+            </div>
+        )
+    }
 
     render () {
         if (this.props.loading)
-            return this._Processing
+            return this._processing()
         else
             if (this.props.failed)
-                return this._Failed
+                return this._failed()
     }
 }
 
