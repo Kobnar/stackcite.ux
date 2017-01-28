@@ -17,10 +17,16 @@ export const CONFIRM_ACCOUNT_REQUEST = 'CONFIRM_ACCOUNT_REQUEST'
 const confirmAccountRequest = () => ({ type: CONFIRM_ACCOUNT_REQUEST })
 
 export const CONFIRM_ACCOUNT_SUCCESS = 'CONFIRM_ACCOUNT_SUCCESS'
-const confirmAccountSuccess = () => ({ type: CONFIRM_ACCOUNT_SUCCESS })
+const confirmAccountSuccess = (data) => ({
+    type: CONFIRM_ACCOUNT_SUCCESS,
+    user: {...data.user}
+})
 
 export const CONFIRM_ACCOUNT_FAILURE = 'CONFIRM_ACCOUNT_FAILURE'
-const confirmAccountFailure = (error) => ({ type: CONFIRM_ACCOUNT_FAILURE })
+const confirmAccountFailure = (error) => ({
+    type: CONFIRM_ACCOUNT_FAILURE,
+    errors: {...error.detail}
+})
 
 export const createConfirmToken = (email) => {
     return (dispatch) => {
@@ -32,9 +38,9 @@ export const createConfirmToken = (email) => {
         })
             .then(response => {
                 if (response.status === 204) {
-                    dispatch(createConfirmTokenSuccess())
+                    return dispatch(createConfirmTokenSuccess())
                 } else {
-                    dispatch(createConfirmTokenFailure())
+                    return dispatch(createConfirmTokenFailure())
                 }
             })
     }
@@ -49,11 +55,12 @@ export const confirmAccount = (key) => {
             body: JSON.stringify({ key })
         })
             .then(response => {
-                if (response.status === 204) {
-                    dispatch(confirmAccountSuccess())
-                } else {
-                    dispatch(confirmAccountFailure())
-                }
+                if (response.status === 200)
+                    return response.json()
+                        .then(data => dispatch(confirmAccountSuccess(data)))                        
+                else
+                    return response.json()
+                        .then(error => dispatch(confirmAccountFailure(error)))
             })
     }
 }

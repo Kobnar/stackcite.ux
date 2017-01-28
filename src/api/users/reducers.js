@@ -4,7 +4,7 @@ import initialState from './state'
 import * as actions from './actions'
 
 import auth from './auth/reducers'
-import conf from './conf/reducers'
+import confirm from './confirm/reducers'
 
 const loading = (state = initialState.loading, action) => {
     switch(action.type) {
@@ -24,5 +24,5 @@ const loading = (state = initialState.loading, action) => {
 export default combineReducers({
     loading,
     auth,
-    conf
+    confirm
 })

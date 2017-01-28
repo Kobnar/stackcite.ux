@@ -1,5 +1,8 @@
+import confirm from './confirm/state'
+
 const initialState = {
-    errors: {}
+    errors: {},
+    confirm
 }
 
 export default initialState

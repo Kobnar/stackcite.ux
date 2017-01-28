@@ -1,10 +1,10 @@
 import auth from './auth/state'
-import conf from './conf/state'
+import confirm from './confirm/state'
 
 const initialState = {
     loading: false,
     auth,
-    conf
+    confirm
 }
 
 export default initialState

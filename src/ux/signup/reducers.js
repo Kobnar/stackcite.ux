@@ -1,13 +1,15 @@
 import { combineReducers } from 'redux'
 
-import * as authActions from '../../api/users/actions'
+import * as userActions from '../../api/users/actions'
 import * as actions from './actions'
 import initialState from './state'
+
+import confirm from './confirm/reducers'
 
 const errors = (state = initialState.errors, action) => {
     switch(action.type) {
 
-        case authActions.SIGNUP_FAILURE:
+        case userActions.SIGNUP_FAILURE:
             return {...action.errors}
 
         case actions.CLEAR_SIGNUP_ERRORS:
@@ -19,5 +21,6 @@ const errors = (state = initialState.errors, action) => {
 }
 
 export default combineReducers({
-    errors
+    errors,
+    confirm
 })
