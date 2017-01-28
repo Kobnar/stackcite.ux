@@ -49,81 +49,65 @@ class Account extends Component {
             <div className="container">
                 <h4>Account Settings</h4>
 
-                <div className="settings-container">
-                    <h5>Profile</h5>
-                    <form onSubmit={this.handleSubmission.bind(this)}>
-                        <div className="row">
-                            <label htmlFor="email">Email address</label>
-                            <input
-                                id="email"
-                                type="email"
-                                className="u-full-width"
-                                placeholder={this.props.user.email}
-                                onChange={this.handleEmailChange.bind(this)}/>
-                        </div>
-                    </form>
-                </div>
-
-                <div className="settings-container">
-                    <h5>Security</h5>
-                    <form>
-                        <div className="row">
-                            <label htmlFor="new-password">New password</label>
-                            <input
-                                id="new-password"
-                                type="password"
-                                className="u-full-width"
-                                onChange={this.handleNewPasswordChange.bind(this)}/>
-                        </div>
-                        <div className="row">
-                            <label htmlFor="password">Old password</label>
-                            <input
-                                id="password"
-                                type="password"
-                                className="u-full-width"
-                                onChange={this.handlePasswordChange.bind(this)}/>
-                        </div>
-                        <div className="row">
-                            <label>Groups</label>
-                            <label>
-                                <input name="users" value={this.state.groups.users} type="checkbox"/>
-                                <span className="label-body">Users</span>
-                            </label>
-                            <label>
-                                <input name="staff" value={this.state.groups.users} type="checkbox"/>
-                                <span className="label-body">Staff</span>
-                            </label>
-                            <label>
-                                <input name="admin" value={this.state.groups.users} type="checkbox"/>
-                                <span className="label-body">Administrators</span>
-                            </label>
-                        </div>
-                    </form>
-                </div>
-
-                <div className="settings-container">
-                    <h5>Stats</h5>
+                <h5>Profile</h5>
+                <form onSubmit={this.handleSubmission.bind(this)}>
                     <div className="row">
-                        <p><strong>Joined:</strong> {this.props.user.joined}</p>
-                    </div>
-                    <div className="row">
-                        <p><strong>Last login:</strong> {this.props.user.previous_login}</p>
-                    </div>
-                </div>
-
-                <div className="settings-container">
-                    <form onSubmit={this.handleSubmission.bind(this)}>
+                        <label htmlFor="email">Email address</label>
                         <input
-                            type="submit"
-                            value="Submit"
-                            className="button-primary"/>
-                    </form>
+                            id="email"
+                            type="email"
+                            className="u-full-width"
+                            placeholder={this.props.user.email}
+                            onChange={this.handleEmailChange.bind(this)}/>
+                    </div>
+                </form>
+
+                <h5>Security</h5>
+                <form>
+                    <div className="row">
+                        <label htmlFor="new-password">New password</label>
+                        <input
+                            id="new-password"
+                            type="password"
+                            className="u-full-width"
+                            onChange={this.handleNewPasswordChange.bind(this)}/>
+                    </div>
+                    <div className="row">
+                        <label htmlFor="password">Old password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            className="u-full-width"
+                            onChange={this.handlePasswordChange.bind(this)}/>
+                    </div>
+                    <div className="row">
+                        <label>Groups</label>
+
+                        <select name="groups" className="u-full-width" style={{height: "5.5em"}} multiple>
+                            <option value="users">Users</option>
+                            <option value="staff">Staff</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </form>
+
+                <form onSubmit={this.handleSubmission.bind(this)}>
+                    <input
+                        type="submit"
+                        value="Submit"
+                        className="button-primary"/>
+                </form>
+
+                <h5>Stats</h5>
+                <div className="row">
+                    <p><strong>Joined:</strong> {this.props.user.joined}</p>
                 </div>
-                
-                <div className="settings-container">
-                    <h5>Delete Account</h5>
-                    <button onClick={() => this.props.deleteUser(this.props.tokenKey, this.props.userId)}>Delete Account</button>
+                <div className="row">
+                    <p><strong>Last login:</strong> {this.props.user.previous_login}</p>
                 </div>
+            
+                <h5>Delete Account</h5>
+                <button onClick={() => this.props.deleteUser(this.props.tokenKey, this.props.userId)}>Delete Account</button>
             </div>
         )
     }
