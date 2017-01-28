@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
+import * as bs from 'react-bootstrap'
 
 import * as authActions from '../../api/users/actions'
 import * as actions from './actions'
@@ -18,11 +19,14 @@ class Form extends Component
             email: '',
             password: ''
         }
+
+        this.handleEmailChange = this.handleEmailChange.bind(this)
+        this.handlePasswordChange = this.handlePasswordChange.bind(this)
+        this.handleSubmission = this.handleSubmission.bind(this)
     }
 
     componentDidMount() { this.props.clearForm() }
 
-    // Input event handlers
     handleEmailChange(event) { this.setState({email: event.target.value}) }
     handlePasswordChange(event) { this.setState({password: event.target.value}) }
     handleSubmission(event) {
@@ -31,38 +35,53 @@ class Form extends Component
     }
 
     _form = (emailErrors, passwordErrors) => {
-        var emailErrorMsg = this.props.errors.email
-        var passwordErrorMsg = this.props.errors.password
+        var emailError = this.props.errors.email
+        var passwordError = this.props.errors.password
 
         return (
             <div>
-                <h4>Sign up</h4>
+                <h1>Sign up</h1>
                 <form onSubmit={this.handleSubmission.bind(this)}>
 
-                    <label htmlFor="email">Email address:</label>
-                    <input
-                        id="email"
-                        type="email"
-                        className={ emailErrorMsg ? "u-full-width has-error" : "u-full-width"}
-                        placeholder="user@example.com"
-                        value={this.state.email}
-                        onChange={this.handleEmailChange.bind(this)}/>
-                    { emailErrorMsg ? <p className="has-error">{emailErrorMsg}</p> : null }
+                    <bs.FormGroup
+                        validationState={ emailError ? 'error' : null }>
+                        <bs.ControlLabel
+                            className="sr-only">
+                            Email address
+                        </bs.ControlLabel>
+                        <bs.FormControl
+                            id="email"
+                            type="email"
+                            placeholder="Email"
+                            value={this.state.email}
+                            onChange={this.handleEmailChange}
+                            validationState={ emailError ? 'error' : null }/>
+                        <bs.HelpBlock>{emailError}</bs.HelpBlock>
+                    </bs.FormGroup>
 
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        id="password"
-                        type="password"
-                        className={ passwordErrorMsg ? "u-full-width has-error" : "u-full-width"}
-                        value={this.state.password}
-                        onChange={(this.handlePasswordChange.bind(this))} />
-                    { passwordErrorMsg ? <p className="has-error">{passwordErrorMsg}</p> : null }
+                    <bs.FormGroup
+                        validationState={ passwordError ? 'error' : null }>
+                        <bs.ControlLabel
+                            className="sr-only">
+                            Password
+                        </bs.ControlLabel>
+                        <bs.FormControl
+                            id="password"
+                            type="password"
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChange={this.handlePasswordChange}/>
+                        <bs.HelpBlock>{passwordError}</bs.HelpBlock>
+                    </bs.FormGroup>
 
-                    <input
+                    <bs.Button
+                        block
                         type="submit"
-                        className="button-primary u-pull-right"
-                        value="Submit"
-                        disabled={this.props.loading} />
+                        bsStyle="primary"
+                        className="pull-right"
+                        disabled={this.props.loading}>
+                        Sign up
+                    </bs.Button>
                 </form>
             </div>
         )
