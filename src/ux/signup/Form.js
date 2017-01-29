@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
-import * as authActions from '../../api/users/actions'
+import * as usersActions from '../../api/users/actions'
 import * as actions from './actions'
 
 import '../css/auth.css'
@@ -34,14 +34,11 @@ class Form extends Component
         this.props.signup(this.state.email, this.state.password)
     }
 
-    _form = (emailErrors, passwordErrors) => {
-        var emailError = this.props.errors.email
-        var passwordError = this.props.errors.password
-
+    _form = (emailError, passwordError) => {
         return (
             <div>
                 <h1>Sign up</h1>
-                <form onSubmit={this.handleSubmission.bind(this)}>
+                <form onSubmit={this.handleSubmission}>
 
                     <bs.FormGroup
                         validationState={ emailError ? 'error' : null }>
@@ -54,8 +51,7 @@ class Form extends Component
                             type="email"
                             placeholder="Email"
                             value={this.state.email}
-                            onChange={this.handleEmailChange}
-                            validationState={ emailError ? 'error' : null }/>
+                            onChange={this.handleEmailChange}/>
                         <bs.HelpBlock>{emailError}</bs.HelpBlock>
                     </bs.FormGroup>
 
@@ -99,7 +95,9 @@ class Form extends Component
     render () {
 
         if (!this.props.complete)
-            return this._form()
+            return this._form(
+                this.props.errors.email,
+                this.props.errors.password)
         else
             return this._success()
     }
@@ -113,7 +111,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     signup(email, password) {
-        dispatch(authActions.signup(email, password))
+        dispatch(usersActions.signup(email, password))
     },
     clearForm() { dispatch(actions.clearSignupForm()) }
 })
