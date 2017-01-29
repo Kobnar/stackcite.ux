@@ -26,6 +26,7 @@ class NavigationBar extends Component {
     }
 
     render () {
+        var isLoggedIn = !!this.props.tokenKey
         return (
             <bs.Navbar collapseOnSelect>
                 <bs.Navbar.Header>
@@ -41,10 +42,10 @@ class NavigationBar extends Component {
                         <NavLink to="/organizations" className="navbar-link">Organizations</NavLink>
                     </bs.Nav>
                     <bs.Nav pullRight>
-                        <NavLink to="/signup" className="navbar-link">Sign up</NavLink>
-                        <NavLink to="/login" className="navbar-link">Log in</NavLink>
-                        <NavLink to="/account" className="navbar-link">Account</NavLink>
-                        <NavLink to="/logout" onClick={this.handleLogout} className="navbar-link">Log out</NavLink>
+                        { !isLoggedIn ? <NavLink to="/signup" className="navbar-link">Sign up</NavLink> : null }
+                        { !isLoggedIn ? <NavLink to="/login" className="navbar-link">Log in</NavLink> : null }
+                        { isLoggedIn ? <NavLink to="/account" className="navbar-link">Account</NavLink> : null }
+                        { isLoggedIn ? <NavLink to="/logout" onClick={this.handleLogout} className="navbar-link">Log out</NavLink> : null }
                     </bs.Nav>
                 </bs.Navbar.Collapse>
             </bs.Navbar>
