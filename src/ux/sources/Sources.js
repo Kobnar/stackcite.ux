@@ -6,7 +6,7 @@ class Sources extends Component {
     render () {
         return (
             <div className="container">
-                <h4>Sources</h4>
+                <h1>Sources</h1>
             </div>
         )
     }

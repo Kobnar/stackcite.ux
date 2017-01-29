@@ -6,7 +6,7 @@ class People extends Component {
     render () {
         return (
             <div className="container">
-                <h4>People</h4>
+                <h1>People</h1>
             </div>
         )
     }

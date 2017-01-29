@@ -6,7 +6,7 @@ class Organizations extends Component {
     render () {
         return (
             <div className="container">
-                <h4>Organizations</h4>
+                <h1>Organizations</h1>
             </div>
         )
     }
