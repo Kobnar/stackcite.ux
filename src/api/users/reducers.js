@@ -1,29 +1,30 @@
 import { combineReducers } from 'redux'
 
+import { REQUEST } from '../actions'
+import {
+    POST_USER,
+    GET_USER,
+    PUT_USER,
+    DELETE_USER,
+    GET_USERS } from './actions'
+
 import initialState from './state'
-import * as actions from './actions'
 
 import auth from './auth/reducers'
 import confirm from './confirm/reducers'
 
 const loading = (state = initialState.loading, action) => {
     switch(action.type) {
-        
-        case actions.SIGNUP_REQUEST:
-        case actions.GET_USER_REQUEST:
-        case actions.UPDATE_USER_REQUEST:
-        case actions.DELETE_USER_REQUEST:
-            return true
-        
-        case actions.SIGNUP_SUCCESS:
-        case actions.SIGNUP_FAILURE:
-        case actions.GET_USER_SUCCESS:
-        case actions.GET_USER_FAILURE:
-        case actions.UPDATE_USER_SUCCESS:
-        case actions.UPDATE_USER_FAILURE:
-        case actions.DELETE_USER_SUCCESS:
-        case actions.DELETE_USER_FAILURE:
-            return false
+
+        case POST_USER:
+        case GET_USER:
+        case PUT_USER:
+        case DELETE_USER:
+        case GET_USERS:
+            if (action.status === REQUEST)
+                return true
+            else
+                return initialState.loading
 
         default:
             return state

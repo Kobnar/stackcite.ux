@@ -1,109 +1,141 @@
-import fetch from 'isomorphic-fetch'
+import {
+    REQUEST,
+    SUCCESS,
+    FAILURE,
+    createDocument,
+    retrieveDocument,
+    updateDocument,
+    deleteDocument } from '../actions'
 
-import * as apiActions from '../actions'
 import * as authActions from './auth/actions'
 
-const route = 'users/'
+const ROUTE = 'users/'
 
-export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
-export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
-export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
+export const POST_USER = 'POST_USER'
+export const GET_USER = 'GET_USER'
+export const PUT_USER = 'PUT_USER'
+export const DELETE_USER = 'DELETE_USER'
+export const GET_USERS = 'GET_USERS'
 
-export const GET_USER_REQUEST = 'GET_USER_REQUEST'
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS'
-export const GET_USER_FAILURE = 'GET_USER_FAILURE'
-
-export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST'
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS'
-export const UPDATE_USER_FAILURE = 'UPDATE_USER_FAILURE'
-
-export const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST'
-export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS'
-export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE'
-
-const signupRequest = () => ({ type: SIGNUP_REQUEST })
-
-const signupSuccess = () => ({ type: SIGNUP_SUCCESS })
-
-const signupFailure = (error) => {
-    if (error.code === 409) {
-        return {
-            type: SIGNUP_FAILURE,
-            errors: { email: ['This email address is already registered.'] }
-        }
-    } else {
-        return {
-            type: SIGNUP_FAILURE,
-            errors: { password: ['This is an invalid password.'] }
-        }
-    }
-}
-
-const getUserRequest = () => ({ type: GET_USER_REQUEST })
-
-const getUserSuccess = (data) => ({
-    type: GET_USER_SUCCESS,
-    user: data
+const createUserRequest = () => ({
+    type: POST_USER,
+    status: REQUEST
 })
 
-const getUserFailure = (error) => ({ type: GET_USER_FAILURE })
-
-const updateUserRequest = () => ({ type: UPDATE_USER_REQUEST })
-
-const updateUserSuccess = (data) => ({
-    type: UPDATE_USER_SUCCESS,
-    user: data
+const createUserSuccess = (data) => ({
+    type: POST_USER,
+    status: SUCCESS,
+    data
 })
 
-const updateUserFailure = (error) => {
-    if (error.code === 409) {
-        return {
-            type: UPDATE_USER_FAILURE,
-            errors: { email: ['This email address is already registered.'] }
-        }
-    } else {
-        return {
-            type: UPDATE_USER_FAILURE,
-            errors: {...error.detail}
-        }
+const createUserFailure = (error) => {
+    var action = {
+        type: POST_USER,
+        status: FAILURE,
+        errors: error.detail
     }
+    if (error.code === 409)
+        action.errors["email"] = ['This email is already registered.']
+    return action
 }
 
-const deleteUserRequest = () => ({ type: DELETE_USER_REQUEST })
+const retrieveUserRequest = (userId) => ({
+    type: GET_USER,
+    status: REQUEST,
+    userId
+})
 
-const deleteUserSuccess = (data) => ({ type: DELETE_USER_SUCCESS })
+const retrieveUserSuccess = (userId, data) => ({
+    type: GET_USER,
+    status: SUCCESS,
+    user: data,
+    userId
+})
 
-const deleteUserFailure = (error) => ({ type: DELETE_USER_FAILURE })
+const retrieveUserFailure = (userId, error) => ({
+    type: GET_USER,
+    status: FAILURE,
+    errors: error.detail,
+    userId
+})
 
-export const signup = (email, password) => {
+const updateUserRequest = (userId) => ({
+    type: PUT_USER,
+    status: REQUEST,
+    userId
+})
+
+const updateUserSuccess = (userId, data) => ({
+    type: PUT_USER,
+    status: SUCCESS,
+    user: data,
+    userId
+})
+
+const updateUserFailure = (userId, error) => ({
+    type: PUT_USER,
+    status: FAILURE,
+    errors: error.detail,
+    userId
+})
+
+const deleteUserRequest = (userId) => ({
+    type: DELETE_USER,
+    status: REQUEST,
+    userId
+})
+
+const deleteUserSuccess = (userId) => ({
+    type: DELETE_USER,
+    status: SUCCESS,
+    userId
+})
+
+const deleteUserFailure = (userId) => ({
+    type: DELETE_USER,
+    status: FAILURE,
+    userId
+})
+
+const retrieveCollectionRequest = (route) => ({
+    type: GET_USERS,
+    status: REQUEST,
+})
+
+const retrieveCollectionSuccess = (data) => ({
+    type: GET_USERS,
+    status: SUCCESS,
+    users: data
+})
+
+const retrieveCollectionFailure = (error) => ({
+    type: GET_USERS,
+    status: FAILURE,
+    errors: error.detail
+})
+
+export const createUser = (email, password) => {
     return (dispatch) => {
-        dispatch(signupRequest())
-        return apiActions.createDocument(route, { email, password })
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                        .then(data => dispatch(signupSuccess(data)))
-                } else {
-                    return response.json()
-                        .then(error => dispatch(signupFailure(error)))
-                }
-    
+        dispatch(createUserRequest())
+        return dispatch(createDocument(ROUTE, { email, password }))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    dispatch(createUserSuccess(action.data))
+                else
+                    dispatch(createUserFailure(action.error))
             })
     }
 }
 
-export const getUser = (tokenKey, userId) => {
+export const retrieveUser = (tokenKey, userId) => {
     return (dispatch) => {
-        dispatch(getUserRequest())
-        return apiActions.retrieveDocument(route, userId, tokenKey)
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                        .then(data => dispatch(getUserSuccess(data)))
-                } else {
-                    return response.json()
-                        .then(error => dispatch(getUserFailure(error)))
-                }
+        dispatch(retrieveUserRequest())
+        return dispatch(retrieveDocument(ROUTE, userId, tokenKey))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    return dispatch(retrieveUserSuccess(userId, action.data))
+                else
+                    return dispatch(retrieveUserFailure(userId, action.error))
             })
     }
 }
@@ -111,30 +143,25 @@ export const getUser = (tokenKey, userId) => {
 export const updateUser = (tokenKey, userId, data) => {
     return (dispatch) => {
         dispatch(updateUserRequest())
-        return apiActions.updateDocument(route, userId, data, tokenKey)
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                        .then(data => dispatch(updateUserSuccess(data)))
-                } else {
-                    return response.json()
-                        .then(error => dispatch(updateUserFailure(error)))
-                }
+        return dispatch(updateDocument(ROUTE, userId, data, tokenKey))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    return dispatch(updateUserSuccess(userId, action.data))
+                else
+                    return dispatch(updateUserFailure(userId, action.error))
             })
     }
 }
 
 export const deleteUser = (tokenKey, userId) => {
     return (dispatch) => {
-        dispatch(getUserRequest())
-        return apiActions.deleteDocument(route, userId, tokenKey)
-            .then(response => {
-                if (response.ok) {
-                    dispatch(deleteUserSuccess())
-                    dispatch(authActions.logoutSuccess())
-                } else {
-                    return dispatch(deleteUserFailure())
-                }
+        dispatch(deleteUserRequest())
+        return dispatch(deleteDocument(ROUTE, userId, tokenKey))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    return dispatch(deleteUserSuccess(userId))
+                else
+                    return dispatch(deleteUserFailure(userId))
             })
     }
 }

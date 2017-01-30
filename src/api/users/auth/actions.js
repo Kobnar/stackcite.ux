@@ -1,105 +1,136 @@
-import fetch from 'isomorphic-fetch'
+import {
+    REQUEST,
+    SUCCESS,
+    FAILURE,
+    createDocument,
+    retrieveDocument,
+    updateDocument,
+    deleteDocument } from '../../actions'
 
-import * as apiActions from '../../actions'
+const ROUTE = 'users/auth/'
 
-const route = 'users/auth/'
+export const POST_AUTH_TOKEN = 'POST_AUTH_TOKEN'
+export const GET_AUTH_TOKEN = 'GET_AUTH_TOKEN'
+export const PUT_AUTH_TOKEN = 'PUT_AUTH_TOKEN'
+export const DELETE_AUTH_TOKEN = 'DELETE_AUTH_TOKEN'
 
-// Maps API response from /v0/auth/ to the standard dispatch action pattern
-const mapAuthApiResponseToAction = (response) => ({
-    user: response.user,
+const AUTH_FAILED_ERROR = { auth: ['Authentication failed.'] }
+
+const mapAuthToken = (data) => ({
+    user: {
+        id: data.user.id
+    },
     token: {
-        key: response.key,
-        issued: response.issued,
-        touched: response.touched
+        key: data.key,
+        issued: data.issued,
+        touched: data.touched
     }
 })
 
-const authFailedMsg = { auth: ['Authentication failed.'] }
-
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
-
-export const TOUCH_TOKEN_REQUEST = 'TOUCH_TOKEN_REQUEST'
-export const TOUCH_TOKEN_SUCCESS = 'TOUCH_TOKEN_SUCCESS'
-export const TOUCH_TOKEN_FAILURE = 'TOUCH_TOKEN_FAILURE'
-
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
-
-export const loginRequest = () => ({ type: LOGIN_REQUEST  })
-
-export const loginSuccess = (response) => ({
-        type: LOGIN_SUCCESS,
-        ...mapAuthApiResponseToAction(response)
+const createAuthTokenRequest = () => ({
+    type: POST_AUTH_TOKEN,
+    status: REQUEST
 })
 
-export const loginFailure = (error) => ({
-        type: LOGIN_FAILURE,
-        errors: authFailedMsg
+const createAuthTokenSuccess = (data) => ({
+    type: POST_AUTH_TOKEN,
+    status: SUCCESS,
+    ...mapAuthToken(data)
 })
 
-export const touchTokenRequest = () => ({ type: TOUCH_TOKEN_REQUEST })
-
-export const touchTokenSuccess = (response) => ({
-        type: TOUCH_TOKEN_SUCCESS,
-        ...mapAuthApiResponseToAction(response)
+const createAuthTokenFailure = (error) => ({
+    type: POST_AUTH_TOKEN,
+    status: FAILURE,
+    errors: AUTH_FAILED_ERROR
 })
 
-export const touchTokenFailure = (error) => ({
-        type: TOUCH_TOKEN_FAILURE,
-        errors: authFailedMsg
+const retrieveAuthTokenRequest = () => ({
+    type: GET_AUTH_TOKEN,
+    status: REQUEST
 })
 
-export const logoutRequest = () => ({ type: LOGOUT_REQUEST })
+const retrieveAuthTokenSuccess = (data) => ({
+    type: GET_AUTH_TOKEN,
+    status: SUCCESS,
+    ...mapAuthToken(data)
+})
 
-export const logoutSuccess = () => ({ type: LOGOUT_SUCCESS })
+const retrieveAuthTokenFailure = (error) => ({
+    type: GET_AUTH_TOKEN,
+    status: FAILURE,
+    errors: AUTH_FAILED_ERROR
+})
 
-export const logoutFailure = () => ({ type: LOGOUT_FAILURE })
+const updateAuthTokenRequest = () => ({
+    type: PUT_AUTH_TOKEN,
+    status: REQUEST
+})
 
-export const login = (email, password) => {
+const updateAuthTokenSuccess = (data) => ({
+    type: PUT_AUTH_TOKEN,
+    status: SUCCESS,
+    ...mapAuthToken(data)
+})
+
+const updateAuthTokenFailure = (error) => ({
+    type: PUT_AUTH_TOKEN,
+    status: FAILURE,
+    errors: AUTH_FAILED_ERROR
+})
+
+const deleteAuthTokenRequest = () => ({
+    type: DELETE_AUTH_TOKEN,
+    status: REQUEST
+})
+
+const deleteAuthTokenSuccess = (data) => ({
+    type: DELETE_AUTH_TOKEN,
+    status: SUCCESS,
+    ...mapAuthToken(data)
+})
+
+const deleteAuthTokenFailure = (error) => ({
+    type: DELETE_AUTH_TOKEN,
+    status: FAILURE,
+    errors: AUTH_FAILED_ERROR
+})
+
+
+export const createAuthToken = (email, password) => {
     return (dispatch) => {
-        dispatch(loginRequest());
-        return apiActions.createDocument(route, { email, password })
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                        .then(data => dispatch(loginSuccess(data)))
-                } else {
-                    return response.json()
-                        .then(error => dispatch(loginFailure(error)))
-                }
+        dispatch(createAuthTokenRequest())
+        return dispatch(createDocument(ROUTE, { email, password }))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    return dispatch(createAuthTokenSuccess(action.data))
+                else
+                    return dispatch(createAuthTokenFailure(action.error))
             })
     }
 }
 
-export const touchToken = (apiToken) => {
+export const updateAuthToken = (apiToken) => {
     return (dispatch) => {
-        dispatch(touchTokenRequest())
-        return apiActions.updateDocument(route, undefined, undefined, apiToken)
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                        .then(data => dispatch(touchTokenSuccess(data)))
-                } else {
-                    return response.json()
-                        .then(error => dispatch(touchTokenFailure(error)))
-                }
+        dispatch(updateAuthTokenRequest())
+        return dispatch(updateDocument(ROUTE, undefined, undefined, apiToken))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    return dispatch(updateAuthTokenSuccess(action.data))
+                else
+                    return dispatch(updateAuthTokenFailure(action.error))
             })
     }
 }
 
-export const logout = (apiToken) => {
+export const deleteAuthToken = (apiToken) => {
     return (dispatch) => {
-        dispatch(logoutRequest())
-        return apiActions.deleteDocument(route, undefined, undefined, apiToken)
-            .then(response => {
-                if (response.ok) {
-                    return dispatch(logoutSuccess())
-                } else {
-                    return dispatch(logoutFailure())
-                }
+        dispatch(deleteAuthTokenRequest())
+        return dispatch(deleteDocument(ROUTE, undefined, undefined, apiToken))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    return dispatch(deleteAuthTokenSuccess(action.data))
+                else
+                    return dispatch(deleteAuthTokenFailure(action.error))
             })
     }
 }

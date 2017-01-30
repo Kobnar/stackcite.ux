@@ -1,24 +1,28 @@
 import { combineReducers } from 'redux'
 
+import { REQUEST, SUCCESS } from '../../actions'
+import {
+    POST_AUTH_TOKEN,
+    GET_AUTH_TOKEN,
+    PUT_AUTH_TOKEN,
+    DELETE_AUTH_TOKEN } from './actions'
+import {
+    DELETE_USER } from '../actions'
+
 import initialState from './state'
-import * as actions from './actions'
 
 const loading = (state = initialState.loading, action) => {
     switch(action.type) {
 
-        case actions.LOGIN_REQUEST:
-        case actions.LOGOUT_REQUEST:
-        case actions.TOUCH_TOKEN_REQUEST:
-            return true
-
-        case actions.LOGIN_SUCCESS:
-        case actions.LOGIN_FAILURE:
-        case actions.LOGOUT_SUCCESS:
-        case actions.LOGOUT_FAILURE:
-        case actions.TOUCH_TOKEN_SUCCESS:
-        case actions.TOUCH_TOKEN_FAILURE:
-            return false
-
+        case POST_AUTH_TOKEN:
+        case GET_AUTH_TOKEN:
+        case PUT_AUTH_TOKEN:
+        case DELETE_AUTH_TOKEN:
+            if (action.status === REQUEST)
+                return true
+            else
+                return initialState.loading
+        
         default:
             return state
     }
@@ -27,17 +31,16 @@ const loading = (state = initialState.loading, action) => {
 const user = (state = initialState.user, action) => {
     switch(action.type) {
 
-        case actions.LOGIN_SUCCESS:
-        case actions.TOUCH_TOKEN_SUCCESS:
-            return { 
-                ...state,
-                ...action.user
-            }
-
-        case actions.LOGIN_FAILURE:
-        case actions.LOGOUT_SUCCESS:
-        case actions.LOGOUT_FAILURE:
-        case actions.TOUCH_TOKEN_FAILURE:
+        case POST_AUTH_TOKEN:
+        case GET_AUTH_TOKEN:
+        case PUT_AUTH_TOKEN:
+            if (action.status === SUCCESS)
+                return { ...action.user }
+            else
+                return initialState.user
+        
+        case DELETE_AUTH_TOKEN:
+        case DELETE_USER:
             return initialState.user
 
         default:
@@ -48,17 +51,16 @@ const user = (state = initialState.user, action) => {
 const token = (state = initialState.token, action) => {
     switch(action.type) {
 
-        case actions.LOGIN_SUCCESS:
-        case actions.TOUCH_TOKEN_SUCCESS:
-            return {
-                ...state,
-                ...action.token
-            }
-
-        case actions.LOGIN_FAILURE:
-        case actions.LOGOUT_SUCCESS:
-        case actions.LOGOUT_FAILURE:
-        case actions.TOUCH_TOKEN_FAILURE:
+        case POST_AUTH_TOKEN:
+        case GET_AUTH_TOKEN:
+        case PUT_AUTH_TOKEN:
+            if (action.status === SUCCESS)
+                return { ...action.token }
+            else
+                return initialState.token
+        
+        case DELETE_AUTH_TOKEN:
+        case DELETE_USER:
             return initialState.token
 
         default:
