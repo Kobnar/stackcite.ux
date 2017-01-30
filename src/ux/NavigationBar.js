@@ -21,7 +21,7 @@ class NavigationBar extends Component {
 
     handleLogout (event) {
         event.preventDefault()
-        this.props.logout()
+        this.props.logout(this.props.tokenKey)
         this.props.push("/")
     }
 
@@ -58,11 +58,11 @@ const mapStateToProps = (state) => ({
     mobileNavMenuVisible: state.ux.mobileNavMenuVisible
 })
 
-const mapDispatchToProps = (dispatch, props) => ({
+const mapDispatchToProps = (dispatch) => ({
     toggleMobileNavMenu() { dispatch(actions.toggleMobileNavMenu()) },
     hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) },
     push(target) { dispatch(push(target)) },
-    logout() { dispatch(actions.logout(props.tokenKey)) }
+    logout(tokenKey) { dispatch(actions.logout(tokenKey)) }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
