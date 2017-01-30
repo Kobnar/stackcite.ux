@@ -33,14 +33,16 @@ class Form extends Component {
         this.handleDelete = this.handleDelete.bind(this)
     }
 
-    componentDidMount() {
-        this.props.retrieveUser(this.props.tokenKey, this.props.userId)
-            .then(action => {
-                var groups = {}
-                for (var group in this.state.groups)
-                    groups[group] = !!this.props.user.groups.includes(group)
-                this.setState({ groups })
-            })
+    componentWillMount() {
+        if (!this.props.user.id)
+            this.props.retrieveUser(this.props.tokenKey, this.props.userId)
+                .then(action => {
+                    // Maps list of groups to dict
+                    var groups = {}
+                    for (var group in this.state.groups)
+                        groups[group] = !!this.props.user.groups.includes(group)
+                    this.setState({ groups })
+                })
     }
 
     handleEmailChange (event) { this.setState({email: event.target.value}) }

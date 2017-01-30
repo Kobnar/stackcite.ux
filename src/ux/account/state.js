@@ -1,8 +1,5 @@
 const initialState = {
-    user: {
-        email: "",
-        groups: []
-    },
+    user: {},
     errors: {}
 }
 
