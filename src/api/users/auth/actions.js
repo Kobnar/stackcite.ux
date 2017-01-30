@@ -125,6 +125,19 @@ export const createAuthToken = (email, password) => {
     }
 }
 
+export const retrieveAuthToken = (apiToken) => {
+    return (dispatch) => {
+        dispatch(retrieveAuthTokenRequest())
+        return dispatch(updateDocument(ROUTE, undefined, undefined, apiToken))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    return dispatch(retrieveAuthTokenSuccess(action.data))
+                else
+                    return dispatch(retrieveAuthTokenFailure(action.error))
+            })
+    }
+}
+
 export const updateAuthToken = (apiToken) => {
     return (dispatch) => {
         dispatch(updateAuthTokenRequest())
