@@ -200,7 +200,7 @@ export const deleteDocument = (route, documentId, tokenKey) => {
 export const retrieveCollection = (route, tokenKey) => {
     return (dispatch) => {
         dispatch(retrieveCollectionRequest(route))
-        return apiInterface.retrieveDocument(route, tokenKey)
+        return apiInterface.retrieveCollection(route, tokenKey)
             .then(response => {
                 if (response.ok)
                     return response.json()
