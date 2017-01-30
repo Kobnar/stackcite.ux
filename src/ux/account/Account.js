@@ -3,30 +3,11 @@ import { connect } from 'react-redux'
 
 import * as userActions from '../../api/users/actions'
 
+import Form from './Form.js'
+
 import './css/account.css'
 
 class Account extends Component {
-
-    constructor(props) {
-        super(props);
-
-        // Set initial form state
-        this.state = {
-            email: '',
-            password: '',
-            newPassword: '',
-            groups: {
-                users: false,
-                staff: false,
-                admin: false
-            }
-        }
-    }
-
-    componentDidMount() {
-        this.props.getUser(this.props.tokenKey, this.props.userId)
-    }
-
     handleEmailChange(event) { this.setState({email: event.target.value}) }
     handlePasswordChange(event) { this.setState({password: event.target.value}) }
     handleNewPasswordChange(event) { this.setState({newPassword: event.target.value}) }
@@ -47,82 +28,15 @@ class Account extends Component {
     render () {
         return (
             <div className="container">
-                <h4>Account Settings</h4>
-
-                <h5>Profile</h5>
-                <form onSubmit={this.handleSubmission.bind(this)}>
-                    <div className="row">
-                        <label htmlFor="email">Email address</label>
-                        <input
-                            id="email"
-                            type="email"
-                            className="u-full-width"
-                            placeholder={this.props.user.email}
-                            onChange={this.handleEmailChange.bind(this)}/>
-                    </div>
-                </form>
-
-                <h5>Security</h5>
-                <form>
-                    <div className="row">
-                        <label htmlFor="new-password">New password</label>
-                        <input
-                            id="new-password"
-                            type="password"
-                            className="u-full-width"
-                            onChange={this.handleNewPasswordChange.bind(this)}/>
-                    </div>
-                    <div className="row">
-                        <label htmlFor="password">Old password</label>
-                        <input
-                            id="password"
-                            type="password"
-                            className="u-full-width"
-                            onChange={this.handlePasswordChange.bind(this)}/>
-                    </div>
-                    <div className="row">
-                        <label>Groups</label>
-
-                        <select name="groups" className="u-full-width" style={{height: "5.5em"}} multiple>
-                            <option value="users">Users</option>
-                            <option value="staff">Staff</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                </form>
-
-                <form onSubmit={this.handleSubmission.bind(this)}>
-                    <input
-                        type="submit"
-                        value="Submit"
-                        className="button-primary"/>
-                </form>
-
-                <h5>Stats</h5>
-                <div className="row">
-                    <p><strong>Joined:</strong> {this.props.user.joined}</p>
-                </div>
-                <div className="row">
-                    <p><strong>Last login:</strong> {this.props.user.previous_login}</p>
-                </div>
-            
-                <h5>Delete Account</h5>
-                <button onClick={() => this.props.deleteUser(this.props.tokenKey, this.props.userId)}>Delete Account</button>
+                <Form userId={this.props.userId} tokenKey={this.props.tokenKey}/>
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    user: state.ux.account.user,
     userId: state.api.users.auth.user.id,
     tokenKey: state.api.users.auth.token.key
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    getUser(tokenKey, userId) { dispatch(userActions.getUser(tokenKey, userId)) },
-    updateUser(tokenKey, userId, data) { dispatch(userActions.updateUser(tokenKey, userId, data)) },
-    deleteUser(tokenKey, userId) { dispatch(userActions.deleteUser(tokenKey, userId)) }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Account)
+export default connect(mapStateToProps)(Account)

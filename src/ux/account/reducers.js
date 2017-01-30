@@ -14,10 +14,24 @@ const user = (state = initialState.user, action) => {
 
         default:
             return state
+    }
+}
 
+const errors = (state = initialState.errors, action) => {
+    switch(action.type) {
+
+        case actions.GET_USER_SUCCESS:
+            return initialState.errors
+
+        case actions.GET_USER_FAILURE:
+            return {...action.errors}
+        
+        default:
+            return state
     }
 }
 
 export default combineReducers({
-    user
+    user,
+    errors
 })

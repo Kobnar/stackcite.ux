@@ -1,5 +1,9 @@
 const initialState = {
-    user: {}
+    user: {
+        email: "",
+        groups: []
+    },
+    errors: {}
 }
 
 export default initialState
