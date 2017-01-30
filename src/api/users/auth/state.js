@@ -1,10 +1,10 @@
 const initialState = {
     loading: false,
     user: {
-        id: ''
+        id: ""
     },
     token: {
-        key: '',
+        key: "",
         issued: null,
         touched: null
     }

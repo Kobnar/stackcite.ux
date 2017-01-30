@@ -1,3 +1,5 @@
+import * as cookie from 'react-cookie'
+
 import {
     REQUEST,
     SUCCESS,
@@ -7,7 +9,8 @@ import {
     updateDocument,
     deleteDocument } from '../../actions'
 
-const ROUTE = 'users/auth/'
+export const ROUTE = 'users/auth/'
+export const COOKIE_NAME = 'key'
 
 export const POST_AUTH_TOKEN = 'POST_AUTH_TOKEN'
 export const GET_AUTH_TOKEN = 'GET_AUTH_TOKEN'
@@ -32,11 +35,14 @@ const createAuthTokenRequest = () => ({
     status: REQUEST
 })
 
-const createAuthTokenSuccess = (data) => ({
-    type: POST_AUTH_TOKEN,
-    status: SUCCESS,
-    ...mapAuthToken(data)
-})
+const createAuthTokenSuccess = (data) => {
+    cookie.save(COOKIE_NAME, data.key)
+    return {
+        type: POST_AUTH_TOKEN,
+        status: SUCCESS,
+        ...mapAuthToken(data)
+    }
+}
 
 const createAuthTokenFailure = (error) => ({
     type: POST_AUTH_TOKEN,
@@ -49,11 +55,14 @@ const retrieveAuthTokenRequest = () => ({
     status: REQUEST
 })
 
-const retrieveAuthTokenSuccess = (data) => ({
-    type: GET_AUTH_TOKEN,
-    status: SUCCESS,
-    ...mapAuthToken(data)
-})
+const retrieveAuthTokenSuccess = (data) => {
+    cookie.save(COOKIE_NAME, data.key)
+    return {
+        type: GET_AUTH_TOKEN,
+        status: SUCCESS,
+        ...mapAuthToken(data)
+    }
+}
 
 const retrieveAuthTokenFailure = (error) => ({
     type: GET_AUTH_TOKEN,
@@ -66,11 +75,14 @@ const updateAuthTokenRequest = () => ({
     status: REQUEST
 })
 
-const updateAuthTokenSuccess = (data) => ({
-    type: PUT_AUTH_TOKEN,
-    status: SUCCESS,
-    ...mapAuthToken(data)
-})
+const updateAuthTokenSuccess = (data) => {
+    cookie.save(COOKIE_NAME, data.key)
+    return {
+        type: PUT_AUTH_TOKEN,
+        status: SUCCESS,
+        ...mapAuthToken(data)
+    }
+}
 
 const updateAuthTokenFailure = (error) => ({
     type: PUT_AUTH_TOKEN,
@@ -78,10 +90,13 @@ const updateAuthTokenFailure = (error) => ({
     errors: AUTH_FAILED_ERROR
 })
 
-const deleteAuthTokenRequest = () => ({
-    type: DELETE_AUTH_TOKEN,
-    status: REQUEST
-})
+const deleteAuthTokenRequest = () => {
+    cookie.remove(COOKIE_NAME)
+    return {
+        type: DELETE_AUTH_TOKEN,
+        status: REQUEST
+    }
+}
 
 const deleteAuthTokenSuccess = (data) => ({
     type: DELETE_AUTH_TOKEN,
@@ -101,8 +116,9 @@ export const createAuthToken = (email, password) => {
         dispatch(createAuthTokenRequest())
         return dispatch(createDocument(ROUTE, { email, password }))
             .then(action => {
-                if (action.status === SUCCESS)
+                if (action.status === SUCCESS) {
                     return dispatch(createAuthTokenSuccess(action.data))
+                }
                 else
                     return dispatch(createAuthTokenFailure(action.error))
             })

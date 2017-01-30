@@ -1,3 +1,4 @@
+import * as reactCookie from 'react-cookie'
 import { combineReducers } from 'redux'
 
 import { REQUEST, SUCCESS } from '../../actions'
@@ -12,7 +13,7 @@ import {
 import initialState from './state'
 
 const loading = (state = initialState.loading, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
         case POST_AUTH_TOKEN:
         case GET_AUTH_TOKEN:
@@ -29,7 +30,7 @@ const loading = (state = initialState.loading, action) => {
 }
 
 const user = (state = initialState.user, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
         case POST_AUTH_TOKEN:
         case GET_AUTH_TOKEN:
@@ -49,7 +50,7 @@ const user = (state = initialState.user, action) => {
 }
 
 const token = (state = initialState.token, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
         case POST_AUTH_TOKEN:
         case GET_AUTH_TOKEN:
