@@ -5,11 +5,6 @@ import * as bs from 'react-bootstrap'
 
 import * as userActions from '../../api/users/actions'
 
-const propTypes = {
-    userId: React.PropTypes.string.isRequired,
-    tokenKey: React.PropTypes.string.isRequired
-}
-
 class Form extends Component {
     constructor (props) {
         super(props)
@@ -244,7 +239,6 @@ class Form extends Component {
         return this._form()
     }
 
-    static propTypes = propTypes
 }
 
 const mapStateToProps = (state) => ({

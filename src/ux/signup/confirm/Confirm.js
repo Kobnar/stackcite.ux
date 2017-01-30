@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import * as confActions from '../../../api/users/confirm/actions'
 import * as actions from './actions'
 
 class Confirm extends Component {

@@ -3,9 +3,7 @@ import {
     SUCCESS,
     FAILURE,
     createDocument,
-    retrieveDocument,
-    updateDocument,
-    deleteDocument } from '../../actions'
+    updateDocument } from '../../actions'
 
 const ROUTE = 'users/conf/'
 

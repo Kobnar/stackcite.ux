@@ -10,7 +10,7 @@ class NavLink extends Component {
             role="presentation"
             className={classNames(className, { active, disabled })}
             style={style}>
-            <Link to={to} role="button" onClick={onClick}>{this.props.children}</Link>
+            <Link to={to} role="button" onClick={onClick} >{this.props.children}</Link>
         </li>)
     }
 }

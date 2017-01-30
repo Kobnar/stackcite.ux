@@ -5,7 +5,6 @@ import {
     SUCCESS,
     FAILURE,
     createDocument,
-    retrieveDocument,
     updateDocument,
     deleteDocument } from '../../actions'
 

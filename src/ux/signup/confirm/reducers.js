@@ -3,7 +3,6 @@ import { combineReducers } from 'redux'
 import { SUCCESS } from '../../../api/actions'
 import { PUT_CONFIRM_TOKEN } from '../../../api/users/confirm/actions'
 
-import * as actions from './actions'
 import initialState from './state'
 
 const failed = (state = initialState.failed, action) => {

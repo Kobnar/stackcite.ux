@@ -7,8 +7,6 @@ import {
     updateDocument,
     deleteDocument } from '../actions'
 
-import * as authActions from './auth/actions'
-
 const ROUTE = 'users/'
 
 export const POST_USER = 'POST_USER'
@@ -95,23 +93,6 @@ const deleteUserFailure = (userId) => ({
     type: DELETE_USER,
     status: FAILURE,
     userId
-})
-
-const retrieveCollectionRequest = (route) => ({
-    type: GET_USERS,
-    status: REQUEST,
-})
-
-const retrieveCollectionSuccess = (data) => ({
-    type: GET_USERS,
-    status: SUCCESS,
-    users: data
-})
-
-const retrieveCollectionFailure = (error) => ({
-    type: GET_USERS,
-    status: FAILURE,
-    errors: error.detail
 })
 
 export const createUser = (email, password) => {

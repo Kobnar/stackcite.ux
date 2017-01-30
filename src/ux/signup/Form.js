@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
 import * as usersActions from '../../api/users/actions'

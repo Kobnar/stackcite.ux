@@ -1,4 +1,3 @@
-import * as reactCookie from 'react-cookie'
 import { combineReducers } from 'redux'
 
 import { REQUEST, SUCCESS } from '../../actions'

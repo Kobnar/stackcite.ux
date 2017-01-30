@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { REQUEST, SUCCESS } from '../../actions'
+import { REQUEST } from '../../actions'
 import {
     POST_CONFIRM_TOKEN,
     PUT_CONFIRM_TOKEN } from './actions'
