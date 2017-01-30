@@ -1,5 +1,5 @@
 const initialState = {
-    failed: true
+    failed: false
 }
 
 export default initialState

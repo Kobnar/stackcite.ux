@@ -27,11 +27,10 @@ class Confirm extends Component {
     }
 
     render () {
-        if (this.props.loading)
+        if (this.props.loading || !this.props.failed)
             return this._processing()
         else
-            if (this.props.failed)
-                return this._failed()
+            return this._failed()
     }
 }
 

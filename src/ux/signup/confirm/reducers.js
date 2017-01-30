@@ -8,7 +8,7 @@ const failed = (state = initialState.failed, action) => {
     switch(action.type) {
 
         case confirmActions.CONFIRM_ACCOUNT_SUCCESS:
-            return false
+            return initialState.failed
 
         case confirmActions.CONFIRM_ACCOUNT_FAILURE:
             return true
