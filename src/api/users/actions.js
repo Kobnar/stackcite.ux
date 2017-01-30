@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
+import * as authActions from './auth/actions'
+
 // TODO: Abstract general endpoint URI
 const usersEndpoint = 'http://api.localhost/v0/users/'
 
@@ -150,10 +152,10 @@ export const deleteUser = (tokenKey, userId) => {
         })
             .then(response => {
                 if (response.ok) {
-                    return dispatch(deleteUserSuccess())
+                    dispatch(deleteUserSuccess())
+                    dispatch(authActions.logoutSuccess())
                 } else {
-                    return response.json()
-                        .then(error => dispatch(deleteUserFailure(error)))
+                    return dispatch(deleteUserFailure())
                 }
             })
     }
