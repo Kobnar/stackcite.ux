@@ -75,7 +75,6 @@ class Form extends Component {
                         block
                         type="submit"
                         bsStyle="primary"
-                        className="pull-right"
                         disabled={this.props.loading}>
                         Log in
                     </bs.Button>
