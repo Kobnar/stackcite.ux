@@ -34,7 +34,7 @@ class Form extends Component {
     }
 
     componentDidMount() {
-        this.props.getUser(this.props.tokenKey, this.props.userId)
+        this.props.retrieveUser(this.props.tokenKey, this.props.userId)
             .then(action => {
                 var groups = {}
                 for (var group in this.state.groups)
@@ -252,8 +252,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getUser(tokenKey, userId) {
-        return dispatch(userActions.getUser(tokenKey, userId)) },
+    retrieveUser(tokenKey, userId) {
+        return dispatch(userActions.retrieveUser(tokenKey, userId)) },
     updateUser(tokenKey, userId, data) {
         return dispatch(userActions.updateUser(tokenKey, userId, data)) },
     deleteUser(tokenKey, userId) {

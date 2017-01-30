@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 
+import * as apiActions from '../../api/actions'
 import * as userActions from '../../api/users/actions'
 import * as actions from './actions'
 import initialState from './state'
@@ -7,31 +8,33 @@ import initialState from './state'
 import confirm from './confirm/reducers'
 
 const errors = (state = initialState.errors, action) => {
-    switch(action.type) {
+    if (action.type === userActions.POST_USER) {
+        switch (action.status) {
 
-        case userActions.SIGNUP_FAILURE:
-            return {...action.errors}
+            case apiActions.SUCCESS:
+                return initialState.errors
 
-        case actions.CLEAR_SIGNUP_FORM:
-            return {}
-        
-        default:
-            return state
+            case apiActions.FAILURE:
+                return {...action.errors}
+            
+            default:
+                return state
+        }
+    } else {
+        return state
     }
 }
 
 const complete = (state = initialState.complete, action) => {
-    switch(action.type) {
+    if (action.type === userActions.POST_USER
+        && action.status === apiActions.SUCCESS)
+        return true
 
-        case userActions.SIGNUP_SUCCESS:
-            return true
-        
-        case actions.CLEAR_SIGNUP_FORM:
-            return false
-        
-        default:
-            return state
-    }
+    else if (action.type === actions.CLEAR_SIGNUP_FORM) 
+        return false
+
+    else
+        return state
 }
 
 export default combineReducers({

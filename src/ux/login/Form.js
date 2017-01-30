@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
+import { SUCCESS } from '../../api/actions'
 import * as authActions from '../../api/users/auth/actions'
 import * as actions from './actions'
 
@@ -96,9 +97,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     login(email, password) {
-        dispatch(authActions.login(email, password))
+        dispatch(authActions.createAuthToken(email, password))
             .then((action) => {
-                if (action.type === authActions.LOGIN_SUCCESS) {
+                if (action.status === SUCCESS) {
                     dispatch(push(ownProps.redirectTarget))
                 }
             })

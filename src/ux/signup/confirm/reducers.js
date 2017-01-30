@@ -1,18 +1,20 @@
 import { combineReducers } from 'redux'
 
-import * as confirmActions from '../../../api/users/confirm/actions'
+import { SUCCESS } from '../../../api/actions'
+import { PUT_CONFIRM_TOKEN } from '../../../api/users/confirm/actions'
+
 import * as actions from './actions'
 import initialState from './state'
 
 const failed = (state = initialState.failed, action) => {
     switch(action.type) {
 
-        case confirmActions.CONFIRM_ACCOUNT_SUCCESS:
-            return initialState.failed
+        case PUT_CONFIRM_TOKEN:
+            if (action.status === SUCCESS)
+                return initialState.failed
+            else
+                return true
 
-        case confirmActions.CONFIRM_ACCOUNT_FAILURE:
-            return true
-        
         default:
             return state
     }

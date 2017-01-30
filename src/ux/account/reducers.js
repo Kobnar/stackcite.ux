@@ -1,15 +1,27 @@
 import { combineReducers } from 'redux'
 
-import * as actions from '../../api/users/actions'
+import { SUCCESS } from '../../api/actions'
+import {
+    GET_USER,
+    PUT_USER,
+    DELETE_USER } from '../../api/users/actions'
+import {
+    DELETE_AUTH_TOKEN } from '../../api/users/auth/actions'
+
 import initialState from './state'
 
 const user = (state = initialState.user, action) => {
     switch(action.type) {
 
-        case actions.GET_USER_SUCCESS:
-            return {...action.user}
+        case GET_USER:
+        case PUT_USER:
+            if (action.status === SUCCESS)
+                return { ...action.user }
+            else
+                return initialState.user
 
-        case actions.GET_USER_FAILURE:
+        case DELETE_USER:
+        case DELETE_AUTH_TOKEN:
             return initialState.user
 
         default:
@@ -20,11 +32,11 @@ const user = (state = initialState.user, action) => {
 const errors = (state = initialState.errors, action) => {
     switch(action.type) {
 
-        case actions.GET_USER_SUCCESS:
-            return initialState.errors
-
-        case actions.GET_USER_FAILURE:
-            return {...action.errors}
+        case PUT_USER:
+            if (action.status === SUCCESS)
+                return initialState.errors
+            else
+                return { ...action.errors }
         
         default:
             return state

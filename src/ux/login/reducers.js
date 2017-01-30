@@ -1,18 +1,20 @@
 import { combineReducers } from 'redux'
 
-import * as authActions from '../../api/users/auth/actions'
+import { SUCCESS, FAILURE } from '../../api/actions'
+import { POST_AUTH_TOKEN } from '../../api/users/auth/actions'
+
 import * as actions from './actions'
 import initialState from './state'
 
 const errors = (state = initialState.errors, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
-        case authActions.LOGIN_FAILURE:
-            return {...action.errors}
+        case POST_AUTH_TOKEN:
+            if (action.status == SUCCESS)
+                return initialState.errors
+            else
+                return { ...action.errors }
 
-        case actions.CLEAR_LOGIN_ERRORS:
-            return {...initialState.errors}
-        
         default:
             return state
     }

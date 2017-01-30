@@ -20,7 +20,7 @@ class Confirm extends Component {
     _failed = () => {
         return (
             <div>
-                <h5>Confirmation Failed</h5>
+                <h3>Confirmation Failed</h3>
                 <p>The confirmation token you provided has either expired or it is invalid.</p>
             </div>
         )

@@ -1,6 +1,7 @@
 import { push } from 'react-router-redux'
 
-import * as authActions from '../api/users/auth/actions'
+import { SUCCESS } from '../api/actions'
+import * as actions from '../api/users/auth/actions'
 
 export const HIDE_MOBILE_NAV_MENU = 'HIDE_MOBILE_NAV_MENU'
 export const hideMobileNavMenu = () => {
@@ -19,9 +20,9 @@ export const toggleMobileNavMenu = () => {
 
 export const logout = (apiToken) => {
     return (dispatch) => {
-        return dispatch(authActions.logout(apiToken))
+        return dispatch(actions.deleteAuthToken(apiToken))
             .then(action => {
-                if (action.type === authActions.LOGOUT_SUCCESS) {
+                if (action.status === SUCCESS) {
                     return dispatch(push('/login'))
                 }
             })

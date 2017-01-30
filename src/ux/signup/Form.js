@@ -110,7 +110,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     signup(email, password) {
-        dispatch(usersActions.signup(email, password))
+        dispatch(usersActions.createUser(email, password))
     },
     clearForm() { dispatch(actions.clearSignupForm()) }
 })
