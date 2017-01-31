@@ -10,14 +10,15 @@ import {
     GET_COLLECTION } from '../actions'
 
 import {
-    updateCache,
+    mergeCache,
+    deleteDocument,
     cache } from '../reducers'
 
-describe('updateCache', () => {
+describe('mergeCache', () => {
 
     it('does not alter original cache', () => {
 
-        var cache = {
+        var existingCache = {
             things: {
                 '588f479a30f193446790b28e': { name: 'Test Document 0'},
                 '521f4793b0f193326790b22g': { name: 'Test Document 1'}
@@ -31,14 +32,13 @@ describe('updateCache', () => {
             }
         }
 
-        deepFreeze(cache)
-
-        var result = updateCache(cache, data)
+        deepFreeze(existingCache)
+        mergeCache(existingCache, data)
     })
 
     it('merges two caches', () => {
 
-        var cache = {
+        var existingCache = {
             things: {
                 '588f479a30f193446790b28e': { name: 'Test Document 0'},
                 '521f4793b0f193326790b22g': { name: 'Test Document 1'}
@@ -60,9 +60,48 @@ describe('updateCache', () => {
             }
         }
 
-        var result = updateCache(cache, data)
+        var result = mergeCache(existingCache, data)
 
         expect(result).toEqual(expected)
+    })
+
+})
+
+describe('deleteDocument', () => {
+
+    it('does not alter original cache', () => {
+
+        var existingCache = {
+            things: {
+                '588f479a30f193446790b28e': { name: 'Test Document 0'},
+                '521f4793b0f193326790b22g': { name: 'Test Document 1'}
+            }
+        }
+
+        deepFreeze(existingCache)
+        deleteDocument(existingCache, '521f4793b0f193326790b22g')
+
+    })
+
+    it('deletes document from cache', () => {
+
+        var existingCache = {
+            things: {
+                '588f479a30f193446790b28e': { name: 'Test Document 0'},
+                '521f4793b0f193326790b22g': { name: 'Test Document 1'}
+            }
+        }
+
+        const expected = {
+            things: {
+                '521f4793b0f193326790b22g': { name: 'Test Document 1'}
+            }
+        }
+
+        const result = deleteDocument(existingCache, '588f479a30f193446790b28e')
+
+        expect(result).toEqual(expected)
+
     })
 
 })
@@ -146,6 +185,39 @@ describe('cache', () => {
         }
 
         var result = cache({}, action)
+
+        expect(result).toEqual(expected)
+    })
+
+    it('deletes a cached document', () => {
+        var existingCache = {
+            things: {
+                '521f4793b0f193326790b22g': {
+                    id: '521f4793b0f193326790b22g', name: 'Test Document 0' },
+                '621f4793b0fa22526777h162': {
+                    id: '621f4793b0fa22526777h162', name: 'Test Document 1' },
+                '588f479a30f193446790b28e': {
+                    id: '588f479a30f193446790b28e', name: 'Test Document 2' }
+            }
+        }
+
+        var action = {
+            type: DELETE_DOCUMENT,
+            status: SUCCESS,
+            route: 'things/',
+            documentId: '621f4793b0fa22526777h162'
+        }
+
+        const expected = {
+            things: {
+                '521f4793b0f193326790b22g': {
+                    id: '521f4793b0f193326790b22g', name: 'Test Document 0' },
+                '588f479a30f193446790b28e': {
+                    id: '588f479a30f193446790b28e', name: 'Test Document 2' }
+            }
+        }
+
+        const result = cache(existingCache, action)
 
         expect(result).toEqual(expected)
     })

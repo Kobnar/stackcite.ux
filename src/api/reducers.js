@@ -16,13 +16,24 @@ import initialState from './state'
 import orgs from './organizations/reducers'
 import users from './users/reducers'
 
-export const updateCache = (cache, update) => {
-    var newCache = { ...cache }
+export const mergeCache = (cache, update) => {
+    // HACK: Need a better deep-clone method
+    var newCache = JSON.parse(JSON.stringify(cache))
     for (var collection in update) {
         newCache[collection] = {
-            ...cache[collection],
+            ...newCache[collection],
             ...update[collection] }
     }
+    return newCache
+}
+
+export const deleteDocument = (cache, documentId) => {
+    // HACK: Need a better deep-clone method
+    var newCache = JSON.parse(JSON.stringify(cache))
+    for (var collection in newCache)
+        var cachedCollection = newCache[collection]
+        if (documentId in cachedCollection)
+            delete cachedCollection[documentId]
     return newCache
 }
 
@@ -34,7 +45,7 @@ export const cache = (state = initialState.cache, action) => {
         case PUT_DOCUMENT:
             if (action.status === SUCCESS && action.schema) {
                 var data = normalize(action.data, action.schema)
-                return updateCache(state, data.entities)
+                return mergeCache(state, data.entities)
             } else
                 return state
 
@@ -42,14 +53,15 @@ export const cache = (state = initialState.cache, action) => {
         case GET_COLLECTION:
             if (action.status === SUCCESS && action.schema) {
                 var data = normalize(action.data.items, arrayOf(action.schema))
-                return updateCache(state, data.entities)
+                return mergeCache(state, data.entities)
             } else
                 return state
 
         case DELETE_DOCUMENT:
-            // if (action.status === REQUEST)
-                // Need to figure out what object to delete (pass through actions)
-            return state
+            if (action.status === SUCCESS) {
+                return deleteDocument(state, action.documentId)
+            } else
+                return state
         
         default:
             return state
