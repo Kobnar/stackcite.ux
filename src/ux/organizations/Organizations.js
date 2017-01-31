@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
+import Collection from './Collection'
+import Detail from './Detail'
 
 class Organizations extends Component {
     render () {
-        return (
-            <div className="container">
-                <h1>Organizations</h1>
-            </div>
-        )
+        if (this.props.routeParams.id)
+            return <Detail orgId={this.props.routeParams.id}/>
+        else
+            return <Collection/>
     }
 }
 
