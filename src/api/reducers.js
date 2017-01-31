@@ -2,9 +2,7 @@ import { combineReducers } from 'redux'
 import { normalize, arrayOf } from 'normalizr'
 
 import {
-    REQUEST,
     SUCCESS,
-    FAILURE,
     POST_DOCUMENT,
     GET_DOCUMENT,
     PUT_DOCUMENT,
