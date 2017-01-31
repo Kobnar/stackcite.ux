@@ -16,11 +16,12 @@ const createDocumentRequest = (route) => ({
     route
 })
 
-const createDocumentSuccess = (route, data) => ({
+const createDocumentSuccess = (route, data, schema=null) => ({
     type: POST_DOCUMENT,
     status: SUCCESS,
     route,
-    data
+    data,
+    schema
 })
 
 const createDocumentFailure = (route, error) => ({
@@ -37,12 +38,13 @@ const retrieveDocumentRequest = (route, documentId) => ({
     documentId
 })
 
-const retrieveDocumentSuccess = (route, documentId, data) => ({
+const retrieveDocumentSuccess = (route, documentId, data, schema=null) => ({
     type: GET_DOCUMENT,
     status: SUCCESS,
     route,
     data,
-    documentId
+    documentId,
+    schema
 })
 
 const retrieveDocumentFailure = (route, documentId, error) => ({
@@ -60,12 +62,13 @@ const updateDocumentRequest = (route, documentId) => ({
     documentId
 })
 
-const updateDocumentSuccess = (route, documentId, data) => ({
+const updateDocumentSuccess = (route, documentId, data, schema=null) => ({
     type: PUT_DOCUMENT,
     status: SUCCESS,
     route,
     data,
-    documentId
+    documentId,
+    schema
 })
 
 const updateDocumentFailure = (route, documentId, error) => ({
@@ -103,11 +106,12 @@ const retrieveCollectionRequest = (route) => ({
     route
 })
 
-const retrieveCollectionSuccess = (route, data) => ({
+const retrieveCollectionSuccess = (route, data, schema=null) => ({
     type: GET_COLLECTION,
     status: SUCCESS,
     route,
-    data
+    data,
+    schema
 })
 
 const retrieveCollectionFailure = (route, error) => ({
@@ -117,7 +121,7 @@ const retrieveCollectionFailure = (route, error) => ({
     error
 })
 
-export const createDocument = (route, data, tokenKey) => {
+export const createDocument = (route, data, tokenKey, schema=null) => {
     return (dispatch) => {
         dispatch(createDocumentRequest(route))
         return apiInterface.createDocument(route, data, tokenKey)
@@ -125,7 +129,7 @@ export const createDocument = (route, data, tokenKey) => {
                 if (response.ok)
                     return response.json()
                         .then(data => dispatch(
-                            createDocumentSuccess(route, data)
+                            createDocumentSuccess(route, data, schema)
                             )
                         )
                 else
@@ -138,7 +142,7 @@ export const createDocument = (route, data, tokenKey) => {
     }
 }
 
-export const retrieveDocument = (route, documentId, tokenKey) => {
+export const retrieveDocument = (route, documentId, tokenKey, schema=null) => {
     return (dispatch) => {
         dispatch(retrieveDocumentRequest(route, documentId))
         return apiInterface.retrieveDocument(route, documentId, tokenKey)
@@ -146,7 +150,7 @@ export const retrieveDocument = (route, documentId, tokenKey) => {
                 if (response.ok)
                     return response.json()
                         .then(data => dispatch(
-                            retrieveDocumentSuccess(route, documentId, data)
+                            retrieveDocumentSuccess(route, documentId, data, schema)
                             )
                         )
                 else
@@ -159,7 +163,7 @@ export const retrieveDocument = (route, documentId, tokenKey) => {
     }
 }
 
-export const updateDocument = (route, documentId, data, tokenKey) => {
+export const updateDocument = (route, documentId, data, tokenKey, schema=null) => {
     return (dispatch) => {
         dispatch(updateDocumentRequest(route, documentId))
         return apiInterface.updateDocument(route, documentId, data, tokenKey)
@@ -167,7 +171,7 @@ export const updateDocument = (route, documentId, data, tokenKey) => {
                 if (response.ok)
                     return response.json()
                         .then(data => dispatch(
-                            updateDocumentSuccess(route, documentId, data)
+                            updateDocumentSuccess(route, documentId, data, schema)
                             )
                         )
                 else
@@ -197,7 +201,7 @@ export const deleteDocument = (route, documentId, tokenKey) => {
     }
 }
 
-export const retrieveCollection = (route, tokenKey) => {
+export const retrieveCollection = (route, tokenKey, schema=null) => {
     return (dispatch) => {
         dispatch(retrieveCollectionRequest(route))
         return apiInterface.retrieveCollection(route, tokenKey)
@@ -205,7 +209,7 @@ export const retrieveCollection = (route, tokenKey) => {
                 if (response.ok)
                     return response.json()
                         .then(data => dispatch(
-                            retrieveCollectionSuccess(route, data)
+                            retrieveCollectionSuccess(route, data, schema)
                             )
                         )
                 else
