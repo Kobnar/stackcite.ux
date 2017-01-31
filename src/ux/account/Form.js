@@ -29,15 +29,14 @@ class Form extends Component {
     }
 
     componentWillMount() {
-        if (!this.props.user.id)
-            this.props.retrieveUser(this.props.tokenKey, this.props.userId)
-                .then(action => {
-                    // Maps list of groups to dict
-                    var groups = {}
-                    for (var group in this.state.groups)
-                        groups[group] = !!this.props.user.groups.includes(group)
-                    this.setState({ groups })
-                })
+        this.props.retrieveUser(this.props.tokenKey, this.props.userId)
+            .then(action => {
+                // Maps list of groups to dict
+                var groups = {}
+                for (var group in this.state.groups)
+                    groups[group] = !!this.props.user.groups.includes(group)
+                this.setState({ groups })
+            })
     }
 
     handleEmailChange (event) { this.setState({email: event.target.value}) }
@@ -242,6 +241,8 @@ class Form extends Component {
 }
 
 const mapStateToProps = (state) => ({
+    tokenKey: state.api.users.auth.token.key,
+    userId: state.api.users.auth.user.id,
     loading: state.api.users.loading,
     user: state.ux.account.user,
     errors: state.ux.account.errors

@@ -16,15 +16,6 @@ class App extends Component {
         var tokenKey = reactCookie.load(COOKIE_NAME)
         if (tokenKey && !this.props.user.id)
             this.props.updateAuthToken(tokenKey)
-                .then(action => {
-                    // Loads user data if auth successful
-                    if (action.status === SUCCESS) {
-                        var userId = this.props.user.id
-                        this.props.retrieveUser(userId, tokenKey)
-                    } else {
-                        reactCookie.remove(COOKIE_NAME)
-                    }
-                })
     }
 
     render() {
