@@ -1,7 +1,10 @@
 import { push } from 'react-router-redux'
+import * as cookie from 'react-cookie'
 
 import { SUCCESS } from '../api/actions'
-import * as actions from '../api/users/auth/actions'
+import authEndpoint from '../api/users/auth/actions'
+
+export const COOKIE_NAME = 'key'
 
 export const HIDE_MOBILE_NAV_MENU = 'HIDE_MOBILE_NAV_MENU'
 export const SHOW_MOBILE_NAV_MENU = 'SHOW_MOBILE_NAV_MENU'
@@ -19,13 +22,14 @@ export const toggleMobileNavMenu = () => {
     return { type: TOGGLE_MOBILE_NAV_MENU }
 }
 
-export const logout = (tokenKey) => {
-    return (dispatch) => {
-        return dispatch(actions.deleteAuthToken(tokenKey))
-            .then(action => {
-                if (action.status === SUCCESS) {
-                    return dispatch(push('/login'))
-                }
-            })
-    }
+export const saveToken = (tokenKey) => {
+    return cookie.save(COOKIE_NAME, tokenKey)
+}
+
+export const loadToken = () => {
+    return cookie.load(COOKIE_NAME)
+}
+
+export const removeToken = () => {
+    return cookie.remove(COOKIE_NAME)
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
-import * as userActions from '../../api/users/actions'
+import usersEndpoint from '../../api/users/actions'
 
 class Form extends Component {
     constructor (props) {
@@ -250,11 +250,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     retrieveUser(tokenKey, userId) {
-        return dispatch(userActions.retrieveUser(tokenKey, userId)) },
+        return dispatch(usersEndpoint.retrieve(userId, tokenKey)) },
     updateUser(tokenKey, userId, data) {
-        return dispatch(userActions.updateUser(tokenKey, userId, data)) },
+        return dispatch(usersEndpoint.update(userId, data, tokenKey)) },
     deleteUser(tokenKey, userId) {
-        return dispatch(userActions.deleteUser(tokenKey, userId))
+        return dispatch(usersEndpoint.delete(userId, tokenKey))
             .then(dispatch(push("/")))}
 })
 

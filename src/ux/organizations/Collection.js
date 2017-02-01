@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as bs from 'react-bootstrap'
 
-import * as actions from '../../api/organizations/actions'
+import orgsEndpoint from '../../api/organizations/actions'
 
 import CollectionTable from './CollectionTable'
 import AddOrgForm from './AddOrgForm'
@@ -52,9 +52,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     createOrg (data, tokenKey) {
-        return dispatch(actions.createOrg(data, tokenKey))},
+        return dispatch(orgsEndpoint.create(data, tokenKey))},
     retrieveOrgs (tokenKey) {
-        return dispatch(actions.retrieveOrgs(tokenKey)) }
+        return dispatch(orgsEndpoint.retrieveCollection(tokenKey)) }
 })
 
 Collection = connect(mapStateToProps, mapDispatchToProps)(Collection)

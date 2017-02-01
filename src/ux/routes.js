@@ -14,10 +14,9 @@ export default (
     <Route path="/" component={App}>
         <IndexRoute component={home.Home}/>
 
-        <Route path="sources" component={sources.Sources}/>
-        <Route path="people" component={people.People}/>
-        <Route path="organizations(/:id)" component={organizations.Organizations}>
-        </Route>
+        <Route path="sources(/:id)" component={sources.Sources}/>
+        <Route path="people(/:id)" component={people.People}/>
+        <Route path="organizations(/:id)" component={organizations.Organizations}/>
 
         <Route path="login" component={login.Login}/>
         <Route path="signup" component={signup.Signup}/>

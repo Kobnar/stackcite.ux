@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as bs from 'react-bootstrap'
 
-import * as usersActions from '../../api/users/actions'
+import usersEndpoint from '../../api/users/actions'
 import * as actions from './actions'
 
 import '../css/auth.css'
@@ -109,7 +109,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     signup(email, password) {
-        dispatch(usersActions.createUser(email, password))
+        dispatch(usersEndpoint.create(email, password))
     },
     clearForm() { dispatch(actions.clearSignupForm()) }
 })

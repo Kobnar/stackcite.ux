@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Collection from './Collection'
 import Detail from './Detail'
 
-import * as actions from '../../api/organizations/actions'
+import orgsEndpoint from '../../api/organizations/actions'
 
 class Organizations extends Component {
 
@@ -19,31 +19,31 @@ class Organizations extends Component {
 
     createOrg = (data) => {
         this.props.dispatch(
-            actions.createOrg(data, this.props.tokenKey)
+            orgsEndpoint.create(data, this.props.tokenKey)
         )
     }
 
     retrieveOrg = (orgId) => {
         this.props.dispatch(
-            actions.retrieveOrg(this.props.tokenKey, orgId)
+            orgsEndpoint.retrieve(orgId, this.props.tokenKey)
         )
     }
 
     updateOrg = (orgId, data) => {
         this.props.dispatch(
-            actions.updateOrg(this.props.tokenKey, orgId, data)
+            orgsEndpoint.update(orgId, data, this.props.tokenKey)
         )
     }
     
     deleteOrg = (orgId) => {
         this.props.dispatch(
-            actions.deleteOrg(this.props.tokenKey, orgId)
+            orgsEndpoint.delete(orgId, this.props.tokenKey)
         )
     }
 
     retrieveOrgs = () => {
         this.props.dispatch(
-            actions.retrieveOrgs(this.props.tokenKey)
+            orgsEndpoint.retrieveCollection(this.props.tokenKey)
         )
     }
 

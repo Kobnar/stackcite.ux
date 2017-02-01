@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as reactCookie from 'react-cookie'
 
-import { SUCCESS } from '../api/actions'
-import { retrieveUser } from '../api/users/actions'
-import { COOKIE_NAME, updateAuthToken } from '../api/users/auth/actions'
+import { FAILURE } from '../api/actions'
+import authEndpoint from '../api/users/auth/actions'
+
+import { loadToken, removeToken } from './actions'
 
 import NavigationBar from './NavigationBar'
 
@@ -13,9 +14,9 @@ import './css/app.css'
 class App extends Component {
 
     componentWillMount () {
-        var tokenKey = reactCookie.load(COOKIE_NAME)
+        var tokenKey = loadToken()
         if (tokenKey && !this.props.user.id)
-            this.props.updateAuthToken(tokenKey)
+            this.props.updateLogin(tokenKey)
     }
 
     render() {
@@ -35,8 +36,13 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updateAuthToken (tokenKey) { return dispatch(updateAuthToken(tokenKey)) },
-    retrieveUser (userId, tokenKey) { return dispatch(retrieveUser(tokenKey, userId))}
+    updateLogin (tokenKey) {
+        return dispatch(authEndpoint.update(tokenKey))
+            .then(action => {
+                if (action.status === FAILURE)
+                    removeToken()
+            })
+    }
 })
 
 App = connect(mapStateToProps, mapDispatchToProps)(App)

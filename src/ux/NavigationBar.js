@@ -4,9 +4,11 @@ import { push } from 'react-router-redux'
 import { IndexLink } from 'react-router'
 import * as bs from 'react-bootstrap'
 
-import NavLink from './NavLink'
-
 import * as actions from './actions'
+
+import authEndpoint from '../api/users/auth/actions'
+
+import NavLink from './NavLink'
 
 import './css/nav.css'
 
@@ -61,7 +63,10 @@ const mapDispatchToProps = (dispatch) => ({
     toggleMobileNavMenu() { dispatch(actions.toggleMobileNavMenu()) },
     hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) },
     push(target) { dispatch(push(target)) },
-    logout(tokenKey) { dispatch(actions.logout(tokenKey)) }
+    logout(tokenKey) { 
+        dispatch(authEndpoint.delete(tokenKey))
+            .then(actions.removeToken(tokenKey))
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)

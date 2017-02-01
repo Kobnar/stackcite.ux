@@ -4,7 +4,9 @@ import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
 import { SUCCESS } from '../../api/actions'
-import * as authActions from '../../api/users/auth/actions'
+import authEndpoint from '../../api/users/auth/actions'
+import { saveToken } from '../actions'
+
 import * as actions from './actions'
 
 class Form extends Component {
@@ -97,9 +99,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     login(email, password) {
-        dispatch(authActions.createAuthToken(email, password))
+        dispatch(authEndpoint.create(email, password))
             .then((action) => {
                 if (action.status === SUCCESS) {
+                    saveToken(action.data.token.key)
                     dispatch(push(ownProps.redirectTarget))
                 }
             })
