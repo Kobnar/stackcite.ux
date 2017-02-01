@@ -6,6 +6,10 @@ const propTypes = {
     createOrg: React.PropTypes.func.isRequired
 }
 
+const defaultProps = {
+    errors: {}
+}
+
 class AddOrgForm extends Component {
 
     constructor (props) {
@@ -46,7 +50,7 @@ class AddOrgForm extends Component {
         return (
             <bs.Form onSubmit={this.handleSubmission}>
                 <bs.FormGroup
-                    className="col-xs-8"
+                    className="col-sm-8"
                     validationState={ nameError ? 'error' : null }>
                     <bs.ControlLabel
                         className="sr-only">
@@ -62,7 +66,7 @@ class AddOrgForm extends Component {
                 </bs.FormGroup>
 
                 <bs.FormGroup
-                    className="col-xs-2"
+                    className="col-sm-2"
                     validationState={ estError ? 'error' : null }>
                     <bs.ControlLabel
                         className="sr-only">
@@ -78,7 +82,7 @@ class AddOrgForm extends Component {
                 </bs.FormGroup>
 
                 <bs.FormGroup
-                    className="col-xs-2">
+                    className="col-sm-2">
                     <bs.Button
                         block
                         type="submit"
@@ -92,6 +96,7 @@ class AddOrgForm extends Component {
     }
 
     static propTypes = propTypes
+    static defaultProps = defaultProps
 }
 
 export default AddOrgForm
