@@ -36,34 +36,23 @@ export const deleteDocument = (cache, documentId) => {
 }
 
 export const cache = (state = initialState.cache, action) => {
-    switch (action.type) {
-
-        case POST_DOCUMENT:
-        case GET_DOCUMENT:
-        case PUT_DOCUMENT:
-            if (action.status === SUCCESS && action.schema) {
-                var data = normalize(action.data, action.schema)
-                return mergeCache(state, data.entities)
-            } else
-                return state
-
-
-        case GET_COLLECTION:
-            if (action.status === SUCCESS && action.schema) {
-                var data = normalize(action.data.items, arrayOf(action.schema))
-                return mergeCache(state, data.entities)
-            } else
-                return state
-
-        case DELETE_DOCUMENT:
-            if (action.status === SUCCESS) {
-                return deleteDocument(state, action.documentId)
-            } else
-                return state
+    if (action.status === SUCCESS) {
         
-        default:
-            return state
+        // Assume schema implies the result should be cached
+        if (action.schema) {
+            var data = {}
+            // WARNING: Will fail if individual document contains 'item' field
+            if (action.data.items)
+                data = normalize(action.data.items, arrayOf(action.schema))
+            else
+                data = normalize(action.data, action.schema)
+            return mergeCache(state, data.entities)
+
+        } else if (action.documentId) {
+            return deleteDocument(state, action.documentId)
+        }
     }
+    return state
 }
 
 export default combineReducers({
