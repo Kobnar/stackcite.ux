@@ -35,7 +35,7 @@ const user = (state = initialState.user, action) => {
         case GET_AUTH_TOKEN:
         case PUT_AUTH_TOKEN:
             if (action.status === SUCCESS)
-                return { ...action.user }
+                return { ...action.data.user }
             else
                 return initialState.user
         
@@ -55,7 +55,7 @@ const token = (state = initialState.token, action) => {
         case GET_AUTH_TOKEN:
         case PUT_AUTH_TOKEN:
             if (action.status === SUCCESS)
-                return { ...action.token }
+                return { ...action.data.token }
             else
                 return initialState.token
         

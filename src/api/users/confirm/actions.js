@@ -1,67 +1,31 @@
-import {
-    REQUEST,
-    SUCCESS,
-    FAILURE,
-    createDocument,
-    updateDocument } from '../../actions'
-
-const ROUTE = 'users/conf/'
+import Endpoint, { API_URI } from '../../actions'
 
 export const POST_CONFIRM_TOKEN = 'POST_CONFIRM_TOKEN'
 export const PUT_CONFIRM_TOKEN = 'PUT_CONFIRM_TOKEN'
 
-const createConfirmTokenRequest = () => ({
-    type: POST_CONFIRM_TOKEN,
-    status: REQUEST
-})
+class Confirm extends Endpoint {
 
-const createConfirmTokenSuccess = () => ({
-    type: POST_CONFIRM_TOKEN,
-    status: SUCCESS
-})
+    route = API_URI + 'users/conf/'
 
-const createConfirmTokenFailure = () => ({
-    type: POST_CONFIRM_TOKEN,
-    status: FAILURE
-})
-
-const updateConfirmTokenRequest = () => ({
-    type: PUT_CONFIRM_TOKEN,
-    status: REQUEST
-})
-
-const updateConfirmTokenSuccess = () => ({
-    type: PUT_CONFIRM_TOKEN,
-    status: SUCCESS
-})
-
-const updateConfirmTokenFailure = () => ({
-    type: PUT_CONFIRM_TOKEN,
-    status: FAILURE
-})
-
-export const createConfirmToken = (email) => {
-    return (dispatch) => {
-        dispatch(createConfirmTokenRequest())
-        return dispatch(createDocument(ROUTE, { email }))
-            .then(action => {
-                if (action.status === SUCCESS)
-                    return dispatch(createConfirmTokenSuccess())
-                else
-                    return dispatch(createConfirmTokenFailure())
-            })
+    actionTypes = {
+        create: POST_CONFIRM_TOKEN,
+        update: PUT_CONFIRM_TOKEN
     }
+
+    create (email) {
+        return super.create({ email })
+    }
+
+    retrieve () {}
+
+    update (key) {
+        return super.update(undefined, { key })
+    }
+
+    delete () {}
+
 }
 
-export const updateConfirmToken = (key) => {
-    return (dispatch) => {
-        dispatch(updateConfirmTokenRequest())
-        return dispatch(updateDocument(ROUTE, undefined, { key }))
-            .then(action => {
-                if (action.status === SUCCESS)
-                    return dispatch(updateConfirmTokenSuccess())
-                else
-                    return dispatch(updateConfirmTokenFailure())
-            })
-    }
-}
+const confirmEndpoint = new Confirm()
+
+export default confirmEndpoint

@@ -1,3 +1,3 @@
-import { normalize, schema } from 'normalizr'
+import { Schema } from 'normalizr'
 
-export const user = new schema.Entity('users')
+export const user = new Schema('users', { idAttribute: "id" })
