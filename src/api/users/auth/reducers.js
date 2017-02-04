@@ -1,12 +1,26 @@
-import { SUCCESS, FAILURE } from '../../../api/actions'
+import { combineReducers } from 'redux'
+import { SUCCESS, FAILURE } from '../../actions'
 import { AUTH, LOGIN, TOUCH, LOGOUT } from './actions'
 import initialState from './state'
 
-export const auth = (state=initialState.auth, action) => {
+const catchAuthResponse = (state, action, key) => {
     if (action.type === AUTH)
         if (action.status === FAILURE || action.method == LOGOUT)
-            return initialState.auth
+            return { [key]: {} }
         else if (action.status === SUCCESS)
-            return { ...action.data }
+            return { ...action.data[key] }
     return state
 }
+
+export const user = (state = {}, action) => {
+    return catchAuthResponse(state, action, 'user')
+}
+
+export const token = (state = {}, action) => {
+    return catchAuthResponse(state, action, 'token')
+}
+
+export default combineReducers({
+    user,
+    token
+})

@@ -3,7 +3,7 @@ import { normalize, arrayOf } from 'normalizr'
 
 import { REST_API, SUCCESS, DELETE } from './actions'
 
-import { auth } from './users/auth/reducers'
+import auth from './users/auth/reducers'
 
 export const mergeCache = (cache, update) => {
     // HACK: Need a better deep-clone method
