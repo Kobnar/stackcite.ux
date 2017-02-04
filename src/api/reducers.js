@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import { normalize, arrayOf } from 'normalizr'
 
 import { REST_API, SUCCESS, DELETE } from './actions'
-import initialState from './state'
 
 import { auth } from './users/auth/reducers'
 
@@ -27,17 +26,19 @@ export const deleteDocument = (cache, documentId) => {
     return newCache
 }
 
-export const cache = (state=initialState.cache, action) => {
+export const cache = (state = {}, action) => {
     if (action.type === REST_API && action.status === SUCCESS)
         if (action.schema) {
-            var data = {}
-            if (action.data.items)
-                data = normalize(action.data.items, arrayOf(action.schema))
-            else
-                data = normalize(action.data, action.schema)
-            return mergeCache(state, data.entities)
-        } else if (action.method === DELETE) {
-            return deleteDocument(state, action.documentId)
+            if (action.method === DELETE) {
+                return deleteDocument(state, action.documentId)
+            } else {
+                var data = {}
+                if (action.data.items)
+                    data = normalize(action.data.items, arrayOf(action.schema))
+                else
+                    data = normalize(action.data, action.schema)
+                return mergeCache(state, data.entities)
+            }
         }
     return state
 }
