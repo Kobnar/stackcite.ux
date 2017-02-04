@@ -1,7 +1,10 @@
-import { normalize, schema } from 'normalizr'
+import { Schema } from 'normalizr'
 
 import user from '../schema'
 
-export const authToken = new schema.Entity('authTokens', {
-    user
+const authToken = new Schema('authTokens')
+authToken.define({
+    user: user
 })
+
+export { authToken }

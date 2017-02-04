@@ -1,8 +1,6 @@
-import users from './users/state'
-
 const initialState = {
-    cache: {},
-    users
+    auth: {},
+    cache: {}
 }
 
 export default initialState

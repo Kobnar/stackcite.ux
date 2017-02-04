@@ -1,3 +1,5 @@
 import { Schema } from 'normalizr'
 
-export const person = new Schema('people', { idAttribute: 'id' })
+const person = new Schema('people', { idAttribute: 'id' })
+
+export { person }

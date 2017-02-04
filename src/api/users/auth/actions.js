@@ -1,59 +1,112 @@
-import Endpoint, { API_URI, SUCCESS } from '../../actions'
+import {
+    REQUEST,
+    SUCCESS,
+    FAILURE,
+    APIInterface,
+    IndexResource } from '../../actions'
 
-export const POST_AUTH_TOKEN = 'POST_AUTH_TOKEN'
-export const GET_AUTH_TOKEN = 'GET_AUTH_TOKEN'
-export const PUT_AUTH_TOKEN = 'PUT_AUTH_TOKEN'
-export const DELETE_AUTH_TOKEN = 'DELETE_AUTH_TOKEN'
+// Action type
+export const AUTH = 'AUTH'
 
-class Auth extends Endpoint {
+// Action method
+export const LOGIN = 'LOGIN'
+export const TOUCH = 'TOUCH'
+export const LOGOUT = 'LOGOUT'
 
-    route = API_URI + 'users/auth/'
+/**
+ * A custom IndexResource for handling REST API authentication requests.
+ */
+export class AuthResource extends IndexResource {
 
-    actionTypes = {
-        create: POST_AUTH_TOKEN,
-        retrieve: GET_AUTH_TOKEN,
-        update: PUT_AUTH_TOKEN,
-        delete: DELETE_AUTH_TOKEN
-    }
-
-    mapResponseData (data) {
-        return {
-            user: {
-                id: data.user.id,
-                groups: data.user.groups
-            },
-            token: {
-                key: data.key,
-                issued: data.issued,
-                touched: data.touched
-            }
+    create (email, password) {
+        return (dispatch) => {
+            dispatch({
+                type: AUTH,
+                method: LOGIN,
+                status: REQUEST
+            })
+            return dispatch(APIInterface.create(this.route(), { email, password }))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: AUTH,
+                            method: LOGIN,
+                            status: SUCCESS,
+                            data: this.mapAuthResponseData(action.data)
+                        })
+                    else
+                        return dispatch({
+                            type: AUTH,
+                            method: LOGIN,
+                            status: FAILURE,
+                            error: action.error
+                        })
+                })
         }
     }
 
-    mapResponseError (error) {
-        return { auth: ['Authentication failed.'] }
+    update (authKey) {
+        return (dispatch) => {
+            dispatch({
+                type: AUTH,
+                method: TOUCH,
+                status: REQUEST
+            })
+            return dispatch(APIInterface.update(this.route(), undefined, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: AUTH,
+                            method: TOUCH,
+                            status: SUCCESS,
+                            data: this.mapAuthResponseData(action.data)
+                        })
+                    else
+                        return dispatch({
+                            type: AUTH,
+                            method: TOUCH,
+                            status: FAILURE,
+                            error: action.error
+                        })
+                })
+        }
     }
 
-    create (email, password) {
-        return super.create({ email, password })
+    delete (authKey) {
+        return (dispatch) => {
+            dispatch({
+                type: AUTH,
+                method: LOGOUT,
+                status: REQUEST
+            })
+            return dispatch(APIInterface.delete(this.route(), undefined, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: AUTH,
+                            method: LOGOUT,
+                            status: SUCCESS
+                        })
+                    else
+                        return dispatch({
+                            type: AUTH,
+                            method: LOGOUT,
+                            status: FAILURE,
+                            error: action.error
+                        })
+                })
+        }
     }
 
-    retrieve (tokenKey) {
-        return super.create(undefined, tokenKey)
-    }
-
-    update (tokenKey) {
-        return super.update(undefined, undefined, tokenKey)
-    }
-
-    delete (tokenKey) {
-        return super.delete(undefined, tokenKey)
-    }
-
-    retrieveCollection () {}
-
+    mapAuthResponseData = (data) => ({
+        user: {
+            id: data.user.id,
+            groups: data.user.groups
+        },
+        token: {
+            key: data.key,
+            issued: data.issued,
+            touched: data.touched
+        }
+    })
 }
-
-const authEndpoint = new Auth()
-
-export default authEndpoint
