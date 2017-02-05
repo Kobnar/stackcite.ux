@@ -1,21 +1,31 @@
 import deepFreeze from 'deep-freeze'
 
-import signup from '../reducers'
-import initialState from '../state'
-import * as actions from '../../../api/users/actions'
+import {
+    REST_API,
+    REQUEST,
+    SUCCESS,
+    FAILURE } from 'api/actions'
+    
+import { SIGNUP } from '../actions'
+import { success } from '../reducers'
 
-describe('signup', () => {
+describe('success', () => {
 
-    it('copies errors from dispatch', () => {
-        var action = {
-            type: actions.SIGNUP_FAILURE,
-            errors: {
-                email: 'Invalid email.'
-            }
+    it('returns true if action.status is SUCCESS', () => {
+        const action = {
+            type: SIGNUP,
+            status: SUCCESS
         }
-        var expected = { errors: { email: 'Invalid email.' }}
-        var result = signup(undefined, action)
-        expect(result).toEqual(expected)
+        const result = success(false, action)
+        expect(result).toEqual(true)
     })
 
+    it('returns false if action.status is not SUCCESS', () => {
+        const action = {
+            type: REST_API,
+            status: FAILURE
+        }
+        const result = success(false, action)
+        expect(result).toEqual(false)
+    })
 })

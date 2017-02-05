@@ -18,7 +18,7 @@ class Collection extends Component {
         if (this.props.sources)
             return (
                 <div className='container'>
-                    <h1>Sources</h1>
+                    <h1 className="page-title">Sources</h1>
                     <CollectionTable sources={this.props.sources}/>
                 </div>
             )

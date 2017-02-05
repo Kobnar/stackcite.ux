@@ -1,36 +1,26 @@
 import { combineReducers } from 'redux'
-import { LOCATION_CHANGE } from 'react-router-redux'
 
-import orgs from './organizations/reducers'
-import account from './account/reducers'
-import login from './login/reducers'
+import { REQUEST } from 'api/actions'
+
+import auth from './auth/reducers'
 import signup from './signup/reducers'
+import account from './account/reducers'
 
-import * as actions from './actions'
-import initialState from './state'
+import { INIT } from './actions'
 
-const mobileNavMenuVisible = (state = initialState.mobileNavMenuVisible, action) => {
-    switch(action.type) {
-
-        case actions.SHOW_MOBILE_NAV_MENU:
+export const init = (state = true, action) => {
+    if (action.type === INIT)
+        if (action.status === REQUEST)
             return true
-
-        case actions.HIDE_MOBILE_NAV_MENU:
-        case LOCATION_CHANGE:
+        else
             return false
-
-        case actions.TOGGLE_MOBILE_NAV_MENU:
-            return !state
-        
-        default:
-            return state
-    }
+    else
+        return state
 }
 
 export default combineReducers({
-    mobileNavMenuVisible,
-    orgs,
-    account,
-    login,
-    signup
+    init,
+    auth,
+    signup,
+    account
 })

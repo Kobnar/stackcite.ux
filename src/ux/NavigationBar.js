@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 import { IndexLink } from 'react-router'
 import * as bs from 'react-bootstrap'
 
-import * as actions from './actions'
-
-import authEndpoint from '../api/users/auth/actions'
+import { logout } from './auth/actions'
 
 import NavLink from './NavLink'
 
@@ -22,12 +19,12 @@ class NavigationBar extends Component {
 
     handleLogout (event) {
         event.preventDefault()
-        this.props.logout(this.props.tokenKey)
-        this.props.push("/")
+        var authKey = this.props.auth.token.key
+        this.props.dispatch(logout(authKey))
     }
 
     render () {
-        var isLoggedIn = !!this.props.tokenKey
+        var isLoggedIn = this.props.auth.token.key
         return (
             <bs.Navbar collapseOnSelect>
                 <bs.Navbar.Header>
@@ -55,18 +52,7 @@ class NavigationBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    tokenKey: state.api.users.auth.token.key,
-    mobileNavMenuVisible: state.ux.mobileNavMenuVisible
+    auth: state.api.auth
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    toggleMobileNavMenu() { dispatch(actions.toggleMobileNavMenu()) },
-    hideMobileNavMenu() { dispatch(actions.hideMobileNavMenu()) },
-    push(target) { dispatch(push(target)) },
-    logout(tokenKey) { 
-        dispatch(authEndpoint.delete(tokenKey))
-            .then(actions.removeToken(tokenKey))
-    }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
+export default connect(mapStateToProps)(NavigationBar)

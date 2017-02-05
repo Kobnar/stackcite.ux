@@ -1,25 +1,28 @@
-import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
-import api from 'api'
+import { GET, REQUEST, SUCCESS, FAILURE } from '../../api/actions'
+import api from '../../api'
 
-export const SIGNUP = 'SIGNUP'
+export const ACCOUNT = 'ACCOUNT'
 
-export const signup = (email, password) => {
+export const retrieve = (userId, authKey) => {
     return (dispatch) => {
         dispatch({
-            type: SIGNUP,
+            type: ACCOUNT,
+            method: GET,
             status: REQUEST
         })
-        return dispatch(api.users.create({ email, password }))
+        return dispatch(api.users.document(userId).retrieve({}, authKey))
             .then(action => {
                 if (action.status === SUCCESS)
                     return dispatch({
-                        type: SIGNUP,
+                        type: ACCOUNT,
+                        method: GET,
                         status: SUCCESS,
                         data: action.data
                     })
                 else
                     return dispatch({
-                        type: SIGNUP,
+                        type: ACCOUNT,
+                        method: GET,
                         status: FAILURE,
                         error: action.error
                     })

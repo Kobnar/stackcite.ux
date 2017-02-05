@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as bs from 'react-bootstrap'
 
-import usersEndpoint from '../../api/users/actions'
-import * as actions from './actions'
+import { signup } from './actions'
 
-import '../css/auth.css'
+import 'ux/css/auth.css'
 
 class Form extends Component
 {
@@ -24,31 +23,35 @@ class Form extends Component
         this.handleSubmission = this.handleSubmission.bind(this)
     }
 
-    componentDidMount() { this.props.clearForm() }
-
     handleEmailChange(event) { this.setState({email: event.target.value}) }
     handlePasswordChange(event) { this.setState({password: event.target.value}) }
     handleSubmission(event) {
-        event.preventDefault();
-        this.props.signup(this.state.email, this.state.password)
+        event.preventDefault()
+        this.props.dispatch(signup(this.state.email, this.state.password))
     }
 
-    _form = (emailError, passwordError) => {
+    form = (errors) => {
+        var emailError = errors.email
+        var passwordError = errors.password
+
+        if (errors.request === 409)
+            emailError = 'This email is already registered.'
+        
         return (
             <div>
-                <h1>Sign up</h1>
+                <h1 className='page-title'>Sign up</h1>
                 <form onSubmit={this.handleSubmission}>
 
                     <bs.FormGroup
                         validationState={ emailError ? 'error' : null }>
                         <bs.ControlLabel
-                            className="sr-only">
+                            className='sr-only'>
                             Email address
                         </bs.ControlLabel>
                         <bs.FormControl
-                            id="email"
-                            type="email"
-                            placeholder="Email"
+                            id='email'
+                            type='email'
+                            placeholder='Email'
                             value={this.state.email}
                             onChange={this.handleEmailChange}/>
                         <bs.HelpBlock>{emailError}</bs.HelpBlock>
@@ -57,13 +60,13 @@ class Form extends Component
                     <bs.FormGroup
                         validationState={ passwordError ? 'error' : null }>
                         <bs.ControlLabel
-                            className="sr-only">
+                            className='sr-only'>
                             Password
                         </bs.ControlLabel>
                         <bs.FormControl
-                            id="password"
-                            type="password"
-                            placeholder="Password"
+                            id='password'
+                            type='password'
+                            placeholder='Password'
                             value={this.state.password}
                             onChange={this.handlePasswordChange}/>
                         <bs.HelpBlock>{passwordError}</bs.HelpBlock>
@@ -71,8 +74,8 @@ class Form extends Component
 
                     <bs.Button
                         block
-                        type="submit"
-                        bsStyle="primary"
+                        type='submit'
+                        bsStyle='primary'
                         disabled={this.props.loading}>
                         Sign up
                     </bs.Button>
@@ -81,7 +84,7 @@ class Form extends Component
         )
     }
 
-    _success = () => {
+    success = () => {
         return (
             <div>
                 <h4>Success!</h4>
@@ -92,36 +95,27 @@ class Form extends Component
 
     render () {
 
-        if (!this.props.complete)
-            return this._form(
-                this.props.errors.email,
-                this.props.errors.password)
+        if (!this.props.success)
+            return this.form(this.props.errors)
         else
-            return this._success()
+            return this.success()
     }
 }
 
 const mapStateToProps = (state) => ({
-    loading: state.api.users.loading,
+    loading: state.ux.signup.loading,
     errors: state.ux.signup.errors,
-    complete: state.ux.signup.complete
+    success: state.ux.signup.success
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    signup(email, password) {
-        dispatch(usersEndpoint.create(email, password))
-    },
-    clearForm() { dispatch(actions.clearSignupForm()) }
-})
-
-Form = connect(mapStateToProps, mapDispatchToProps)(Form)
+Form = connect(mapStateToProps)(Form)
 
 Form.propTypes = {
     redirectTarget: React.PropTypes.string.isRequired
 }
 
 Form.defaultProps = {
-    redirectTarget: "/"
+    redirectTarget: '/'
 }
 
 export default Form

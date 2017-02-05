@@ -2,14 +2,15 @@ import React, { Component } from 'react'
 
 import Form from './Form'
 
-import '../css/auth.css'
+import 'ux/css/auth.css'
 
 class Login extends Component
 {
     render () {
+        var redirectTarget = this.props.location.query.redirect
         return (
             <div className="auth-container">
-                <Form redirectTarget={this.props.location.query.redirect} />
+                <Form redirectTarget={redirectTarget} />
             </div>
         )
     }

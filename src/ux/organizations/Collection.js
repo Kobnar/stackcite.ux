@@ -30,7 +30,7 @@ class Collection extends Component {
 
         return (
             <div className="container">
-                <h1>Organizations</h1>
+                <h1 className="page-title">Organizations</h1>
                 
                 <CollectionTable orgs={orgs}/>
 

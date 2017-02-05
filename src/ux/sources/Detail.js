@@ -20,7 +20,7 @@ class Detail extends Component {
         if (this.props.source)
             return (
                 <div className='container'>
-                    <h1>{source.title}</h1>
+                    <h1 className="page-title">{source.title} { source.published ? <small>({source.published})</small> : null }</h1>
                 </div>
             )
         else

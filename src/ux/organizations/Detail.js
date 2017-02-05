@@ -14,7 +14,7 @@ class Detail extends Component {
         return (
                 <div className="container">
                     <div>
-                        <h1>{this.props.organization.name} <small>({this.props.organization.established})</small></h1>
+                        <h1 className="page-title">{this.props.organization.name} <small>({this.props.organization.established})</small></h1>
                     </div>
                 </div>
         )

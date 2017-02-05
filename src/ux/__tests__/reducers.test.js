@@ -1,56 +1,30 @@
-import deepFreeze from 'deep-freeze'
-import { LOCATION_CHANGE } from 'react-router-redux'
+import { REQUEST, SUCCESS } from 'api/actions'
 
-import ux from '../reducers'
-import initialState from '../state'
-import * as actions from '../actions'
+import { INIT } from '../actions'
+import { init } from '../reducers'
 
-describe('ux', () => {
+describe('init', () => {
 
-    it('does not mutate initial state', () => {
-        var action = { type: actions.TOGGLE_MOBILE_NAV_MENU }
-        deepFreeze(initialState)
-        ux(initialState, action)
+    it('returns default "true"', () => {
+        const result = init(undefined, { type: 'SOME_ACTION_TYPE' })
+        expect(result).toEqual(true)
     })
 
-    it('toggles the mobile nav menu visibility', () => {
-        var action = { type: actions.TOGGLE_MOBILE_NAV_MENU }
-        var prevState = {
-            ...initialState,
-            mobileNavMenuVisible: true
+    it('returns "true" if action.status is REQUEST', () => {
+        const action = {
+            type: INIT,
+            status: REQUEST
         }
-        var newState = ux(prevState, action)
-        expect(newState.mobileNavMenuVisible).toBe(false)
+        const result = init(false, action)
+        expect(result).toBe(true)
     })
 
-    it('shows the mobile nav menu', () => {
-        var action = { type: actions.SHOW_MOBILE_NAV_MENU }
-        var newState = ux(initialState, action)
-        expect(newState.mobileNavMenuVisible).toBe(true)
-    })
-
-    it('hides the mobile nav menu', () => {
-        var action = { type: actions.HIDE_MOBILE_NAV_MENU }
-        var prevState = {
-            ...initialState,
-            mobileNavMenuVisible: true
+    it('returns "false" if action.status is not REQUEST', () => {
+        const action = {
+            type: INIT,
+            status: SUCCESS
         }
-        var newState = ux(prevState, action)
-        expect(newState.mobileNavMenuVisible).toBe(false)
+        const result = init(true, action)
+        expect(result).toBe(false)
     })
-
-})
-
-describe('react-router-redux', () => {
-
-    it('hides nav menu for any location change', () => {
-        var action = { type: LOCATION_CHANGE }
-        var prevState = {
-            ...initialState,
-            mobileNavMenuVisible: true
-        }
-        var newState = ux(undefined, action)
-        expect(newState.mobileNavMenuVisible).toBe(false)
-    })
-
 })

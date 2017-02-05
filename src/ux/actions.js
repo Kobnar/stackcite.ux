@@ -1,35 +1,33 @@
-import { push } from 'react-router-redux'
-import * as cookie from 'react-cookie'
+import api from 'api'
+import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
 
-import { SUCCESS } from '../api/actions'
-import authEndpoint from '../api/users/auth/actions'
+import * as auth from './auth/actions'
 
-export const COOKIE_NAME = 'key'
+export const INIT = 'INIT'
 
-export const HIDE_MOBILE_NAV_MENU = 'HIDE_MOBILE_NAV_MENU'
-export const SHOW_MOBILE_NAV_MENU = 'SHOW_MOBILE_NAV_MENU'
-export const TOGGLE_MOBILE_NAV_MENU = 'TOGGLE_MOBILE_NAV_MENU'
-
-export const hideMobileNavMenu = () => {
-    return { type: HIDE_MOBILE_NAV_MENU }
-}
-
-export const showMobileNavMenu = () => {
-    return { type: SHOW_MOBILE_NAV_MENU }
-}
-
-export const toggleMobileNavMenu = () => {
-    return { type: TOGGLE_MOBILE_NAV_MENU }
-}
-
-export const saveToken = (tokenKey) => {
-    return cookie.save(COOKIE_NAME, tokenKey)
-}
-
-export const loadToken = () => {
-    return cookie.load(COOKIE_NAME)
-}
-
-export const removeToken = () => {
-    return cookie.remove(COOKIE_NAME)
+export const init = () => {
+    return (dispatch) => {
+        dispatch({
+            type: INIT,
+            status: REQUEST
+        })
+        var authKey = auth.loadCookie()
+        if (authKey)
+            dispatch(auth.touchLogin(authKey))
+                .then(action => {
+                    if (action.status === SUCCESS) {
+                        auth.saveCookie(authKey)
+                        dispatch({
+                            type: INIT,
+                            status: SUCCESS
+                        })
+                    } else {
+                        auth.removeCookie()
+                        dispatch({
+                            type: INIT,
+                            status: FAILURE
+                        })
+                    }
+                })
+    }
 }

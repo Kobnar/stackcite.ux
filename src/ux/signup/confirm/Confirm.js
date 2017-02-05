@@ -1,48 +1,49 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
-import * as actions from './actions'
+import { SUCCESS } from 'api/actions'
+
+import { confirm } from './actions'
+
+const Processing = () => {
+    return <p>Processing account confirmation...</p>
+}
+
+const Failure = () => {
+    return <div>
+            <h1 className='page-title'>Confirmation Failed</h1>
+            <p>The confirmation token you provided has either expired or it is invalid.</p>
+        </div>
+}
 
 class Confirm extends Component {
 
     componentDidMount () {
         if (this.props.confirmKey)
-            this.props.confirmAccount(this.props.confirmKey)
-    }
-
-    _processing = () => {
-        return (
-            <p>Processing account confirmation...</p>
-        )
-    }
-
-    _failed = () => {
-        return (
-            <div>
-                <h3>Confirmation Failed</h3>
-                <p>The confirmation token you provided has either expired or it is invalid.</p>
-            </div>
-        )
+            this.props.dispatch(confirm(this.props.confirmKey))
+                .then(action => {
+                    if (action.status === SUCCESS) {
+                        this.props.dispatch(push(this.props.redirectTarget))
+                        return action
+                    }
+                })
     }
 
     render () {
-        if (this.props.loading || !this.props.failed)
-            return this._processing()
+        if (this.props.loading || this.props.success)
+            return <Processing />
         else
-            return this._failed()
+            return <Failure />
     }
 }
 
 const mapStateToProps = (state) => ({
-    loading: state.api.users.confirm.loading,
-    failed: state.ux.signup.confirm.failed
+    loading: state.ux.signup.confirm.loading,
+    success: state.ux.signup.confirm.success
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    confirmAccount(key) { dispatch(actions.confirmAccount(key, ownProps.redirectTarget))}
-})
-
-Confirm = connect(mapStateToProps, mapDispatchToProps)(Confirm)
+Confirm = connect(mapStateToProps)(Confirm)
 
 Confirm.propTypes = {
     redirectTarget: React.PropTypes.string.isRequired,

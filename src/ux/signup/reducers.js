@@ -1,44 +1,34 @@
 import { combineReducers } from 'redux'
 
-import * as apiActions from '../../api/actions'
-import * as userActions from '../../api/users/actions'
-import * as actions from './actions'
-import initialState from './state'
+import {
+    REQUEST,
+    SUCCESS,
+    FAILURE } from 'api/actions'
+
+import { 
+    loading as formLoading,
+    errors as formError,
+    success as formSuccess } from 'ux/utils'
+
+import { SIGNUP } from './actions'
 
 import confirm from './confirm/reducers'
 
-const errors = (state = initialState.errors, action) => {
-    if (action.type === userActions.POST_USER) {
-        switch (action.status) {
-
-            case apiActions.SUCCESS:
-                return initialState.errors
-
-            case apiActions.FAILURE:
-                return {...action.errors}
-            
-            default:
-                return state
-        }
-    } else {
-        return state
-    }
+export const loading = (state = false, action) => {
+    return formLoading(SIGNUP, state, action)
 }
 
-const complete = (state = initialState.complete, action) => {
-    if (action.type === userActions.POST_USER
-        && action.status === apiActions.SUCCESS)
-        return true
+export const errors = (state = {}, action) => {
+    return formError(SIGNUP, state, action)
+}
 
-    else if (action.type === actions.CLEAR_SIGNUP_FORM) 
-        return false
-
-    else
-        return state
+export const success = (state = false, action) => {
+    return formSuccess(SIGNUP, state, action)
 }
 
 export default combineReducers({
+    confirm,
+    loading,
     errors,
-    complete,
-    confirm
+    success
 })

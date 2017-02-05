@@ -1,17 +1,30 @@
-import { push } from 'react-router-redux'
+import api from 'api'
 
-import { SUCCESS } from '../../../api/actions'
-import * as actions from '../../../api/users/confirm/actions'
+import {
+    REQUEST,
+    SUCCESS,
+    FAILURE } from 'api/actions'
 
-export const CLEAR_CONFIRM_ERRORS = 'CLEAR_CONFIRM_ERRORS'
-export const clearConfirmErrors = () => ({ type: CLEAR_CONFIRM_ERRORS })
+export const CONFIRM_ACCOUNT = 'CONFIRM_ACCOUNT'
 
-export const confirmAccount = (key, redirectTarget) => {
+export const confirm = (confirmKey) => {
     return (dispatch) => {
-        dispatch(actions.updateConfirmToken(key))
+        dispatch({
+            type: CONFIRM_ACCOUNT,
+            status: REQUEST
+        })
+        return dispatch(api.users.conf.update(confirmKey))
             .then(action => {
                 if (action.status === SUCCESS)
-                    dispatch(push(redirectTarget))
-                })
+                    return dispatch({
+                        type: CONFIRM_ACCOUNT,
+                        status: SUCCESS
+                    })
+                else
+                    return dispatch({
+                        type: CONFIRM_ACCOUNT,
+                        status: FAILURE
+                    })
+            })
     }
 }

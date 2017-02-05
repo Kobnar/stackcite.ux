@@ -3,11 +3,18 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
-import { SUCCESS } from '../../api/actions'
-import authEndpoint from '../../api/users/auth/actions'
-import { saveToken } from '../actions'
+import api from 'api'
+import { SUCCESS } from 'api/actions'
+import { AUTH } from 'api/users/auth/actions'
+import { login } from 'ux/auth/actions'
 
-import * as actions from './actions'
+const propTypes = {
+    redirectTarget: React.PropTypes.string.isRequired
+}
+
+const defaultProps = {
+    redirectTarget: '/'
+}
 
 class Form extends Component {
 
@@ -25,20 +32,26 @@ class Form extends Component {
         this.handleSubmission = this.handleSubmission.bind(this)
     }
 
-    componentDidMount() { this.props.clearErrors() }
-
-    // Input event handlers
     handleEmailChange(event) { this.setState({email: event.target.value}) }
     handlePasswordChange(event) { this.setState({password: event.target.value}) }
+
     handleSubmission(event) {
         event.preventDefault()
-        this.props.login(this.state.email, this.state.password)
+        this.props.dispatch(login(this.state.email, this.state.password))
+            .then(action => {
+                if (action.status === SUCCESS)
+                    this.props.dispatch(push(this.props.redirectTarget))
+            })
     }
 
-    _form = (authError) => {
+    render () {
+
+        if (Object.keys(this.props.errors).length)
+            var authError = 'Authentication failed.'
+
         return (
             <div>
-                <h1>Log in</h1>
+                <h1 className="page-title">Log in</h1>
                 <form onSubmit={this.handleSubmission}>
 
                     <bs.FormGroup
@@ -85,39 +98,15 @@ class Form extends Component {
             </div>
         )
     }
-
-    render () {
-        return this._form(this.props.errors.auth)
-    }
-
 }
 
 const mapStateToProps = (state) => ({
-    loading: state.api.users.auth.loading,
-    errors: state.ux.login.errors
+    errors: state.ux.auth.errors
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    login(email, password) {
-        dispatch(authEndpoint.create(email, password))
-            .then((action) => {
-                if (action.status === SUCCESS) {
-                    saveToken(action.data.token.key)
-                    dispatch(push(ownProps.redirectTarget))
-                }
-            })
-        },
-    clearErrors() { dispatch(actions.clearLoginErrors()) }
-})
+Form = connect(mapStateToProps)(Form)
 
-Form = connect(mapStateToProps, mapDispatchToProps)(Form)
-
-Form.propTypes = {
-    redirectTarget: React.PropTypes.string.isRequired
-}
-
-Form.defaultProps = {
-    redirectTarget: "/account"
-}
+Form.propTypes = propTypes
+Form.defaultProps = defaultProps
 
 export default Form

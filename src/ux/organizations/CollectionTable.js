@@ -21,17 +21,28 @@ class CollectionTable extends Component {
                 <td className="text-right">
                     {org.established}
                 </td>
+                <td>
+                    <bs.ButtonToolbar className="pull-right">
+                        <bs.ButtonGroup>
+                            <bs.Button bsSize="xsmall"><bs.Glyphicon glyph="pencil"/></bs.Button>
+                            <bs.Button bsSize="xsmall"><bs.Glyphicon glyph="link"/></bs.Button>
+                            <bs.Button bsSize="xsmall"><bs.Glyphicon glyph="share"/></bs.Button>
+                            <bs.Button bsSize="xsmall"><bs.Glyphicon glyph="remove"/></bs.Button>
+                        </bs.ButtonGroup>
+                    </bs.ButtonToolbar>
+                </td>
             </tr>
         )
     }
 
     render = () => {
         return (
-            <bs.Table>
+            <bs.Table hover>
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th className="col-xs-3 text-right">Established</th>
+                        <th className="col-xs-1 text-right">Established</th>
+                        <th style={{width: '120px'}}/>
                     </tr>
                 </thead>
                 <tbody>

@@ -3,16 +3,137 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
-import usersEndpoint from '../../api/users/actions'
+import { SUCCESS } from '../../api/actions'
+import { retrieve } from './actions'
+
+const mapGroupsToState = (groups) => {
+    console.log(groups)
+    var newGroups = {}
+    for (var group in groups)
+        newGroups[group] = !!groups.includes(group)
+    return newGroups
+}
+
+const mapStateToGroups = (groups) => {
+    var newGroups = []
+    for (var group in groups) {
+        if (groups[group])
+            newGroups.push(group)
+    }
+    return newGroups
+}
+
+const EmailControl = ({placeholder, state, error, onChange}) => {
+    return (
+        <bs.FormGroup
+            validationState={error ? 'error' : null}>
+
+            <bs.ControlLabel
+                className='sr-only'>
+                Email address
+            </bs.ControlLabel>
+
+            <bs.FormControl
+                id='email'
+                type='email'
+                placeholder={placeholder || 'Email'}
+                value={state}
+                onChange={onChange}/>
+
+            <bs.HelpBlock>{error}</bs.HelpBlock>
+
+        </bs.FormGroup>
+    )
+}
+
+const NewPasswordControl = ({state, error, onChange}) => {
+    return <bs.FormGroup
+        validationState={error ? 'error' : null}>
+
+        <bs.ControlLabel
+            className='sr-only'>
+            New password
+        </bs.ControlLabel>
+
+        <bs.FormControl
+            id='newPassword'
+            type='password'
+            placeholder='New password'
+            value={state}
+            onChange={onChange}/>
+
+        <bs.HelpBlock>{error}</bs.HelpBlock>
+
+    </bs.FormGroup>
+}
+
+const PasswordControl = ({state, error, onChange}) => {
+    return <bs.FormGroup
+        validationState={error ? 'error' : null}>
+
+        <bs.ControlLabel
+            className='sr-only'>
+            Old password
+        </bs.ControlLabel>
+
+        <bs.FormControl
+            id='password'
+            type='password'
+            placeholder='Current password'
+            value={state}
+            onChange={onChange}/>
+
+        <bs.HelpBlock>{error}</bs.HelpBlock>
+
+    </bs.FormGroup>
+}
+
+const GroupsControl = ({state, error, onChange}) => {
+    return <bs.FormGroup
+        validationState={error ? 'error' : null}>
+
+        <bs.ControlLabel
+            className='sr-only'>
+            Groups
+        </bs.ControlLabel>
+
+        <bs.Checkbox
+            id='usersGroup'
+            value='users'
+            checked={state.users}
+            onChange={onChange}>
+            Users
+        </bs.Checkbox>
+
+        <bs.Checkbox
+            id='usersGroup'
+            value='staff'
+            checked={state.staff}
+            onChange={onChange}>
+            Staff
+        </bs.Checkbox>
+
+        <bs.Checkbox
+            id='usersGroup'
+            value='admin'
+            checked={state.admin}
+            onChange={onChange}>
+            Administrators
+        </bs.Checkbox>
+
+        <bs.HelpBlock>{error}</bs.HelpBlock>
+
+    </bs.FormGroup>
+}
 
 class Form extends Component {
     constructor (props) {
         super(props)
 
         this.state = {
-            email: "",
-            newPassword: "",
-            password: "",
+            email: '',
+            newPassword: '',
+            password: '',
             groups: {
                 users: false,
                 staff: false,
@@ -28,17 +149,12 @@ class Form extends Component {
         this.handleDelete = this.handleDelete.bind(this)
     }
 
-    componentWillMount() {
-        this.props.retrieveUser(this.props.tokenKey, this.props.userId)
-            .then(action => {
-                // Maps list of groups to dict
-                var groups = {}
-                for (var group in this.state.groups)
-                    groups[group] = !!this.props.user.groups.includes(group)
-                this.setState({ groups })
-            })
+    componentWillMount () {
+        var userId = this.props.auth.user.id
+        var authKey = this.props.auth.token.key
+        this.props.dispatch(retrieve(userId, authKey))
     }
-
+    
     handleEmailChange (event) { this.setState({email: event.target.value}) }
     handleNewPasswordChange (event) { this.setState({newPassword: event.target.value}) }
     handlePasswordChange (event) { this.setState({password: event.target.value}) }
@@ -60,18 +176,11 @@ class Form extends Component {
         // Map state data
         for (var field in this.state) {
             var value = this.state[field]
-            if (value !== "") {
+            if (value !== '') {
                 formData[field] = value
             }
         }
-        // Map dict of groups to list of groups
-        var groups = []
-        for (var group in formData.groups) {
-            if (formData.groups[group])
-                groups.push(group)
-        }
-        // Replace dict of groups with list
-        formData.groups = groups
+        formData['groups'] = mapStateToGroups(this.state.groups)
         this.props.updateUser(this.props.tokenKey, this.props.userId, formData)
     }
 
@@ -79,120 +188,7 @@ class Form extends Component {
         this.props.deleteUser(this.props.tokenKey, this.props.userId)
     }
 
-    _emailControl = (emailError) => {
-        return (
-            <bs.FormGroup
-                validationState={emailError ? 'error' : null}>
-
-                <bs.ControlLabel
-                    className="sr-only">
-                    Email address
-                </bs.ControlLabel>
-
-                <bs.FormControl
-                    id="email"
-                    type="email"
-                    placeholder={this.props.user.email || "Email"}
-                    value={this.state.email}
-                    onChange={this.handleEmailChange}/>
-
-                <bs.HelpBlock>{emailError}</bs.HelpBlock>
-
-            </bs.FormGroup>
-        )
-    }
-
-    _newPasswordControl = (newPasswordError) => {
-        return (
-            <bs.FormGroup
-                validationState={newPasswordError ? 'error' : null}>
-
-                <bs.ControlLabel
-                    className="sr-only">
-                    New password
-                </bs.ControlLabel>
-
-                <bs.FormControl
-                    id="newPassword"
-                    type="password"
-                    placeholder={"New password"}
-                    value={this.state.newPassword}
-                    onChange={this.handleNewPasswordChange}/>
-
-                <bs.HelpBlock>{newPasswordError}</bs.HelpBlock>
-
-            </bs.FormGroup>
-        )
-    }
-
-    _passwordControl = (passwordError) => {
-        return (
-            <bs.FormGroup
-                validationState={passwordError ? 'error' : null}>
-
-                <bs.ControlLabel
-                    className="sr-only">
-                    Old password
-                </bs.ControlLabel>
-
-                <bs.FormControl
-                    id="password"
-                    type="password"
-                    placeholder={"Old password"}
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}/>
-
-                <bs.HelpBlock>{passwordError}</bs.HelpBlock>
-
-            </bs.FormGroup>
-        )
-    }
-
-    _groupsControl = (groupsError) => {
-        return (
-            <bs.FormGroup
-                validationState={groupsError ? 'error' : null}>
-
-                <bs.ControlLabel
-                    className="sr-only">
-                    Groups
-                </bs.ControlLabel>
-
-                <bs.Checkbox
-                    id="usersGroup"
-                    value="users"
-                    checked={this.state.groups.users}
-                    onChange={this.handleGroupsChange}>
-                    Users
-                </bs.Checkbox>
-
-                <bs.Checkbox
-                    id="usersGroup"
-                    value="staff"
-                    checked={this.state.groups.staff}
-                    onChange={this.handleGroupsChange}>
-                    Staff
-                </bs.Checkbox>
-
-                <bs.Checkbox
-                    id="usersGroup"
-                    value="admin"
-                    checked={this.state.groups.admin}
-                    onChange={this.handleGroupsChange}>
-                    Administrators
-                </bs.Checkbox>
-
-                <bs.HelpBlock>{groupsError}</bs.HelpBlock>
-
-            </bs.FormGroup>
-        )
-    }
-
-    _form = () => {
-        var emailError = this.props.errors.email
-        var newPasswordError = this.props.errors.new_password
-        var passwordError = this.props.errors.password
-        var groupsError = this.props.errors.groups
+    form () {
         return (
             <div>
                 <h1>Account Settings</h1>
@@ -200,23 +196,35 @@ class Form extends Component {
 
                     <h3>Profile</h3>
 
-                    {this._emailControl(emailError)}
+                    <EmailControl
+                        placeholder={this.props.user.email}
+                        state={this.state.email}
+                        error={this.props.errors.email}
+                        onChange={this.handleEmailChange} />
 
                     <h3>Security</h3>
 
                     <h4>Update password</h4>
-
-                    {this._newPasswordControl(newPasswordError)}
-                    {this._passwordControl(passwordError)}
+                    <NewPasswordControl
+                        state={this.state.newPassword}
+                        error={this.props.errors.new_password}
+                        onChange={this.handleNewPasswordChange} />
+                    <PasswordControl
+                        state={this.state.password}
+                        error={this.props.errors.password}
+                        onChange={this.handlePasswordChange} />
 
                     <h4>Modify groups</h4>
 
-                    {this._groupsControl(groupsError)}
+                    <GroupsControl
+                        state={this.state.groups}
+                        error={this.props.errors.groups}
+                        onChange={this.handleGroupsChange} />
 
                     <bs.Button
                         block
-                        type="submit"
-                        bsStyle="primary"
+                        type='submit'
+                        bsStyle='primary'
                         disabled={this.props.loading}>
                         Save
                     </bs.Button>
@@ -225,7 +233,7 @@ class Form extends Component {
                 <h3>Delete account</h3>
                 <bs.Button
                     block
-                    bsStyle="danger"
+                    bsStyle='danger'
                     disabled={this.props.loading}
                     onClick={this.handleDelete}>
                     Delete account
@@ -235,27 +243,15 @@ class Form extends Component {
     }
 
     render = () => {
-        return this._form()
+        return this.form()
     }
-
 }
 
 const mapStateToProps = (state) => ({
-    tokenKey: state.api.users.auth.token.key,
-    userId: state.api.users.auth.user.id,
-    loading: state.api.users.loading,
+    auth: state.api.auth,
     user: state.ux.account.user,
+    loading: state.ux.account.loading,
     errors: state.ux.account.errors
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    retrieveUser(tokenKey, userId) {
-        return dispatch(usersEndpoint.retrieve(userId, tokenKey)) },
-    updateUser(tokenKey, userId, data) {
-        return dispatch(usersEndpoint.update(userId, data, tokenKey)) },
-    deleteUser(tokenKey, userId) {
-        return dispatch(usersEndpoint.delete(userId, tokenKey))
-            .then(dispatch(push("/")))}
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Form)
+export default connect(mapStateToProps)(Form)

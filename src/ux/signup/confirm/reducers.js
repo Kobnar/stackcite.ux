@@ -1,24 +1,19 @@
 import { combineReducers } from 'redux'
 
-import { SUCCESS } from '../../../api/actions'
-import { PUT_CONFIRM_TOKEN } from '../../../api/users/confirm/actions'
+import {
+    loading as formLoading,
+    success as formSuccess } from 'ux/utils'
+import { CONFIRM_ACCOUNT } from './actions'
 
-import initialState from './state'
+const loading = (state = false, action) => {
+    return formLoading(CONFIRM_ACCOUNT, state, action)
+}
 
-const failed = (state = initialState.failed, action) => {
-    switch(action.type) {
-
-        case PUT_CONFIRM_TOKEN:
-            if (action.status === SUCCESS)
-                return initialState.failed
-            else
-                return true
-
-        default:
-            return state
-    }
+const success = (state = false, action) => {
+    return formSuccess(CONFIRM_ACCOUNT, state, action)
 }
 
 export default combineReducers({
-    failed
+    loading,
+    success
 })

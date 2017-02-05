@@ -4,8 +4,8 @@ import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-rou
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-import api from './api/reducers'
-import ux from './ux/reducers'
+import api from 'api/reducers'
+import ux from 'ux/reducers'
 
 // Combine the root reducer
 const rootReducer = combineReducers({
