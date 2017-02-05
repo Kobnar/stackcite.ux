@@ -1,20 +1,13 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
-import { SUCCESS } from 'api/actions'
-import { login } from 'ux/auth/actions'
-
 const propTypes = {
-    redirectTarget: React.PropTypes.string.isRequired
+    onSubmit: React.PropTypes.func.isRequired,
+    loading: React.PropTypes.bool,
+    errors: React.PropTypes.object
 }
 
-const defaultProps = {
-    redirectTarget: '/'
-}
-
-class Form extends Component {
+class LoginForm extends Component {
 
     constructor(props) {
         super(props);
@@ -35,11 +28,7 @@ class Form extends Component {
 
     handleSubmission(event) {
         event.preventDefault()
-        this.props.dispatch(login(this.state.email, this.state.password))
-            .then(action => {
-                if (action.status === SUCCESS)
-                    this.props.dispatch(push(this.props.redirectTarget))
-            })
+        this.props.onSubmit(this.state.email, this.state.password)
     }
 
     render () {
@@ -96,15 +85,8 @@ class Form extends Component {
             </div>
         )
     }
+
+    static propTypes = propTypes
 }
 
-const mapStateToProps = (state) => ({
-    errors: state.ux.auth.errors
-})
-
-Form = connect(mapStateToProps)(Form)
-
-Form.propTypes = propTypes
-Form.defaultProps = defaultProps
-
-export default Form
+export default LoginForm
