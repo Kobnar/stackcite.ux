@@ -1,6 +1,10 @@
 import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
 
-import * as auth from './auth/actions'
+import {
+    saveCookie,
+    loadCookie,
+    removeCookie,
+    touchLogin } from './login/actions'
 
 export const INIT = 'INIT'
 
@@ -10,18 +14,18 @@ export const init = () => {
             type: INIT,
             status: REQUEST
         })
-        var authKey = auth.loadCookie()
+        var authKey = loadCookie()
         if (authKey)
-            dispatch(auth.touchLogin(authKey))
+            dispatch(touchLogin(authKey))
                 .then(action => {
                     if (action.status === SUCCESS) {
-                        auth.saveCookie(authKey)
+                        saveCookie(authKey)
                         dispatch({
                             type: INIT,
                             status: SUCCESS
                         })
                     } else {
-                        auth.removeCookie()
+                        removeCookie()
                         dispatch({
                             type: INIT,
                             status: FAILURE

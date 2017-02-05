@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { IndexLink } from 'react-router'
 import * as bs from 'react-bootstrap'
 
-import { logout } from './auth/actions'
+import { logout } from './login/actions'
 
 import NavLink from './NavLink'
 

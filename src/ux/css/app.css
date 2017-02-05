@@ -2,8 +2,17 @@ h1.page-title {
     font-size: 24px;
 }
 
+/* Modifies the maximum container width */
 @media (min-width: 992px) {
     .container {
         max-width: 750px;
     }
+}
+
+/* Sets narrow size for devices larger than a phone */
+@media (min-width: 768px) {
+  .auth-container {
+    max-width: 350px;
+    margin: auto;
+    padding: 0; }
 }
