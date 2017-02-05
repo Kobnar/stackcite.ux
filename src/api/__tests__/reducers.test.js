@@ -8,9 +8,10 @@ import {
     DELETE,
     REQUEST,
     SUCCESS,
-    FAILURE } from '../actions'
+    FAILURE } from 'api/actions'
 
-import { cache } from '../reducers'
+import {
+    cache } from '../reducers'
 
 describe('cache', () => {
 

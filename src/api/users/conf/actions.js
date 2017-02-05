@@ -1,4 +1,4 @@
-import { APIInterface, IndexResource } from '../../actions'
+import { APIInterface, IndexResource } from 'api/actions'
 
 export class ConfirmResource extends IndexResource {
 

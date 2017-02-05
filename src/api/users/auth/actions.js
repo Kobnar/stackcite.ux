@@ -3,7 +3,7 @@ import {
     SUCCESS,
     FAILURE,
     APIInterface,
-    IndexResource } from '../../actions'
+    IndexResource } from 'api/actions'
 
 // Action type
 export const AUTH = 'AUTH'

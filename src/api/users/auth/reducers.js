@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
-import { SUCCESS, FAILURE } from '../../actions'
+import { SUCCESS, FAILURE } from 'api/actions'
 import { AUTH, LOGIN, TOUCH, LOGOUT } from './actions'
-import initialState from './state'
 
 const catchAuthResponse = (state, action, key) => {
     if (action.type === AUTH)

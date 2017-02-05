@@ -1,4 +1,4 @@
-import { CollectionResource } from '../actions'
+import { CollectionResource } from 'api/actions'
 
 import * as schema from './schema'
 

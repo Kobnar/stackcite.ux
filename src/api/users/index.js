@@ -1,4 +1,4 @@
-import { CollectionResource } from '../actions'
+import { CollectionResource } from 'api/actions'
 
 import auth from './auth'
 import conf from './conf'

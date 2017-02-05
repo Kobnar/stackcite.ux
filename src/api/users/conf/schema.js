@@ -1,6 +1,6 @@
 import { Schema } from 'normalizr'
 
-import user from '../schema'
+import user from 'api/users/schema'
 
 const confirmToken = new Schema('confirmTokens')
 confirmToken.define({

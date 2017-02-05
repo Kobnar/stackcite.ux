@@ -3,7 +3,7 @@ import deepFreeze from 'deep-freeze'
 import {
     REQUEST,
     SUCCESS,
-    FAILURE } from '../../../actions'
+    FAILURE } from 'api/actions'
 
 import {
     AUTH,
@@ -11,7 +11,9 @@ import {
     TOUCH,
     LOGOUT } from '../actions'
 
-import { user, token } from '../reducers'
+import {
+    user,
+    token } from '../reducers'
 
 describe('user', () => {
 
