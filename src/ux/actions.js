@@ -28,5 +28,10 @@ export const init = () => {
                         })
                     }
                 })
+        else
+            dispatch({
+                type: INIT,
+                status: SUCCESS
+            })
     }
 }
