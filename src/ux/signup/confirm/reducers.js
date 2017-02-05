@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux'
 
-import {
-    loading as formLoading,
-    success as formSuccess } from 'ux/utils'
+import { loading as formLoading } from 'ux/utils'
 import { CONFIRM_ACCOUNT } from './actions'
 
 const loading = (state = false, action) => {

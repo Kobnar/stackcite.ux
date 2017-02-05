@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 
-import api from 'api'
 import { SUCCESS } from 'api/actions'
 
 import { signup } from './actions'

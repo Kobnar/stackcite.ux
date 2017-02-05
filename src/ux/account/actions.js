@@ -7,8 +7,6 @@ import {
     SUCCESS,
     FAILURE } from 'api/actions'
 
-import { logout } from 'ux/login/actions'
-
 export const ACCOUNT = 'ACCOUNT'
 
 export const retrieveUser = (userId, authKey) => {
