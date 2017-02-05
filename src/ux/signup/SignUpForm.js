@@ -2,18 +2,24 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as bs from 'react-bootstrap'
 
-import { signup } from './actions'
+const propTypes = {
+    redirectTarget: React.PropTypes.string.isRequired,
+    loading: React.PropTypes.bool,
+    errors: React.PropTypes.object,
+    onSubmit: React.PropTypes.func
+}
 
-import 'ux/css/auth.css'
+const defaultProps = {
+    redirectTarget: '/'
+}
 
-class Form extends Component
+class SignUpForm extends Component
 {
     constructor(props) {
         super(props);
 
         // Set initial form state
         this.state = {
-            submitted: false,
             email: '',
             password: ''
         }
@@ -27,18 +33,18 @@ class Form extends Component
     handlePasswordChange(event) { this.setState({password: event.target.value}) }
     handleSubmission(event) {
         event.preventDefault()
-        this.props.dispatch(signup(this.state.email, this.state.password))
+        this.props.onSubmit(this.state.email, this.state.password)
     }
 
-    form = (errors) => {
-        var emailError = errors.email
-        var passwordError = errors.password
+    render () {
+        var emailError = this.props.errors.email
+        var passwordError = this.props.errors.password
 
-        if (errors.request === 409)
+        if (this.props.errors.request === 409)
             emailError = 'This email is already registered.'
-        
+
         return (
-            <div>
+            <div className='auth-container'>
                 <h1 className='page-title'>Sign up</h1>
                 <form onSubmit={this.handleSubmission}>
 
@@ -84,38 +90,8 @@ class Form extends Component
         )
     }
 
-    success = () => {
-        return (
-            <div>
-                <h4>Success!</h4>
-                <p>A confirmation link has been sent to {this.state.email}.</p>
-            </div>
-        )
-    }
-
-    render () {
-
-        if (!this.props.success)
-            return this.form(this.props.errors)
-        else
-            return this.success()
-    }
+    static propTypes = propTypes
+    static defaultProps = defaultProps
 }
 
-const mapStateToProps = (state) => ({
-    loading: state.ux.signup.loading,
-    errors: state.ux.signup.errors,
-    success: state.ux.signup.success
-})
-
-Form = connect(mapStateToProps)(Form)
-
-Form.propTypes = {
-    redirectTarget: React.PropTypes.string.isRequired
-}
-
-Form.defaultProps = {
-    redirectTarget: '/'
-}
-
-export default Form
+export default SignUpForm
