@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import * as bs from 'react-bootstrap'
 
-import api from 'api'
 import { SUCCESS } from 'api/actions'
-import { AUTH } from 'api/users/auth/actions'
 import { login } from 'ux/auth/actions'
 
 const propTypes = {

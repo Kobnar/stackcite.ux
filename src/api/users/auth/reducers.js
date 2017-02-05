@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import { SUCCESS, FAILURE } from 'api/actions'
-import { AUTH, LOGIN, TOUCH, LOGOUT } from './actions'
+import { AUTH, LOGOUT } from './actions'
 
 const catchAuthResponse = (state, action, key) => {
     if (action.type === AUTH)
-        if (action.status === FAILURE || action.method == LOGOUT)
+        if (action.status === FAILURE || action.method === LOGOUT)
             return { [key]: {} }
         else if (action.status === SUCCESS)
             return { ...action.data[key] }

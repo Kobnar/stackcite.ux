@@ -1,6 +1,5 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
-import { push } from 'react-router-redux'
 
 import App from './App'
 import { Home } from './home'

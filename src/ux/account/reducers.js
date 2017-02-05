@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import { GET, SUCCESS } from '../../api/actions'
+import { SUCCESS } from '../../api/actions'
 import {
     loading as formLoading,
     errors as formErrors } from '../utils'

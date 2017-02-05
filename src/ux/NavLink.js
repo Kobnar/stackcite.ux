@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 
 class NavLink extends Component {
     render () {
-        const { to, active, disabled, onClick, className, style, ...props } = this.props;
+        const { to, active, disabled, onClick, className, style } = this.props;
         return (
         <li
             role="presentation"

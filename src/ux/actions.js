@@ -1,4 +1,3 @@
-import api from 'api'
 import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
 
 import * as auth from './auth/actions'

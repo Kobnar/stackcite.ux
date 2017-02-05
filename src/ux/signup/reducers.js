@@ -1,10 +1,5 @@
 import { combineReducers } from 'redux'
 
-import {
-    REQUEST,
-    SUCCESS,
-    FAILURE } from 'api/actions'
-
 import { 
     loading as formLoading,
     errors as formError,
