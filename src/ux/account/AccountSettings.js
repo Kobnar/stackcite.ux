@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import * as bs from 'react-bootstrap'
 
-import { retrieve } from './actions'
+const propTypes = {
+    user: React.PropTypes.object.isRequired,
+    onSubmit: React.PropTypes.func.isRequired,
+    loading: React.PropTypes.bool,
+    errors: React.PropTypes.object
+}
 
 const mapGroupsToState = (groups) => {
     console.log(groups)
@@ -124,7 +128,7 @@ const GroupsControl = ({state, error, onChange}) => {
     </bs.FormGroup>
 }
 
-class Form extends Component {
+class AccountSettings extends Component {
     constructor (props) {
         super(props)
 
@@ -144,13 +148,6 @@ class Form extends Component {
         this.handlePasswordChange = this.handlePasswordChange.bind(this)
         this.handleGroupsChange = this.handleGroupsChange.bind(this)
         this.handleSubmission = this.handleSubmission.bind(this)
-        this.handleDelete = this.handleDelete.bind(this)
-    }
-
-    componentWillMount () {
-        var userId = this.props.auth.user.id
-        var authKey = this.props.auth.token.key
-        this.props.dispatch(retrieve(userId, authKey))
     }
     
     handleEmailChange (event) { this.setState({email: event.target.value}) }
@@ -170,26 +167,19 @@ class Form extends Component {
 
     handleSubmission(event) {
         event.preventDefault();
-        var formData = {}
-        // Map state data
-        for (var field in this.state) {
-            var value = this.state[field]
-            if (value !== '') {
-                formData[field] = value
-            }
-        }
-        formData['groups'] = mapStateToGroups(this.state.groups)
-        this.props.updateUser(this.props.tokenKey, this.props.userId, formData)
+        // var formData = {
+        //     [email]: this.state.email,
+        //     [password]: this.state.password,
+        //     [new_password]: this.state.newPassword,
+        //     [groups]: mapStateToGroups(this.state.groups)
+        // }
+        // this.props.onSubmit(formData)
     }
 
-    handleDelete(event) {
-        this.props.deleteUser(this.props.tokenKey, this.props.userId)
-    }
-
-    form () {
+    render = () => {
         return (
             <div>
-                <h1>Account Settings</h1>
+                <h2>Account Settings</h2>
                 <form onSubmit={this.handleSubmission}>
 
                     <h3>Profile</h3>
@@ -227,29 +217,11 @@ class Form extends Component {
                         Save
                     </bs.Button>
                 </form>
-
-                <h3>Delete account</h3>
-                <bs.Button
-                    block
-                    bsStyle='danger'
-                    disabled={this.props.loading}
-                    onClick={this.handleDelete}>
-                    Delete account
-                </bs.Button>
             </div>
         )
     }
 
-    render = () => {
-        return this.form()
-    }
+    static propTypes = propTypes
 }
 
-const mapStateToProps = (state) => ({
-    auth: state.api.auth,
-    user: state.ux.account.user,
-    loading: state.ux.account.loading,
-    errors: state.ux.account.errors
-})
-
-export default connect(mapStateToProps)(Form)
+export default AccountSettings
