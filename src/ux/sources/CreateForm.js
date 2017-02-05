@@ -9,7 +9,7 @@ const BOOK = 'BOOK'
 const SOURCE_TYPES = [SOURCE, TEXT, BOOK]
 
 const propTypes = {
-    createSource: React.PropTypes.func.isRequired,
+    onSubmit: React.PropTypes.func.isRequired,
     loading: React.PropTypes.bool,
     errors: React.PropTypes.object
 }
@@ -59,7 +59,7 @@ clearForm () {
 
     handleSubmission (event) {
         event.preventDefault()
-        this.props.createSource({
+        this.props.onSubmit({
             title: this.state.title,
             description: this.state.description
         }).then(action => {

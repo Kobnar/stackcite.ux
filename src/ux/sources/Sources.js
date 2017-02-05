@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import sources from '../../api/sources/actions'
+import { 
+    createSource,
+    retrieveSource,
+    updateSource,
+    deleteSource,
+    retrieveSourceCollection } from './actions'
 
 import Detail from './Detail'
 import Collection from './Collection'
@@ -9,38 +14,49 @@ import CreateForm from './CreateForm'
 
 class Sources extends Component {
 
+    constructor (props) {
+        super(props)
+
+        this.sourceId = this.props.routeParams.id
+
+        this.create = this.create.bind(this)
+        this.retrieve = this.retrieve.bind(this)
+        this.update = this.update.bind(this)
+        this.delete = this.delete.bind(this)
+        this.retrieveCollection = this.retrieveCollection.bind(this)
+    }
+
     componentWillMount () {
-        var sourceId = this.props.routeParams.id
-        if (sourceId) {
-            this.retrieveSource(sourceId)
+        if (this.sourceId) {
+            this.retrieve(this.sourceId)
         } else {
-            this.retrieveSources()
+            this.retrieveCollection()
         }
     }
 
-    createSource = (data) => {
+    create = (data) => {
         return this.props.dispatch(
-            sources.create(data, this.props.tokenKey))
+            createSource(data, this.props.tokenKey))
     }
 
-    retrieveSource = (sourceId) => {
+    retrieve = (sourceId) => {
         return this.props.dispatch(
-            sources.retrieve(sourceId, this.props.tokenKey))
+            retrieveSource(sourceId, this.props.tokenKey))
     }
 
-    updateSource = (sourceId, data) => {
+    update = (sourceId, data) => {
         return this.props.dispatch(
-            sources.update(sourceId, data, this.props.tokenKey))
+            updateSource(sourceId, data, this.props.tokenKey))
     }
 
-    deleteSource = (sourceId) => {
+    delete = (sourceId) => {
         return this.props.dispatch(
-            sources.delete(sourceId, this.props.tokenKey))
+            deleteSource(sourceId, this.props.tokenKey))
     }
 
-    retrieveSources = () => {
+    retrieveCollection = () => {
         return this.props.dispatch(
-            sources.retrieveCollection(this.props.tokenKey))
+            retrieveSourceCollection(this.props.tokenKey))
     }
 
     render () {
@@ -64,7 +80,7 @@ class Sources extends Component {
                     <div className='container'>
                         <h3>Add source</h3>
                         <CreateForm
-                            createSource={this.createSource}
+                            onSubmit={this.create}
                             loading={this.props.loading}
                             errors={this.props.errors}/>
                     </div>
@@ -75,7 +91,7 @@ class Sources extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    tokenKey: state.api.users.auth.token.key,
+    tokenKey: state.api.auth.token.key,
     cache: state.api.cache
 })
 

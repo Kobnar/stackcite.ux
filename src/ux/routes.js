@@ -3,7 +3,7 @@ import { IndexRoute, Route } from 'react-router'
 
 import App from './App'
 import { Home } from './home'
-// import * as sources from './sources'
+import { Sources }from './sources'
 // import * as people from './people'
 // import * as organizations from './organizations'
 import { Login } from './login'
@@ -14,8 +14,8 @@ export default (
     <Route path="/" component={App}>
         <IndexRoute component={Home}/>
 
+        <Route path="sources(/:id)" component={Sources}/>
         {/**
-        <Route path="sources(/:id)" component={sources.Sources}/>
         <Route path="people(/:id)" component={people.People}/>
         <Route path="organizations(/:id)" component={organizations.Organizations}/>
         */}
