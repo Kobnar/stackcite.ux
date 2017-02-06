@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import * as bs from 'react-bootstrap'
 
-import { SUCCESS } from '../../api/actions'
+import { SUCCESS } from 'api/actions'
 
-const SOURCE = 'SOURCE'
-const TEXT = 'TEXT'
-const BOOK = 'BOOK'
-const SOURCE_TYPES = [BOOK]
+import { BOOK } from './actions'
 
 const propTypes = {
     onSubmit: React.PropTypes.func.isRequired,
@@ -200,25 +197,31 @@ class CreateForm extends Component {
         this.handleSubmission = this.handleSubmission.bind(this)
     }
 
-    clearForm () {
-        this.setState({ ...emptyForm })
-    }
-
     onChangeFactory (field) {
         return (event) => { this.setState({ [field]: event.target.value })}
     }
 
-    handleSubmission (event) {
-        event.preventDefault()
-        // Compile "truthy" values into a form data object
-        var formData = { }
-        Object.entries(this.props.cache.sources)
+    clearForm () {
+        this.setState({ ...emptyForm })
+    }
+
+    clean (data, listFields = []) {
+        var formData = {}
+        Object.entries(data)
             .forEach(([key, value]) => {
                 if (value)
-                    formData[key] = value
+                    if (listFields.includes(key))
+                        formData[key] = value.trim().split(/[\s]*,[\s]*/)
+                    else
+                        formData[key] = value
             })
-        // Submit data and clear form
-        this.props.onSubmit(formData)
+        return formData
+    }
+
+    handleSubmission (event) {
+        event.preventDefault()
+        var formData = this.clean(this.state, ['authors', 'editors'])
+        this.props.onSubmit(formData, formData.type)
             .then(action => {
                 if (action.status === SUCCESS)
                     this.clearForm()
