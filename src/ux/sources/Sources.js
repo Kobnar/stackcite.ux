@@ -1,23 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { 
+import {
+    SOURCE,
     createSource,
-    retrieveSource,
-    updateSource,
-    deleteSource,
     retrieveSourceCollection } from './actions'
 
-import Detail from './Detail'
+import {
+    retrieveSource,
+    updateSource,
+    deleteSource } from './detail/actions'
+
 import Collection from './Collection'
 import CreateForm from './CreateForm'
+import { Detail } from './detail'
 
 class Sources extends Component {
 
     constructor (props) {
         super(props)
-
-        this.sourceId = this.props.routeParams.id
 
         this.create = this.create.bind(this)
         this.retrieve = this.retrieve.bind(this)
@@ -27,40 +28,42 @@ class Sources extends Component {
     }
 
     componentWillMount () {
-        if (this.sourceId) {
-            this.retrieve(this.sourceId)
+        var sourceId = this.props.routeParams.id
+        if (sourceId) {
+            this.retrieve(sourceId)
         } else {
-            this.retrieveCollection()
+            this.retrieveCollection({}, SOURCE)
         }
     }
 
-    create = (data) => {
+    create = (data, type = SOURCE) => {
         return this.props.dispatch(
-            createSource(data, this.props.tokenKey))
+            createSource(data, type, this.props.authKey))
     }
 
-    retrieve = (sourceId) => {
+    retrieve = (sourceId, type = SOURCE) => {
         return this.props.dispatch(
-            retrieveSource(sourceId, this.props.tokenKey))
+            retrieveSource(sourceId, type, this.props.authKey))
     }
 
-    update = (sourceId, data) => {
+    update = (sourceId, data, type = SOURCE) => {
         return this.props.dispatch(
-            updateSource(sourceId, data, this.props.tokenKey))
+            updateSource(data, sourceId, type, this.props.authKey))
     }
 
-    delete = (sourceId) => {
+    delete = (sourceId, type = SOURCE) => {
         return this.props.dispatch(
-            deleteSource(sourceId, this.props.tokenKey))
+            deleteSource(type, sourceId, type, this.props.authKey))
     }
 
-    retrieveCollection = () => {
+    retrieveCollection = (query, type = SOURCE) => {
         return this.props.dispatch(
-            retrieveSourceCollection(this.props.tokenKey))
+            retrieveSourceCollection(query, type, this.props.authKey))
     }
 
     render () {
-
+        
+        // Handle detail view
         var sourceId = this.props.routeParams.id
         if (sourceId) {
             var source = {}
@@ -68,17 +71,21 @@ class Sources extends Component {
                 source = this.props.cache.sources[sourceId]
             return <Detail source={source}/>
 
+        // Handle collection view
         } else {
             var sources = []
             if (this.props.cache.sources)
                 Object.entries(this.props.cache.sources)
                     .forEach(([key, value]) => sources.push(value))
+
             return (
                 <div>
-                    <Collection sources={sources}/>
+                    <Collection
+                        sources={sources}
+                        onDelete={this.delete}/>
 
                     <div className='container'>
-                        <h3>Add source</h3>
+                        <h3>Create source</h3>
                         <CreateForm
                             onSubmit={this.create}
                             loading={this.props.loading}
@@ -91,7 +98,7 @@ class Sources extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    tokenKey: state.api.auth.token.key,
+    authKey: state.api.auth.token.key,
     cache: state.api.cache
 })
 

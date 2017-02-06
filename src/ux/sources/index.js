@@ -1,1 +1,1 @@
-export {default as Sources} from './Sources'
+export { default as Sources } from './Sources'

@@ -4,13 +4,12 @@ import { loading as ldg } from 'ux/utils'
 
 import detail from './detail/reducers'
 
-import { SOURCE_COL } from './actions'
+import { SOURCE_DOC } from './actions'
 
 const loading = (state = false, action) => {
-    return ldg(SOURCE_COL, state, action)
+    return ldg(SOURCE_DOC, state, action)
 }
 
 export default combineReducers({
-    loading,
-    detail
+    loading
 })
