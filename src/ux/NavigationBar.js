@@ -33,7 +33,7 @@ class NavigationBar extends Component {
                     </bs.Navbar.Brand>
                     <bs.Navbar.Toggle/>
                 </bs.Navbar.Header>
-                <bs.Navbar.Collapse id="navbar-collapse">
+                <bs.Navbar.Collapse>
                     <bs.Nav>
                         <NavLink to="/sources" className="navbar-link">Sources</NavLink>
                         <NavLink to="/people" className="navbar-link">People</NavLink>

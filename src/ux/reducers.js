@@ -2,6 +2,8 @@ import { combineReducers } from 'redux'
 
 import { REQUEST } from 'api/actions'
 
+import people from './people/reducers'
+import sources from './sources/reducers'
 import login from './login/reducers'
 import signup from './signup/reducers'
 import account from './account/reducers'
@@ -20,6 +22,8 @@ export const init = (state = true, action) => {
 
 export default combineReducers({
     init,
+    people,
+    sources,
     login,
     signup,
     account
