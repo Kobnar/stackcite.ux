@@ -1,6 +1,24 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
+
+// Modified from http://davidwalsh.name/javascript-debounce-function
+/**
+ * A general function debounce method.
+ */
+export const debounce = (func, wait) => {
+	var timeout
+	return () => {
+		var context = this, args = arguments
+		var later = () => {
+			timeout = null
+			func.apply(context, args)
+		}
+		clearTimeout(timeout)
+		timeout = setTimeout(later, wait)
+	}
+}
+
 /**
  * A generalized reducer for indicating an active request "loading" state to
  * front-end components.
