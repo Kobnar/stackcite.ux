@@ -1,1 +1,2 @@
-export {default as People} from './People'
+export { default as Collection } from './Collection'
+export { default as Detail } from './detail/Detail'
