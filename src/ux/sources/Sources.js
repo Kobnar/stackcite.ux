@@ -28,9 +28,11 @@ class Sources extends Component {
     }
 
     componentWillMount () {
+        // FIXME: Document should be retrieved when detail is about to mount
         var sourceId = this.props.routeParams.id
         if (sourceId) {
             this.retrieve(sourceId)
+        // FIXME: Collection should be retrieved when collection is about to mount
         } else {
             this.retrieveCollection({}, SOURCE)
         }
@@ -70,9 +72,10 @@ class Sources extends Component {
             if (this.props.cache.sources)
                 source = this.props.cache.sources[sourceId]
             return <Detail source={source}/>
+        }
 
         // Handle collection view
-        } else {
+        else {
             var sources = []
             if (this.props.cache.sources)
                 Object.entries(this.props.cache.sources)
@@ -99,7 +102,9 @@ class Sources extends Component {
 
 const mapStateToProps = (state) => ({
     authKey: state.api.auth.token.key,
-    cache: state.api.cache
+    cache: state.api.cache,
+    loading: state.ux.sources.loading,
+    errors: state.ux.sources.errors
 })
 
 Sources = connect(mapStateToProps)(Sources)

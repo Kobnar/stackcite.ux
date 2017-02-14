@@ -2,8 +2,6 @@ import { combineReducers } from 'redux'
 
 import { loading as ldg } from 'ux/utils'
 
-import detail from './detail/reducers'
-
 import { SOURCE_DOC } from './actions'
 
 const loading = (state = false, action) => {

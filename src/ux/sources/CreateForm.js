@@ -197,12 +197,12 @@ class CreateForm extends Component {
         this.handleSubmission = this.handleSubmission.bind(this)
     }
 
-    onChangeFactory (field) {
-        return (event) => { this.setState({ [field]: event.target.value })}
-    }
-
     clearForm () {
         this.setState({ ...emptyForm })
+    }
+
+    onChangeFactory (field) {
+        return (event) => { this.setState({ [field]: event.target.value })}
     }
 
     clean (data, listFields = []) {
