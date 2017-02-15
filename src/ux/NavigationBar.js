@@ -38,19 +38,19 @@ class NavigationBar extends Component {
                         <ul className='navbar-list'>
                             <li>
                                 <NavLink
-                                    to='sources'>
+                                    to='/sources'>
                                     Sources
                                 </NavLink>
                             </li>
                             <li>
                                 <NavLink
-                                    to='people'>
+                                    to='/people'>
                                     People
                                 </NavLink>
                             </li>
                             <li>
                                 <NavLink
-                                    to='organizations'>
+                                    to='/organizations'>
                                     Organizations
                                 </NavLink>
                             </li>
@@ -61,13 +61,13 @@ class NavigationBar extends Component {
                             <ul className='navbar-list'>
                                 <li>
                                     <NavLink
-                                        to='account'>
+                                        to='/account'>
                                         Account
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='logout' 
+                                        to='/logout' 
                                         onClick={this.handleLogout}>
                                         Logout
                                     </NavLink>
@@ -76,13 +76,13 @@ class NavigationBar extends Component {
                             <ul className='navbar-list'>
                                 <li>
                                     <NavLink
-                                        to='signup'>
+                                        to='/signup'>
                                         Signup
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='login'>
+                                        to='/login'>
                                         Login
                                     </NavLink>
                                 </li>
