@@ -10,7 +10,7 @@ import {
 
 export const PEOPLE_COL = 'PEOPLE_COL'
 
-export const createDocument = (data, type, authKey) => {
+export const createDocument = (data, authKey) => {
     return (dispatch) => {
         dispatch({
             type: PEOPLE_COL,
@@ -37,7 +37,7 @@ export const createDocument = (data, type, authKey) => {
     }
 }
 
-export const retrieveCollection = (query, type, authKey) => {
+export const retrieveCollection = (query, authKey) => {
     return (dispatch) => {
         dispatch({
             type: PEOPLE_COL,
