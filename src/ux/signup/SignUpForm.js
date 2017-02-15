@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import { InputGroup } from 'ux/Forms'
+
 const propTypes = {
     redirectTarget: React.PropTypes.string.isRequired,
     loading: React.PropTypes.bool,
@@ -9,26 +11,6 @@ const propTypes = {
 
 const defaultProps = {
     redirectTarget: '/'
-}
-
-const InputGroup = ({id, type, placeholder, value, error, onChange}) => {
-    return (
-        <div className='form-group'>
-            <label
-                htmlFor={id}
-                className='sr-only'>
-                Email
-            </label>
-            <input
-                id={id}
-                type={type}
-                placeholder={placeholder}
-                className={ error ? 'error' : null }
-                value={value}
-                onChange={onChange}/>
-            { error ? <p className='help-block error'>{error}</p> : null }
-        </div>
-    )
 }
 
 class SignUpForm extends Component
@@ -73,7 +55,8 @@ class SignUpForm extends Component
                             type='email'
                             placeholder='Email'
                             value={this.state.email}
-                            error={emailError}
+                            error={!!emailError}
+                            errorMsg={emailError}
                             onChange={this.handleEmailChange} />
 
                         <InputGroup
@@ -81,7 +64,8 @@ class SignUpForm extends Component
                             type='password'
                             placeholder='Placeholder'
                             value={this.state.password}
-                            error={passwordError}
+                            error={!!passwordError}
+                            errorMsg={passwordError}
                             onChange={this.handlePasswordChange} />
                         
                         <input
