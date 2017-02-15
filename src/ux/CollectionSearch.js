@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as bs from 'react-bootstrap'
 
 import { debounce } from 'ux/utils'
 
@@ -43,18 +42,21 @@ class CollectionSearch extends Component {
     render () {
         return (
             <form onSubmit={this.handleSubmit}>
-                <bs.FormGroup>
-                    <bs.ControlLabel
-                        className="sr-only">
-                        Search
-                    </bs.ControlLabel>
-                    <bs.FormControl
-                        id="query"
-                        type="text"
-                        placeholder="Search"
-                        value={this.state.query}
-                        onChange={this.handleChange}/>
-                </bs.FormGroup>
+                <fieldset>
+                    <div className='form-group'>
+                        <label
+                            htmlFor='query'
+                            className='sr-only'>
+                            Search
+                        </label>
+                        <input
+                            id='query'
+                            type='search'
+                            placeholder='Search...'
+                            value={this.state.query}
+                            onChange={this.handleChange}/>
+                    </div>
+                </fieldset>
             </form>
         )
     }
