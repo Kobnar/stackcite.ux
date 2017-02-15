@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import * as bs from 'react-bootstrap'
+
+import { InputGroup } from 'ux/Forms'
 
 const propTypes = {
     user: React.PropTypes.object.isRequired,
@@ -27,105 +28,79 @@ const mapStateToGroups = (groups) => {
 
 const EmailControl = ({placeholder, state, error, onChange}) => {
     return (
-        <bs.FormGroup
-            validationState={error ? 'error' : null}>
-
-            <bs.ControlLabel
-                className='sr-only'>
-                Email address
-            </bs.ControlLabel>
-
-            <bs.FormControl
-                id='email'
-                type='email'
-                placeholder={placeholder || 'Email'}
-                value={state}
-                onChange={onChange}/>
-
-            <bs.HelpBlock>{error}</bs.HelpBlock>
-
-        </bs.FormGroup>
+        <InputGroup
+            id='email'
+            type='email'
+            placeholder={placeholder}
+            value={state}
+            error={error}
+            errorMsg={error}
+            onChange={onChange}/>
     )
 }
 
 const NewPasswordControl = ({state, error, onChange}) => {
-    return <bs.FormGroup
-        validationState={error ? 'error' : null}>
-
-        <bs.ControlLabel
-            className='sr-only'>
-            New password
-        </bs.ControlLabel>
-
-        <bs.FormControl
-            id='newPassword'
+    return (
+        <InputGroup
+            id='new-password'
             type='password'
-            placeholder='New password'
+            placeholder='New Password'
             value={state}
+            error={error}
+            errorMsg={error}
             onChange={onChange}/>
-
-        <bs.HelpBlock>{error}</bs.HelpBlock>
-
-    </bs.FormGroup>
+    )
 }
 
 const PasswordControl = ({state, error, onChange}) => {
-    return <bs.FormGroup
-        validationState={error ? 'error' : null}>
-
-        <bs.ControlLabel
-            className='sr-only'>
-            Old password
-        </bs.ControlLabel>
-
-        <bs.FormControl
+    return  (
+        <InputGroup
             id='password'
             type='password'
-            placeholder='Current password'
+            placeholder='Current Password'
             value={state}
+            error={error}
+            errorMsg={error}
             onChange={onChange}/>
-
-        <bs.HelpBlock>{error}</bs.HelpBlock>
-
-    </bs.FormGroup>
+    )
 }
 
 const GroupsControl = ({state, error, onChange}) => {
-    return <bs.FormGroup
-        validationState={error ? 'error' : null}>
+    return (
+        <div className='form-group'>
+            <label className='label-inline' forHtml='usersGroup'>
+                <input
+                    id='usersGroup'
+                    type='checkbox'
+                    value='users'
+                    checked={state.users}
+                    onChange={onChange} />
+                Users
+            </label>
 
-        <bs.ControlLabel
-            className='sr-only'>
-            Groups
-        </bs.ControlLabel>
+            <label className='label-inline' forHtml='usersGroup'>
+                <input
+                    id='staffGroup'
+                    type='checkbox'
+                    value='staff'
+                    checked={state.staff}
+                    onChange={onChange} />
+                Staff
+            </label>
 
-        <bs.Checkbox
-            id='usersGroup'
-            value='users'
-            checked={state.users}
-            onChange={onChange}>
-            Users
-        </bs.Checkbox>
+            <label className='label-inline' forHtml='usersGroup'>
+                <input
+                    id='adminGroup'
+                    type='checkbox'
+                    value='admin'
+                    checked={state.admin}
+                    onChange={onChange} />
+                Administrators
+            </label>
 
-        <bs.Checkbox
-            id='usersGroup'
-            value='staff'
-            checked={state.staff}
-            onChange={onChange}>
-            Staff
-        </bs.Checkbox>
-
-        <bs.Checkbox
-            id='usersGroup'
-            value='admin'
-            checked={state.admin}
-            onChange={onChange}>
-            Administrators
-        </bs.Checkbox>
-
-        <bs.HelpBlock>{error}</bs.HelpBlock>
-
-    </bs.FormGroup>
+            { error ? <p className='help-block error'>{error}</p> : null}
+        </div>
+    )
 }
 
 class AccountSettings extends Component {
@@ -208,14 +183,12 @@ class AccountSettings extends Component {
                         state={this.state.groups}
                         error={this.props.errors.groups}
                         onChange={this.handleGroupsChange} />
-
-                    <bs.Button
-                        block
+                        
+                    <input
                         type='submit'
-                        bsStyle='primary'
-                        disabled={this.props.loading}>
-                        Save
-                    </bs.Button>
+                        className='button-primary'
+                        disabled={this.props.loading}
+                        value='Save'/>
                 </form>
             </div>
         )

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as bs from 'react-bootstrap'
 
 const propTypes = {
     onSubmit: React.PropTypes.func.isRequired,
@@ -12,13 +11,11 @@ class DeleteAccount extends Component {
             <div>
                 <h2>Delete account</h2>
                 <form onSubmit={() => this.props.delete()}>
-                    <bs.Button
-                        block
+                    <input
                         type='submit'
-                        bsStyle='danger'
-                        disabled={this.props.loading}>
-                        Delete account
-                    </bs.Button>
+                        className='button-danger'
+                        disabled={this.props.loading}
+                        value='Delete account'/>
                 </form>
             </div>
         )
