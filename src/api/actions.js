@@ -2,6 +2,8 @@ import url from 'url'
 
 // Action type
 export const REST_API = 'REST_API'
+export const DOCUMENT = 'DOCUMENT'
+export const COLLECTION = 'COLLECTION'
 
 // Methods
 export const POST = 'POST'
@@ -29,7 +31,7 @@ export class APIInterface {
         return new Headers(headers)
     }
 
-    static create = (route, data, authKey, schema) => {
+    static create = (route, data, authKey) => {
         return (dispatch) => {
 
             dispatch({
@@ -52,8 +54,7 @@ export class APIInterface {
                                 method: POST,
                                 status: SUCCESS,
                                 route,
-                                data,
-                                schema
+                                data
                             }))
                     else
                         return response.json()
@@ -68,7 +69,7 @@ export class APIInterface {
         }
     }
 
-    static retrieve = (route, query, authKey, schema) => {
+    static retrieve = (route, query, authKey) => {
         return (dispatch) => {
 
             route = route.concat(
@@ -94,8 +95,7 @@ export class APIInterface {
                                 method: GET,
                                 status: SUCCESS,
                                 route,
-                                data,
-                                schema
+                                data
                             }))
                     else
                         return response.json()
@@ -110,7 +110,7 @@ export class APIInterface {
         }
     }
 
-    static update = (route, data, authKey, schema) => {
+    static update = (route, data, authKey) => {
         return (dispatch) => {
 
             dispatch({
@@ -133,8 +133,7 @@ export class APIInterface {
                                 method: PUT,
                                 status: SUCCESS,
                                 route,
-                                data,
-                                schema
+                                data
                             }))
                     else
                         return response.json()
@@ -242,15 +241,104 @@ class DataResource extends IndexResource {
 export class DocumentResource extends DataResource {
 
     retrieve (query, authKey) {
-        return APIInterface.retrieve(this.route(), query, authKey, this.schema)
+        return(dispatch) => {
+            dispatch({
+                type: DOCUMENT,
+                method: GET,
+                status: REQUEST,
+                collection: this.parent.name,
+                documentId: this.name,
+            })
+            return dispatch(APIInterface.retrieve(this.route(), query, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: DOCUMENT,
+                            method: GET,
+                            status: SUCCESS,
+                            data: action.data,
+                            schema: this.schema,
+                            collection: this.parent.name,
+                            documentId: this.name
+                        })
+                    else
+                        return dispatch({
+                            type: DOCUMENT,
+                            method: GET,
+                            status: FAILURE,
+                            error: action.error,
+                            collection: this.parent.name,
+                            documentId: this.name
+                        })
+                })
+        }
     }
 
     update (data, authKey) {
-        return APIInterface.update(this.route(), data, authKey, this.schema)
+        return(dispatch) => {
+            dispatch({
+                type: DOCUMENT,
+                method: PUT,
+                status: REQUEST,
+                collection: this.parent.name,
+                documentId: this.name,
+            })
+            return dispatch(APIInterface.update(this.route(), data, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: DOCUMENT,
+                            method: PUT,
+                            status: SUCCESS,
+                            data: action.data,
+                            schema: this.schema,
+                            collection: this.parent.name,
+                            documentId: this.name
+                        })
+                    else
+                        return dispatch({
+                            type: DOCUMENT,
+                            method: PUT,
+                            status: FAILURE,
+                            error: action.error,
+                            collection: this.parent.name,
+                            documentId: this.name
+                        })
+                })
+        }
     }
 
     delete (authKey) {
-        return APIInterface.delete(this.route(), undefined, authKey)
+        return(dispatch) => {
+            dispatch({
+                type: DOCUMENT,
+                method: DELETE,
+                status: REQUEST,
+                collection: this.parent.name,
+                documentId: this.name,
+            })
+            return dispatch(APIInterface.delete(this.route(), undefined, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: DOCUMENT,
+                            method: DELETE,
+                            status: SUCCESS,
+                            schema: this.schema,
+                            collection: this.parent.name,
+                            documentId: this.name
+                        })
+                    else
+                        return dispatch({
+                            type: DOCUMENT,
+                            method: DELETE,
+                            status: FAILURE,
+                            error: action.error,
+                            collection: this.parent.name,
+                            documentId: this.name
+                        })
+                })
+        }
     }
 }
 
@@ -265,18 +353,125 @@ export class CollectionResource extends DataResource {
     }
 
     create (data, authkey) {
-        return APIInterface.create(this.route(), data, authkey, this.schema)
+        return(dispatch) => {
+            dispatch({
+                type: COLLECTION,
+                method: POST,
+                status: REQUEST,
+                collection: this.name
+            })
+            return dispatch(APIInterface.create(this.route(), data, authkey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: COLLECTION,
+                            method: POST,
+                            status: SUCCESS,
+                            data: action.data,
+                            schema: this.schema,
+                            collection: this.name
+                        })
+                    else
+                        return dispatch({
+                            type: COLLECTION,
+                            method: POST,
+                            status: FAILURE,
+                            error: action.error,
+                            collection: this.name
+                        })
+                })
+        }
     }
 
     retrieve (query, authKey) {
-        return APIInterface.retrieve(this.route(), query, authKey, this.schema)
+        return(dispatch) => {
+            dispatch({
+                type: COLLECTION,
+                method: GET,
+                status: REQUEST,
+                collection: this.name
+            })
+            return dispatch(APIInterface.retrieve(this.route(), query, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: COLLECTION,
+                            method: POST,
+                            status: SUCCESS,
+                            data: action.data,
+                            schema: this.schema,
+                            collection: this.name
+                        })
+                    else
+                        return dispatch({
+                            type: COLLECTION,
+                            method: POST,
+                            status: FAILURE,
+                            error: action.error,
+                            collection: this.name
+                        })
+                })
+        }
     }
 
     update (data, authKey) {
-        return APIInterface.update(this.route(), data, authKey, this.schema)
+        return(dispatch) => {
+            dispatch({
+                type: COLLECTION,
+                method: PUT,
+                status: REQUEST,
+                collection: this.name
+            })
+            return dispatch(APIInterface.update(this.route(), data, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: COLLECTION,
+                            method: PUT,
+                            status: SUCCESS,
+                            data: action.data,
+                            schema: this.schema,
+                            collection: this.name
+                        })
+                    else
+                        return dispatch({
+                            type: COLLECTION,
+                            method: PUT,
+                            status: FAILURE,
+                            error: action.error,
+                            collection: this.name
+                        })
+                })
+        }
     }
 
     delete (query, authKey) {
-        return APIInterface.delete(this.route(), query, authKey)
+        return(dispatch) => {
+            dispatch({
+                type: COLLECTION,
+                method: DELETE,
+                status: REQUEST,
+                collection: this.name
+            })
+            return dispatch(APIInterface.delete(this.route(), query, authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        return dispatch({
+                            type: COLLECTION,
+                            method: DELETE,
+                            status: SUCCESS,
+                            schema: this.schema,
+                            collection: this.name
+                        })
+                    else
+                        return dispatch({
+                            type: COLLECTION,
+                            method: DELETE,
+                            status: FAILURE,
+                            error: action.error,
+                            collection: this.name
+                        })
+                })
+        }
     }
 }

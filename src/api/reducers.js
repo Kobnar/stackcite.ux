@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 import { normalize, arrayOf } from 'normalizr'
 
-import { REST_API, SUCCESS, DELETE } from './actions'
+import { DOCUMENT, COLLECTION, SUCCESS, DELETE } from './actions'
 import { updateCache, deleteDocument } from './utils'
 
 import auth from './users/auth/reducers'
 
 export const cache = (state = {}, action) => {
-    if (action.type === REST_API && action.status === SUCCESS)
+    if (action.type === DOCUMENT || action.type === COLLECTION && action.status === SUCCESS)
         if (action.schema) {
             if (action.method === DELETE) {
                 return deleteDocument(state, action.documentId)
