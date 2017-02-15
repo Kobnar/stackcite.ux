@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import * as bs from 'react-bootstrap'
 
 import {
     retrieveDocument,
     updateDocument,
     deleteDocument } from './actions'
+
+import UpdateForm from './UpdateForm'
 
 class Detail extends Component {
 
@@ -14,6 +15,7 @@ class Detail extends Component {
         super(props)
 
         this.retrieve = this.retrieve.bind(this)
+        this.update = this.update.bind(this)
     }
 
     componentWillMount () {
@@ -24,6 +26,12 @@ class Detail extends Component {
         var personId = this.props.routeParams.id
         return this.props.dispatch(
             retrieveDocument(personId, this.props.authKey))
+    }
+
+    update (data) {
+        var personId = this.props.routeParams.id
+        return this.props.dispatch(
+            updateDocument(data, personId, this.props.authKey))
     }
 
     render () {
@@ -45,10 +53,20 @@ class Detail extends Component {
                             }
                         </h1>
                         { hasTitle ?
-                            <h2>{ person.name.full }</h2>
+                            <h4><strong>Full name:</strong> { person.name.full }</h4>
                             : null
                         }
                         <p>{ person.description }</p>
+                    </div>
+
+                    <hr/>
+
+                    <div className='container'>
+                        <h3>Update</h3>
+
+                        <UpdateForm
+                            person={person}
+                            onSubmit={this.update} />
                     </div>
                 </div>
             )
