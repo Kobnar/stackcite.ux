@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import * as bs from 'react-bootstrap'
 
 const propTypes = {
     redirectTarget: React.PropTypes.string.isRequired,
@@ -11,6 +9,26 @@ const propTypes = {
 
 const defaultProps = {
     redirectTarget: '/'
+}
+
+const InputGroup = ({id, type, placeholder, value, error, onChange}) => {
+    return (
+        <div className='form-group'>
+            <label
+                htmlFor={id}
+                className='sr-only'>
+                Email
+            </label>
+            <input
+                id={id}
+                type={type}
+                placeholder={placeholder}
+                className={ error ? 'error' : null }
+                value={value}
+                onChange={onChange}/>
+            { error ? <p className='help-block error'>{error}</p> : null }
+        </div>
+    )
 }
 
 class SignUpForm extends Component
@@ -40,6 +58,8 @@ class SignUpForm extends Component
         var emailError = this.props.errors.email
         var passwordError = this.props.errors.password
 
+        console.log(this.props.errors.email)
+
         if (this.props.errors.request === 409)
             emailError = 'This email is already registered.'
 
@@ -47,44 +67,29 @@ class SignUpForm extends Component
             <div className='auth-container'>
                 <h1 className='page-title'>Sign up</h1>
                 <form onSubmit={this.handleSubmission}>
-
-                    <bs.FormGroup
-                        validationState={ emailError ? 'error' : null }>
-                        <bs.ControlLabel
-                            className='sr-only'>
-                            Email address
-                        </bs.ControlLabel>
-                        <bs.FormControl
+                    <fieldset>
+                        <InputGroup
                             id='email'
                             type='email'
                             placeholder='Email'
                             value={this.state.email}
-                            onChange={this.handleEmailChange}/>
-                        <bs.HelpBlock>{emailError}</bs.HelpBlock>
-                    </bs.FormGroup>
+                            error={emailError}
+                            onChange={this.handleEmailChange} />
 
-                    <bs.FormGroup
-                        validationState={ passwordError ? 'error' : null }>
-                        <bs.ControlLabel
-                            className='sr-only'>
-                            Password
-                        </bs.ControlLabel>
-                        <bs.FormControl
+                        <InputGroup
                             id='password'
                             type='password'
-                            placeholder='Password'
+                            placeholder='Placeholder'
                             value={this.state.password}
-                            onChange={this.handlePasswordChange}/>
-                        <bs.HelpBlock>{passwordError}</bs.HelpBlock>
-                    </bs.FormGroup>
-
-                    <bs.Button
-                        block
-                        type='submit'
-                        bsStyle='primary'
-                        disabled={this.props.loading}>
-                        Sign up
-                    </bs.Button>
+                            error={passwordError}
+                            onChange={this.handlePasswordChange} />
+                        
+                        <input
+                            type='submit'
+                            className='button-primary'
+                            disabled={this.props.loading}
+                            value='Sign up'/>
+                    </fieldset>
                 </form>
             </div>
         )
