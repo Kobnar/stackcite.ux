@@ -45,7 +45,7 @@ class LoginForm extends Component {
                         <InputGroup
                             id='email'
                             type='email'
-                            placeholder='Email'
+                            label='Email'
                             value={this.state.email}
                             error={authError}
                             onChange={this.handleEmailChange} />
@@ -53,7 +53,7 @@ class LoginForm extends Component {
                         <InputGroup
                             id='password'
                             type='password'
-                            placeholder='Placeholder'
+                            label='Password'
                             value={this.state.password}
                             error={authError}
                             errorMsg={authError}

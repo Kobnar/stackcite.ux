@@ -53,7 +53,7 @@ class SignUpForm extends Component
                         <InputGroup
                             id='email'
                             type='email'
-                            placeholder='Email'
+                            label='Email'
                             value={this.state.email}
                             error={!!emailError}
                             errorMsg={emailError}
@@ -62,7 +62,7 @@ class SignUpForm extends Component
                         <InputGroup
                             id='password'
                             type='password'
-                            placeholder='Placeholder'
+                            label='Password'
                             value={this.state.password}
                             error={!!passwordError}
                             errorMsg={passwordError}

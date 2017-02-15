@@ -31,6 +31,7 @@ const EmailControl = ({placeholder, state, error, onChange}) => {
         <InputGroup
             id='email'
             type='email'
+            label='Email'
             placeholder={placeholder}
             value={state}
             error={error}
@@ -44,7 +45,7 @@ const NewPasswordControl = ({state, error, onChange}) => {
         <InputGroup
             id='new-password'
             type='password'
-            placeholder='New Password'
+            label='New Password'
             value={state}
             error={error}
             errorMsg={error}
@@ -57,7 +58,7 @@ const PasswordControl = ({state, error, onChange}) => {
         <InputGroup
             id='password'
             type='password'
-            placeholder='Current Password'
+            label='Current Password'
             value={state}
             error={error}
             errorMsg={error}

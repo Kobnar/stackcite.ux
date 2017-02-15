@@ -1,12 +1,14 @@
 import React from 'react'
 
-export const InputGroup = ({id, type, placeholder, value, error, errorMsg, onChange}) => {
+export const InputGroup = ({id, type, label, placeholder, value, error, errorMsg, onChange}) => {
+    if (label && !placeholder)
+        placeholder = label
     return (
         <div className='form-group'>
             <label
                 htmlFor={id}
                 className='sr-only'>
-                Email
+                {label}
             </label>
             <input
                 id={id}
