@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { IndexLink } from 'react-router'
-import * as bs from 'react-bootstrap'
+import { Link, IndexLink } from 'react-router'
+import { push } from 'react-router-redux'
 
 import { logout } from './login/actions'
 
-import NavLink from './NavLink'
-
-import './css/nav.css'
+const NavLink = React.createClass({
+    render() {
+        return <Link {...this.props} activeClassName='active' />
+    }
+})
 
 class NavigationBar extends Component {
 
@@ -21,32 +23,74 @@ class NavigationBar extends Component {
         event.preventDefault()
         var authKey = this.props.auth.token.key
         this.props.dispatch(logout(authKey))
+        this.props.dispatch(push('/login'))
     }
 
     render () {
         var isLoggedIn = this.props.auth.token.key
         return (
-            <bs.Navbar collapseOnSelect>
-                <bs.Navbar.Header>
-                    <bs.Navbar.Brand>
-                        <IndexLink to="/">StackCite</IndexLink>
-                    </bs.Navbar.Brand>
-                    <bs.Navbar.Toggle/>
-                </bs.Navbar.Header>
-                <bs.Navbar.Collapse>
-                    <bs.Nav>
-                        <NavLink to="/sources" className="navbar-link">Sources</NavLink>
-                        <NavLink to="/people" className="navbar-link">People</NavLink>
-                        <NavLink to="/organizations" className="navbar-link">Organizations</NavLink>
-                    </bs.Nav>
-                    <bs.Nav pullRight>
-                        { !isLoggedIn ? <NavLink to="/signup" className="navbar-link">Sign up</NavLink> : null }
-                        { !isLoggedIn ? <NavLink to="/login" className="navbar-link">Log in</NavLink> : null }
-                        { isLoggedIn ? <NavLink to="/account" className="navbar-link">Account</NavLink> : null }
-                        { isLoggedIn ? <NavLink to="/logout" onClick={this.handleLogout} className="navbar-link">Log out</NavLink> : null }
-                    </bs.Nav>
-                </bs.Navbar.Collapse>
-            </bs.Navbar>
+            <div className='navbar'>
+                <div className='container'>
+                    <div className='navbar-header'>
+                        <IndexLink to='/' className='navbar-brand'>Stackcite</IndexLink>
+                    </div>
+                    <div className='navbar-nav'>
+                        <ul className='navbar-list'>
+                            <li>
+                                <NavLink
+                                    to='sources'>
+                                    Sources
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to='people'>
+                                    People
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to='organizations'>
+                                    Organizations
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className='navbar-nav float-right'>
+                        { isLoggedIn ? 
+                            <ul className='navbar-list'>
+                                <li>
+                                    <NavLink
+                                        to='account'>
+                                        Account
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='logout' 
+                                        onClick={this.handleLogout}>
+                                        Logout
+                                    </NavLink>
+                                </li>
+                            </ul> :
+                            <ul className='navbar-list'>
+                                <li>
+                                    <NavLink
+                                        to='signup'>
+                                        Signup
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        to='login'>
+                                        Login
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
         )
     }
 }
