@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import * as bs from 'react-bootstrap'
+
+import { InputGroup } from 'ux/Forms'
 
 const propTypes = {
-    onSubmit: React.PropTypes.func.isRequired,
     loading: React.PropTypes.bool,
-    errors: React.PropTypes.object
+    errors: React.PropTypes.object,
+    onSubmit: React.PropTypes.func.isRequired
 }
 
 class LoginForm extends Component {
@@ -40,47 +41,31 @@ class LoginForm extends Component {
             <div>
                 <h1 className="page-title">Log in</h1>
                 <form onSubmit={this.handleSubmission}>
-
-                    <bs.FormGroup
-                        validationState={ authError ? 'error' : null }>
-                        <bs.ControlLabel
-                            className="sr-only">
-                            Email address
-                        </bs.ControlLabel>
-                        <bs.FormControl
-                            id="email"
-                            type="email"
-                            placeholder="Email"
+                    <fieldset>
+                        <InputGroup
+                            id='email'
+                            type='email'
+                            placeholder='Email'
                             value={this.state.email}
-                            onChange={this.handleEmailChange}/>
-                    </bs.FormGroup>
+                            error={authError}
+                            onChange={this.handleEmailChange} />
 
-                    <bs.FormGroup
-                        validationState={ authError ? 'error' : null }>
-                        <bs.ControlLabel
-                            className="sr-only">
-                            Password
-                        </bs.ControlLabel>
-                        <bs.FormControl
-                            id="password"
-                            type="password"
-                            placeholder="Password"
+                        <InputGroup
+                            id='password'
+                            type='password'
+                            placeholder='Placeholder'
                             value={this.state.password}
-                            onChange={this.handlePasswordChange}/>
-                    </bs.FormGroup>
+                            error={authError}
+                            errorMsg={authError}
+                            onChange={this.handlePasswordChange} />
+                        
+                        <input
+                            type='submit'
+                            className='button-primary'
+                            disabled={this.props.loading}
+                            value='Log in'/>
 
-                    <bs.FormGroup
-                        validationState={ authError ? 'error' : null }>
-                        <bs.HelpBlock>{authError}</bs.HelpBlock>
-                    </bs.FormGroup>
-
-                    <bs.Button
-                        block
-                        type="submit"
-                        bsStyle="primary"
-                        disabled={this.props.loading}>
-                        Log in
-                    </bs.Button>
+                    </fieldset>
                 </form>
             </div>
         )
