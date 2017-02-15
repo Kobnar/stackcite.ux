@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import * as bs from 'react-bootstrap'
+
+import { InputGroup } from 'ux/Forms'
 
 import { SUCCESS } from 'api/actions'
 
@@ -16,20 +17,14 @@ const defaultProps = {
 
 const TitleInput = ({state, error, onChange}) => {
     return (
-        <bs.FormGroup
-            validationState={ error ? 'error' : null }>
-            <bs.ControlLabel
-                className="sr-only">
-                Known Title
-            </bs.ControlLabel>
-            <bs.FormControl
-                id="title"
-                type="text"
-                placeholder="Known Title"
-                value={state}
-                onChange={onChange}/>
-            <bs.HelpBlock>{error}</bs.HelpBlock>
-        </bs.FormGroup>
+        <InputGroup
+            id='title'
+            type='text'
+            label='Title'
+            value={state}
+            error={!!error}
+            errorMsg={error}
+            onChange={onChange} />
     )
 }
 
@@ -58,17 +53,26 @@ class CreateForm extends Component {
 
     handleSubmission (event) {
         event.preventDefault()
-        // Submit the form
+        var data = { name: { title: this.state.title } }
+        this.props.onSubmit(data)
     }
 
     render () {
         return (
-            <bs.Form onSubmit={this.handleSubmission}>
-                <TitleInput
-                    state={this.state.title}
-                    error={this.props.errors.title}
-                    onChange={this.onChangeFactory('title')} />
-            </bs.Form>
+            <form onSubmit={this.handleSubmission}>
+                <fieldset>
+                    <TitleInput
+                        state={this.state.title}
+                        error={this.props.errors.title}
+                        onChange={this.onChangeFactory('title')} />
+                        
+                    <input
+                        type='submit'
+                        className='button-primary'
+                        disabled={this.props.loading}
+                        value='Create'/>
+                </fieldset>
+            </form>
         )
     }
 

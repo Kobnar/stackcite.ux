@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import * as bs from 'react-bootstrap'
 
 import {
     createDocument,
     retrieveCollection } from './actions'
 
-import Breadcrumbs from 'ux/Breadcrumbs'
 import CollectionSearch from 'ux/CollectionSearch'
 import CreateForm from './CreateForm'
 
@@ -37,7 +35,7 @@ const CollectionTable = ({ people, onDelete }) => {
     ))
     
     return (
-        <bs.Table>
+        <table>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -47,7 +45,7 @@ const CollectionTable = ({ people, onDelete }) => {
             <tbody>
                 { rows }
             </tbody>
-        </bs.Table>
+        </table>
     )
 }
 
@@ -78,8 +76,6 @@ class Collection extends Component {
         if (this.props.people)
             return (
                 <div id='collection'>
-                    <Breadcrumbs path={this.props.location.pathname} />
-
                     <div className='container'>
                         <h1 className='page-title'>People</h1>
 
