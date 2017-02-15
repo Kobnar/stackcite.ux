@@ -24,6 +24,9 @@ select
 	&:focus
 		border-color: $color-primary
 		outline: 0
+	
+	&.error
+		border-color: $color-error
 
 select
 	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 29 14" width="29"><path fill="#d1d1d1" d="M9.37727 3.625l5.08154 6.93523L19.54036 3.625"/></svg>') center right no-repeat
@@ -41,6 +44,9 @@ legend
 	font-size: 1.6rem
 	font-weight: 700
 	margin-bottom: .5rem
+
+	&.error
+		color: $color-error
 
 fieldset
 	border-width: 0
