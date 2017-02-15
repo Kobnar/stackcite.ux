@@ -16,3 +16,6 @@ npm-debug.log
 
 # IDEs
 .vscode
+
+# SASS build
+src/css/*
