@@ -16,10 +16,12 @@ class App extends Component {
     render() {
         if (!this.props.init)
             return (
-                <div className="App">
+                <div className='App'>
                     <NavigationBar />
 
-                    { this.props.children }
+                    <div className='main'>
+                        { this.props.children }
+                    </div>
                 </div>
             )
         else

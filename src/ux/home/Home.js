@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 
-import Breadcrumbs from 'ux/Breadcrumbs'
-
 class Home extends Component {
     render () {
         return (
             <div id='home'>
-                <Breadcrumbs path={this.props.location.pathname} />
-
                 <div className="container">
                     <h1 className="page-title">Welcome to StackCite!</h1>
 
