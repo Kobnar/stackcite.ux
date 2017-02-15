@@ -14,7 +14,7 @@ describe('updateCache', () => {
         updateCache(cache, update)
     })
 
-    it('replaces cached collection with new data', () => {
+    it('Updates cache with new data', () => {
         const cache = {
             sources: {
                 '58982f1930f193383f952a47': { id: '58982f1930f193383f952a47' },
@@ -31,6 +31,8 @@ describe('updateCache', () => {
                 '58982f1930f193383f952a47': { id: '58982f1930f193383f952a47' },
                 '5898313830f1933b18476eb7': { id: '5898313830f1933b18476eb7' }},
             people: {
+                '58982f1930f193383f952a4b': { id: '58982f1930f193383f952a4b' },
+                '58982f1930f193383f952a4f': { id: '58982f1930f193383f952a4f' },
                 '5898336130f1933caf7045bd': { id: '5898336130f1933caf7045bd' },
                 '5898336130f1933caf7045bc': { id: '5898336130f1933caf7045bc' }}}
         const result = updateCache(cache, update)
