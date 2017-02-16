@@ -2,6 +2,19 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 
 import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
 
+/**
+ * A general function to copy truthy values from a given object to a new object.
+ */
+export const getFormData = (data, fields) => {
+    var newData = {}
+    Object.entries(data).map(([key, value]) => {
+        if (value)
+            if (fields && fields.includes(key) || !fields)
+                newData[key] = value
+    })
+    return newData
+}
+
 // Modified from http://davidwalsh.name/javascript-debounce-function
 /**
  * A general function debounce method.

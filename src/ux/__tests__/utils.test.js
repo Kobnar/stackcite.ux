@@ -1,9 +1,59 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import { REQUEST, SUCCESS, FAILURE } from '../../api/actions'
-import { loading, errors, success } from '../utils'
+import { getFormData, loading, errors, success } from '../utils'
 
 const ACTION_TYPE = 'ACTION_TYPE'
+
+describe('getFormData', () => {
+
+    it('sets all truthy values', () => {
+        const data = {
+            fieldA: 'Some value',
+            feildB: '',
+            fieldC: undefined,
+            fieldD: 23 }
+        const expected = ['FieldA', 'fieldC']
+        const keys = Object.keys(getFormData(data)).sort()
+        const result = keys.includes('fieldA') && keys.includes('fieldD')
+        expect(result).toBeTruthy()
+    })
+
+    it('does not set falsy values', () => {
+        const data = {
+            fieldA: 'Some value',
+            feildB: '',
+            fieldC: undefined,
+            fieldD: 23}
+        const keys = Object.keys(getFormData(data)).sort()
+        const result = keys.includes('fieldB') || keys.includes('fieldC')
+        expect(result).toBeFalsy()
+    })
+
+    it('only sets explicity defined truthy fields', () => {
+        const data = {
+            fieldA: 'Some value',
+            feildB: '',
+            fieldC: undefined,
+            fieldD: 23 }
+        const fields = ['fieldA', 'fieldB']
+        const keys = Object.keys(getFormData(data, fields)).sort()
+        const result = keys.includes('fieldA')
+        expect(result).toBeTruthy()
+    })
+
+    it('does not set explicity defined falsy fields', () => {
+        const data = {
+            fieldA: 'Some value',
+            feildB: '',
+            fieldC: undefined,
+            fieldD: 23 }
+        const fields = ['fieldA', 'fieldB']
+        const keys = Object.keys(getFormData(data, fields)).sort()
+        const result = keys.includes('fieldB')
+        expect(result).toBeFalsy()
+    })
+})
 
 describe('loading', () => {
 
