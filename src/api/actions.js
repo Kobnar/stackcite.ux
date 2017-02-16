@@ -395,7 +395,7 @@ export class CollectionResource extends DataResource {
                     if (action.status === SUCCESS)
                         return dispatch({
                             type: STACKCITE_API,
-                            method: POST,
+                            method: GET,
                             status: SUCCESS,
                             data: action.data,
                             schema: this.schema,
@@ -404,7 +404,7 @@ export class CollectionResource extends DataResource {
                     else
                         return dispatch({
                             type: STACKCITE_API,
-                            method: POST,
+                            method: GET,
                             status: FAILURE,
                             error: action.error,
                             collection: this.name
