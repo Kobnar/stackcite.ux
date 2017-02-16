@@ -2,18 +2,15 @@ import api from 'api'
 import {
     POST,
     GET,
-    PUT,
-    DELETE,
     REQUEST,
-    SUCCESS,
-    FAILURE } from 'api/actions'
+    SUCCESS } from 'api/actions'
 
-export const PEOPLE_COL = 'PEOPLE_COL'
+export const PEOPLE = 'PEOPLE'
 
 export const createDocument = (data, authKey) => {
     return (dispatch) => {
         dispatch({
-            type: PEOPLE_COL,
+            type: PEOPLE,
             method: POST,
             status: REQUEST
         })
@@ -21,17 +18,13 @@ export const createDocument = (data, authKey) => {
             .then(action => {
                 if (action.status === SUCCESS)
                     return dispatch({
-                        type: PEOPLE_COL,
-                        method: POST,
-                        status: SUCCESS,
-                        data: action.data
+                        ...action,
+                        type: PEOPLE
                     })
                 else
                     return dispatch({
-                        type: PEOPLE_COL,
-                        method: POST,
-                        status: FAILURE,
-                        error: action.error
+                        ...action,
+                        type: PEOPLE
                     })
             })
     }
@@ -40,7 +33,7 @@ export const createDocument = (data, authKey) => {
 export const retrieveCollection = (query, authKey) => {
     return (dispatch) => {
         dispatch({
-            type: PEOPLE_COL,
+            type: PEOPLE,
             method: GET,
             status: REQUEST
         })
@@ -48,17 +41,13 @@ export const retrieveCollection = (query, authKey) => {
             .then(action => {
                 if (action.status === SUCCESS)
                     return dispatch({
-                        type: PEOPLE_COL,
-                        method: GET,
-                        status: SUCCESS,
-                        data: action.data
+                        ...action,
+                        type: PEOPLE
                     })
                 else
                     return dispatch({
-                        type: PEOPLE_COL,
-                        method: GET,
-                        status: FAILURE,
-                        error: action.error
+                        ...action,
+                        type: PEOPLE
                     })
             })
     }

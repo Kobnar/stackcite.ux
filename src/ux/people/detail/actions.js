@@ -1,37 +1,32 @@
 import api from 'api'
 import {
-    POST,
     GET,
     PUT,
     DELETE,
     REQUEST,
-    SUCCESS,
-    FAILURE } from 'api/actions'
-
-export const PEOPLE_DOC = 'PEOPLE_DOC'
+    SUCCESS } from 'api/actions'
+import {
+    PEOPLE } from '../actions'
 
 export const retrieveDocument = (personId, authKey) => {
     return (dispatch) => {
         dispatch({
-            type: PEOPLE_DOC,
+            type: PEOPLE,
             method: GET,
-            status: REQUEST
+            status: REQUEST,
+            documentId: personId
         })
         return dispatch(api.people.document(personId).retrieve({}, authKey))
             .then(action => {
                 if (action.status === SUCCESS)
                     return dispatch({
-                        type: PEOPLE_DOC,
-                        method: GET,
-                        status: SUCCESS,
-                        data: action.data
+                        ...action,
+                        type: PEOPLE
                     })
                 else
                     return dispatch({
-                        type: PEOPLE_DOC,
-                        method: GET,
-                        status: FAILURE,
-                        error: action.error
+                        ...action,
+                        type: PEOPLE
                     })
             })
     }
@@ -40,25 +35,22 @@ export const retrieveDocument = (personId, authKey) => {
 export const updateDocument = (data, personId, authKey) => {
     return (dispatch) => {
         dispatch({
-            type: PEOPLE_DOC,
+            type: PEOPLE,
             method: PUT,
-            status: REQUEST
+            status: REQUEST,
+            documentId: personId
         })
         return dispatch(api.people.document(personId).update(data, authKey))
             .then(action => {
                 if (action.status === SUCCESS)
                     return dispatch({
-                        type: PEOPLE_DOC,
-                        method: PUT,
-                        status: SUCCESS,
-                        data: action.data
+                        ...action,
+                        type: PEOPLE
                     })
                 else
                     return dispatch({
-                        type: PEOPLE_DOC,
-                        method: PUT,
-                        status: FAILURE,
-                        error: action.error
+                        ...action,
+                        type: PEOPLE
                     })
             })
     }
@@ -67,24 +59,22 @@ export const updateDocument = (data, personId, authKey) => {
 export const deleteDocument = (personId, authKey) => {
     return (dispatch) => {
         dispatch({
-            type: PEOPLE_DOC,
+            type: PEOPLE,
             method: DELETE,
-            status: REQUEST
+            status: REQUEST,
+            documentId: personId
         })
         return dispatch(api.people.document(personId).delete(authKey))
             .then(action => {
                 if (action.status === SUCCESS)
                     return dispatch({
-                        type: PEOPLE_DOC,
-                        method: DELETE,
-                        status: SUCCESS
+                        ...action,
+                        type: PEOPLE
                     })
                 else
                     return dispatch({
-                        type: PEOPLE_DOC,
-                        method: DELETE,
-                        status: FAILURE,
-                        error: action.error
+                        ...action,
+                        type: PEOPLE
                     })
             })
     }
