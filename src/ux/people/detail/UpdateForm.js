@@ -70,6 +70,8 @@ class UpdateForm extends Component {
         this.state = {
             title: this.props.person.name.title,
             fullName: this.props.person.name.full,
+            birth: this.props.person.birth,
+            death: this.props.person.death,
             description: this.props.person.description || ''
         }
 
@@ -88,28 +90,57 @@ class UpdateForm extends Component {
                 title: this.state.title,
                 full: this.state.fullName
             },
+            birth: this.state.birth,
+            death: this.state.death,
             description: this.state.description
         }
         this.props.onSubmit(data)
     }
 
     render () {
+        var formErrors = this.props.errors
+        var nameErrors = formErrors.name || {}
         return (
             <form onSubmit={this.handleSubmission}>
                 <fieldset>
                     <TitleInput
                         state={this.state.title}
-                        error={this.props.errors.title}
+                        error={nameErrors.title}
                         onChange={this.onChangeFactory('title')} />
 
                     <FullNameInput
                         state={this.state.fullName}
-                        error={this.props.errors.fullName}
+                        error={nameErrors.full}
                         onChange={this.onChangeFactory('fullName')} />
+                    
+                    <div className='row'>
+                        <div className='column'>
+                            <InputGroup
+                                id='birth'
+                                type='number'
+                                label='Birth (year)'
+                                value={this.state.birth}
+                                error={!!formErrors.birth}
+                                errorMsg={formErrors.birth}
+                                onChange={this.onChangeFactory('birth')}
+                                srOnly={false} />
+                        </div>
+                        <div className='column'>
+                            <InputGroup
+                                id='death'
+                                type='number'
+                                label='Death (year)'
+                                value={this.state.death}
+                                error={!!formErrors.death}
+                                errorMsg={formErrors.death}
+                                onChange={this.onChangeFactory('death')}
+                                srOnly={false} />
+                        </div>
+                    </div>
 
                     <DescriptionTextArea
                         state={this.state.description}
-                        error={this.props.errors.description}
+                        error={formErrors.description}
                         onChange={this.onChangeFactory('description')} />
                         
                     <input

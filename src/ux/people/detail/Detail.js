@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { push } from 'react-router-redux'
 
 import {
     retrieveDocument,
@@ -16,6 +17,7 @@ class Detail extends Component {
 
         this.retrieve = this.retrieve.bind(this)
         this.update = this.update.bind(this)
+        this.delete = this.delete.bind(this)
     }
 
     componentWillMount () {
@@ -32,6 +34,13 @@ class Detail extends Component {
         var personId = this.props.routeParams.id
         return this.props.dispatch(
             updateDocument(data, personId, this.props.authKey))
+    }
+
+    delete () {
+        var personId = this.props.routeParams.id
+        return this.props.dispatch(
+            deleteDocument(personId, this.props.authKey))
+                .then(this.props.dispatch(push('/people')))
     }
 
     render () {
@@ -53,7 +62,7 @@ class Detail extends Component {
                             }
                         </h1>
                         { hasTitle ?
-                            <h4><strong>Full name:</strong> { person.name.full }</h4>
+                            <h4>{ person.name.full }</h4>
                             : null
                         }
                         <p>{ person.description }</p>
@@ -67,6 +76,18 @@ class Detail extends Component {
                         <UpdateForm
                             person={person}
                             onSubmit={this.update} />
+                    </div>
+
+                    <hr />
+
+                    <div className='container'>
+                        <h3>Delete</h3>
+
+                        <button
+                            className='button-danger'
+                            onClick={this.delete} >
+                            Delete
+                        </button>
                     </div>
                 </div>
             )

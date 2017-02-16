@@ -5,6 +5,8 @@ import { Link } from 'react-router'
 import {
     createDocument,
     retrieveCollection } from './actions'
+import {
+    filterCollection } from 'ux/utils'
 
 import CollectionSearch from 'ux/CollectionSearch'
 import CreateForm from './CreateForm'
@@ -73,37 +75,33 @@ class Collection extends Component {
     }
 
     render () {
-        if (this.props.people)
-            return (
-                <div id='collection'>
-                    <div className='container'>
-                        <h1 className='page-title'>People</h1>
+        return (
+            <div id='collection'>
+                <div className='container'>
+                    <h1 className='page-title'>People</h1>
 
-                        <CollectionSearch
-                            retrieve={this.retrieve} />
+                    <CollectionSearch
+                        retrieve={this.retrieve} />
 
-                        <CollectionTable
-                            people={this.props.people} />
-                    </div>
-
-                    <div className='container'>
-                        <h3>Create Person</h3>
-                        <CreateForm
-                            onSubmit={this.create}
-                            loading={this.props.loading}
-                            errors={this.props.errors} />
-                    </div>
+                    <CollectionTable
+                        people={this.props.people} />
                 </div>
-            )
-        
-        else
-            return <p>Loading...</p>
+
+                <div className='container'>
+                    <h3>Create Person</h3>
+                    <CreateForm
+                        onSubmit={this.create}
+                        loading={this.props.loading}
+                        errors={this.props.errors} />
+                </div>
+            </div>
+        )
     }
 }
 
 const mapStateToProps = (state) => ({
     authKey: state.api.auth.token.key,
-    people: state.api.cache.people
+    people: filterCollection(state.api.cache.people, state.ux.people.ids)
 })
 
 export default connect(mapStateToProps)(Collection)
