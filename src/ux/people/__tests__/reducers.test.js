@@ -10,7 +10,8 @@ import {
     PEOPLE } from '../actions'
 
 import {
-    ids } from '../reducers'
+    ids,
+    page } from '../reducers'
 
 describe('ids', () => {
 
@@ -75,5 +76,53 @@ describe('ids', () => {
         const newAction = testAction(GET, FAILURE, undefined, { code: 404 })
         const result = ids(existingState, newAction).sort()
         expect(result).toEqual(existingState)
+    })
+})
+
+describe('page', () => {
+
+    it('returns 0 if skip is less than limit', () => {
+        const newAction = {
+            type: PEOPLE,
+            method: GET,
+            status: SUCCESS,
+            data: {
+                items: [],
+                limit: 100,
+                skip: 0
+            }
+        }
+        const result = page(undefined, newAction)
+        expect(result).toEqual(0)
+    })
+
+    it('returns positive value if skip is equal to or greater than limit', () => {
+        const newAction = {
+            type: PEOPLE,
+            method: GET,
+            status: SUCCESS,
+            data: {
+                items: [],
+                limit: 100,
+                skip: 200
+            }
+        }
+        const result = page(undefined, newAction)
+        expect(result).toEqual(2)
+    })
+
+    it('returns integer value if skip is not wholy divisible by limit', () => {
+        const newAction = {
+            type: PEOPLE,
+            method: GET,
+            status: SUCCESS,
+            data: {
+                items: [],
+                limit: 100,
+                skip: 123
+            }
+        }
+        const result = page(undefined, newAction)
+        expect(result).toEqual(1)
     })
 })

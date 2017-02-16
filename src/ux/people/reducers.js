@@ -31,9 +31,17 @@ export const ids = (state = [], action) => {
     return state
 }
 
+export const page = (state = 0, action) => {
+    if (action.type === PEOPLE && action.status === SUCCESS)
+        if (action.method === GET && action.data.items)
+            return parseInt(action.data.skip / action.data.limit)
+    return state
+}
+
 export default combineReducers({
     loading,
     errors,
     ids,
+    page,
     detail
 })
