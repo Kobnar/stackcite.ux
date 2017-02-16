@@ -3,7 +3,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
 
 /**
- * A general function to copy truthy values from a given object to a new object.
+ * Copies truthy values from a given object to a new object.
  */
 export const getFormData = (data, fields) => {
     var newData = {}
@@ -13,6 +13,21 @@ export const getFormData = (data, fields) => {
                 newData[key] = value
     })
     return newData
+}
+
+/**
+ * Filters cached collection object into a list of documents based on a list
+ * of desired object ids.
+ */
+export const filterCollection = (collection, filter) => {
+    var filteredCollection = []
+    if (collection)
+        Object.entries(collection)
+            .forEach(([docId, document]) => {
+                if (!!filter.length && filter.includes(docId) || !filter.length)
+                    filteredCollection.push(document)
+            })
+    return filteredCollection
 }
 
 // Modified from http://davidwalsh.name/javascript-debounce-function

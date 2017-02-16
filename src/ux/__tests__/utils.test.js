@@ -1,7 +1,12 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import { REQUEST, SUCCESS, FAILURE } from '../../api/actions'
-import { getFormData, loading, errors, success } from '../utils'
+import {
+    getFormData,
+    filterCollection,
+    loading,
+    errors,
+    success } from '../utils'
 
 const ACTION_TYPE = 'ACTION_TYPE'
 
@@ -52,6 +57,41 @@ describe('getFormData', () => {
         const keys = Object.keys(getFormData(data, fields)).sort()
         const result = keys.includes('fieldB')
         expect(result).toBeFalsy()
+    })
+})
+
+describe('filterCollection', () => {
+
+    it('returns entire collection if filter is empty', () => {
+        const collection = {
+            '58a56e6330f193518bcbc257': { id: '58a56e6330f193518bcbc257' },
+            '58a56e6330f193518bcbc258': { id: '58a56e6330f193518bcbc258' },
+            '58a56e6330f193518bcbc259': { id: '58a56e6330f193518bcbc259' },
+            '58a56e6330f193518bcbc25a': { id: '58a56e6330f193518bcbc25a' },
+            '58a56e6330f193518bcbc25b': { id: '58a56e6330f193518bcbc25b' }}
+        const expected = [
+            { id: '58a56e6330f193518bcbc257' },
+            { id: '58a56e6330f193518bcbc258' },
+            { id: '58a56e6330f193518bcbc259' },
+            { id: '58a56e6330f193518bcbc25a' },
+            { id: '58a56e6330f193518bcbc25b' }]
+        const result = filterCollection(collection, [])
+        expect(result).toEqual(expected)
+    })
+
+    it('returns filtered collection if filter is set', () => {
+        const collection = {
+            '58a56e6330f193518bcbc257': { id: '58a56e6330f193518bcbc257' },
+            '58a56e6330f193518bcbc258': { id: '58a56e6330f193518bcbc258' },
+            '58a56e6330f193518bcbc259': { id: '58a56e6330f193518bcbc259' },
+            '58a56e6330f193518bcbc25a': { id: '58a56e6330f193518bcbc25a' },
+            '58a56e6330f193518bcbc25b': { id: '58a56e6330f193518bcbc25b' }}
+        const filter = ['58a56e6330f193518bcbc259', '58a56e6330f193518bcbc25a']
+        const expected = [
+            { id: '58a56e6330f193518bcbc259' },
+            { id: '58a56e6330f193518bcbc25a' }]
+        const result = filterCollection(collection, filter)
+        expect(result).toEqual(expected)
     })
 })
 
