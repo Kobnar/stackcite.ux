@@ -41,9 +41,14 @@ class CollectionSearch extends Component {
 
     render () {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <fieldset>
-                    <div className='form-group'>
+            <form
+                className='search-form'
+                onSubmit={this.handleSubmit}>
+                <fieldset
+                    style={{margin: '0'}}>
+                    <div
+                        className='form-group'
+                        style={{margin: '0'}}>
                         <label
                             htmlFor='query'
                             className='sr-only'>
