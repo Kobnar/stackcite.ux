@@ -9,15 +9,22 @@ const clone = (obj) => ({
  * 
  * NOTE: This method operates on the collection level, wiping previous data.
  */
-export const updateCache = (cache, update) => {
-    var newCache = { ...clone(cache) }
-    for (var collection in update) {
-        newCache[collection] = {
-            ...newCache[collection],
-            ...clone(update[collection])
+export const updateCache = (cache, update, replace) => {
+    if (replace) {
+        return {
+            ...clone(cache),
+            ...clone(update)
         }
+    } else {
+        var newCache = { ...clone(cache) }
+        for (var collection in update) {
+            newCache[collection] = {
+                ...newCache[collection],
+                ...clone(update[collection])
+            }
+        }
+        return newCache
     }
-    return newCache
 }
 
 /**

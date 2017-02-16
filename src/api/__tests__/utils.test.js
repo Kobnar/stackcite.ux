@@ -38,6 +38,29 @@ describe('updateCache', () => {
         const result = updateCache(cache, update)
         expect(result).toEqual(expected)
     })
+
+    it('replaces cache with new data if replace is set', () => {
+        const cache = {
+            sources: {
+                '58982f1930f193383f952a47': { id: '58982f1930f193383f952a47' },
+                '5898313830f1933b18476eb7': { id: '5898313830f1933b18476eb7' }},
+            people: {
+                '58982f1930f193383f952a4b': { id: '58982f1930f193383f952a4b' },
+                '58982f1930f193383f952a4f': { id: '58982f1930f193383f952a4f' }}}
+        const update = {
+            people: {
+                '5898336130f1933caf7045bd': { id: '5898336130f1933caf7045bd' },
+                '5898336130f1933caf7045bc': { id: '5898336130f1933caf7045bc' }}}
+        const expected = {
+            sources: {
+                '58982f1930f193383f952a47': { id: '58982f1930f193383f952a47' },
+                '5898313830f1933b18476eb7': { id: '5898313830f1933b18476eb7' }},
+            people: {
+                '5898336130f1933caf7045bd': { id: '5898336130f1933caf7045bd' },
+                '5898336130f1933caf7045bc': { id: '5898336130f1933caf7045bc' }}}
+        const result = updateCache(cache, update, true)
+        expect(result).toEqual(expected)
+    })
 })
 
 describe('deleteDocument', () => {
