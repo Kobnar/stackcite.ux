@@ -3,6 +3,16 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
 
 /**
+ * Converts an integer date to a propery formatted string value.
+ */
+export const readDate = (date) => {
+    if (date < 0)
+        return -date + ' B.C.E.'
+    else
+        return date
+}
+
+/**
  * Copies truthy values from a given object to a new object.
  */
 export const getFormData = (data, fields) => {

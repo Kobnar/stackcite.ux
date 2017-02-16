@@ -2,6 +2,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 
 import { REQUEST, SUCCESS, FAILURE } from '../../api/actions'
 import {
+    readDate,
     getFormData,
     filterCollection,
     loading,
@@ -9,6 +10,15 @@ import {
     success } from '../utils'
 
 const ACTION_TYPE = 'ACTION_TYPE'
+
+describe('readDate', () => {
+
+    it('converts negative values to positive B.C.E.', () => {
+        const expected = '399 B.C.E.'
+        const result = readDate(-399)
+        expect(result).toEqual(expected)
+    })
+})
 
 describe('getFormData', () => {
 
