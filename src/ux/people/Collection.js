@@ -85,7 +85,18 @@ class Collection extends Component {
 
                     <CollectionTable
                         people={this.props.people} />
+
+                    <div className='page-controls'>
+                        { this.props.page > 0 ? 
+                            <Link className='float-left'>Back</Link>
+                            : null
+                        }
+                        <Link className='float-right'>Forward</Link>
+                    </div>
                 </div>
+
+
+                <hr />
 
                 <div className='container'>
                     <h3>Create Person</h3>
@@ -101,7 +112,8 @@ class Collection extends Component {
 
 const mapStateToProps = (state) => ({
     authKey: state.api.auth.token.key,
-    people: filterCollection(state.api.cache.people, state.ux.people.ids)
+    people: filterCollection(state.api.cache.people, state.ux.people.ids),
+    page: state.ux.people.page
 })
 
 export default connect(mapStateToProps)(Collection)
