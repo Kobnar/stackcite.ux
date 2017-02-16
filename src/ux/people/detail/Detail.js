@@ -7,6 +7,8 @@ import {
     retrieveDocument,
     updateDocument,
     deleteDocument } from './actions'
+import {
+    readDate } from 'ux/utils'
 
 import UpdateForm from './UpdateForm'
 
@@ -45,7 +47,6 @@ class Detail extends Component {
 
     render () {
         var personId = this.props.routeParams.id
-
         if (personId && this.props.people) {
             var person = this.props.people[personId]
             var hasTitle = person.name.title !== person.name.full
@@ -54,9 +55,11 @@ class Detail extends Component {
                     <div className='container'>
                         <h1 className='page-title'>
                             { person.name.title }
-                            { person.birth ?
-                                <small>
-                                    &nbsp;({ person.birth }&ndash;{ person.death })
+                            { person.birth || person.death ?
+                                <small style={{paddingLeft: '1rem'}}>
+                                    ({ readDate(person.birth) || ' ?' }
+                                    &nbsp;&ndash;&nbsp;
+                                    { readDate(person.death) })
                                 </small>
                                 : null
                             }
