@@ -90,8 +90,8 @@ class UpdateForm extends Component {
                 title: this.state.title,
                 full: this.state.fullName
             },
-            birth: this.state.birth,
-            death: this.state.death,
+            birth: this.state.birth || null,
+            death: this.state.death || null,
             description: this.state.description
         }
         this.props.onSubmit(data)
