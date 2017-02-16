@@ -7,6 +7,8 @@ import {
     touchLogin } from './login/actions'
 
 export const INIT = 'INIT'
+export const HIDE_NAV = 'HIDE_NAV'
+export const TOGGLE_NAV = 'TOGGLE_NAV'
 
 export const init = () => {
     return (dispatch) => {
@@ -39,3 +41,11 @@ export const init = () => {
             })
     }
 }
+
+export const hideNav = () => ({
+    type: HIDE_NAV
+})
+
+export const toggleNav = () => ({
+    type: TOGGLE_NAV
+})

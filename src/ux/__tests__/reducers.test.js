@@ -1,7 +1,8 @@
 import { REQUEST, SUCCESS } from 'api/actions'
+import { LOCATION_CHANGE } from 'react-router-redux'
 
-import { INIT } from '../actions'
-import { init } from '../reducers'
+import { INIT, HIDE_NAV, TOGGLE_NAV } from '../actions'
+import { init, navHidden } from '../reducers'
 
 describe('init', () => {
 
@@ -26,5 +27,23 @@ describe('init', () => {
         }
         const result = init(true, action)
         expect(result).toBe(false)
+    })
+})
+
+describe('navHidden', () => {
+
+    it('toggles states for TOGGLE_NAV', () => {
+        const result = navHidden(false, { type: TOGGLE_NAV })
+        expect(result).toEqual(true)
+    })
+
+    it('hides nav for HIDE_NAV', () => {
+        const result = navHidden(false, { type: HIDE_NAV })
+        expect(result).toEqual(true)
+    })
+
+    it('hides nav for LOCATION_CHANGE', () => {
+        const result = navHidden(false, { type: LOCATION_CHANGE })
+        expect(result).toEqual(true)
     })
 })
