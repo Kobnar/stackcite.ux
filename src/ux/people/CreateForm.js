@@ -8,7 +8,8 @@ import { InputGroup, TextAreaGroup } from 'ux/Forms'
 const propTypes = {
     onSubmit: React.PropTypes.func.isRequired,
     loading: React.PropTypes.bool,
-    errors: React.PropTypes.object
+    errors: React.PropTypes.object,
+    onCancel: React.PropTypes.func
 }
 
 const defaultProps = {
@@ -33,6 +34,7 @@ class CreateForm extends Component {
 
         this.onChangeFactory = this.onChangeFactory.bind(this)
         this.handleSubmission = this.handleSubmission.bind(this)
+        this.handleCancel = this.handleCancel.bind(this)
     }
 
     clearForm () {
@@ -45,21 +47,21 @@ class CreateForm extends Component {
 
     handleSubmission (event) {
         event.preventDefault()
-        var data = {}
-        var nameData = {}
-        if (this.state.title)
-            nameData['title'] = this.state.title
-        if (this.state.fullName)
-            nameData['full'] = this.state.fullName
-        if (nameData)
-            data['name'] = nameData
-        if (this.state.birth)
-            data['birth'] = this.state.birth
-        if (this.state.death)
-            data['death'] = this.state.death
-        if (this.state.description)
-            data['description'] = this.state.description
+        var data = {
+            name: {
+                title: this.state.title,
+                full: this.state.fullName
+            },
+            birth: this.state.birth || null,
+            death: this.state.death || null,
+            description: this.state.description
+        }
         this.props.onSubmit(data)
+    }
+
+    handleCancel (event) {
+        event.preventDefault()
+        this.props.onCancel()
     }
 
     render () {
@@ -116,12 +118,24 @@ class CreateForm extends Component {
                         error={!!formErrors.description}
                         errorMsg={formErrors.description}
                         onChange={this.onChangeFactory('description')} />
-                        
-                    <input
-                        type='submit'
-                        className='button-primary'
-                        disabled={this.props.loading}
-                        value='Create'/>
+                    
+                    <div className='float-right'>
+                        <input
+                            type='submit'
+                            className='button-primary'
+                            disabled={this.props.loading}
+                            value='Create'/>
+
+                        { this.props.onCancel ?
+                            <input
+                                type='button'
+                                className='button-outline'
+                                onClick={this.handleCancel}
+                                value='Cancel'
+                                style={{marginLeft: '0.5rem'}} />
+                            : null
+                        }
+                    </div>
                 </fieldset>
             </form>
         )
