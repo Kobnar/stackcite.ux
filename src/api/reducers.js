@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux'
 import { normalize, arrayOf } from 'normalizr'
 
-import { DOCUMENT, COLLECTION, SUCCESS, DELETE } from './actions'
-import { updateCache, deleteDocument } from './utils'
+import { STACKCITE_API, COLLECTION, SUCCESS, DELETE } from './actions'
+import { clone, updateCache, deleteDocument } from './utils'
 
 import auth from './users/auth/reducers'
 
 export const cache = (state = {}, action) => {
-    if (action.type === DOCUMENT || action.type === COLLECTION && action.status === SUCCESS)
+    // TODO: Entirely separate cache update actions
+    if (action.type === STACKCITE_API && action.status === SUCCESS) {
         if (action.schema) {
             if (action.method === DELETE) {
                 return deleteDocument(state, action.documentId)
@@ -20,6 +21,7 @@ export const cache = (state = {}, action) => {
                 return updateCache(state, data.entities)
             }
         }
+    }
     return state
 }
 

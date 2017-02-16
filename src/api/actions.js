@@ -1,24 +1,23 @@
 import url from 'url'
 
-// Action type
+// REST action types
 export const REST_API = 'REST_API'
-export const DOCUMENT = 'DOCUMENT'
-export const COLLECTION = 'COLLECTION'
+export const STACKCITE_API = 'STACKCITE_API'
 
-// Methods
+// REST Methods
 export const POST = 'POST'
 export const GET = 'GET'
 export const PUT = 'PUT'
 export const DELETE = 'DELETE'
 
-// Status
+// REST Status
 export const REQUEST = 'REQUEST'
 export const SUCCESS = 'SUCCESS'
 export const FAILURE = 'FAILURE'
 
 /**
  * A dispatch-enabled wrapper for calling and signaling CRUD operations with
- * a REST API.
+ * a REST_API API.
  */
 export class APIInterface {
 
@@ -189,7 +188,7 @@ export class APIInterface {
 }
 
 /**
- * A traversal resource for defining non-data interface nodes of a REST API.
+ * A traversal resource for defining non-data interface nodes of a REST_API API.
  */
 export class IndexResource {
 
@@ -222,7 +221,7 @@ export class IndexResource {
 
 /**
  * A traversal resource containing common properties and methods of data
- * interface nodes of a REST API.
+ * interface nodes of a REST_API API.
  */
 class DataResource extends IndexResource {
 
@@ -235,7 +234,7 @@ class DataResource extends IndexResource {
 }
 
 /**
- * A traversal resource for performing CRUD operations on a REST API document
+ * A traversal resource for performing CRUD operations on a REST_API API document
  * resource.
  */
 export class DocumentResource extends DataResource {
@@ -243,7 +242,7 @@ export class DocumentResource extends DataResource {
     retrieve (query, authKey) {
         return(dispatch) => {
             dispatch({
-                type: DOCUMENT,
+                type: STACKCITE_API,
                 method: GET,
                 status: REQUEST,
                 collection: this.parent.name,
@@ -253,7 +252,7 @@ export class DocumentResource extends DataResource {
                 .then(action => {
                     if (action.status === SUCCESS)
                         return dispatch({
-                            type: DOCUMENT,
+                            type: STACKCITE_API,
                             method: GET,
                             status: SUCCESS,
                             data: action.data,
@@ -263,7 +262,7 @@ export class DocumentResource extends DataResource {
                         })
                     else
                         return dispatch({
-                            type: DOCUMENT,
+                            type: STACKCITE_API,
                             method: GET,
                             status: FAILURE,
                             error: action.error,
@@ -277,7 +276,7 @@ export class DocumentResource extends DataResource {
     update (data, authKey) {
         return(dispatch) => {
             dispatch({
-                type: DOCUMENT,
+                type: STACKCITE_API,
                 method: PUT,
                 status: REQUEST,
                 collection: this.parent.name,
@@ -287,7 +286,7 @@ export class DocumentResource extends DataResource {
                 .then(action => {
                     if (action.status === SUCCESS)
                         return dispatch({
-                            type: DOCUMENT,
+                            type: STACKCITE_API,
                             method: PUT,
                             status: SUCCESS,
                             data: action.data,
@@ -297,7 +296,7 @@ export class DocumentResource extends DataResource {
                         })
                     else
                         return dispatch({
-                            type: DOCUMENT,
+                            type: STACKCITE_API,
                             method: PUT,
                             status: FAILURE,
                             error: action.error,
@@ -311,7 +310,7 @@ export class DocumentResource extends DataResource {
     delete (authKey) {
         return(dispatch) => {
             dispatch({
-                type: DOCUMENT,
+                type: STACKCITE_API,
                 method: DELETE,
                 status: REQUEST,
                 collection: this.parent.name,
@@ -321,7 +320,7 @@ export class DocumentResource extends DataResource {
                 .then(action => {
                     if (action.status === SUCCESS)
                         return dispatch({
-                            type: DOCUMENT,
+                            type: STACKCITE_API,
                             method: DELETE,
                             status: SUCCESS,
                             schema: this.schema,
@@ -330,7 +329,7 @@ export class DocumentResource extends DataResource {
                         })
                     else
                         return dispatch({
-                            type: DOCUMENT,
+                            type: STACKCITE_API,
                             method: DELETE,
                             status: FAILURE,
                             error: action.error,
@@ -343,7 +342,7 @@ export class DocumentResource extends DataResource {
 }
 
 /**
- * A traversal resource for performing CRUD operations on REST API collection
+ * A traversal resource for performing CRUD operations on REST_API API collection
  * resources.
  */
 export class CollectionResource extends DataResource {
@@ -355,7 +354,7 @@ export class CollectionResource extends DataResource {
     create (data, authkey) {
         return(dispatch) => {
             dispatch({
-                type: COLLECTION,
+                type: STACKCITE_API,
                 method: POST,
                 status: REQUEST,
                 collection: this.name
@@ -364,7 +363,7 @@ export class CollectionResource extends DataResource {
                 .then(action => {
                     if (action.status === SUCCESS)
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: POST,
                             status: SUCCESS,
                             data: action.data,
@@ -373,7 +372,7 @@ export class CollectionResource extends DataResource {
                         })
                     else
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: POST,
                             status: FAILURE,
                             error: action.error,
@@ -386,7 +385,7 @@ export class CollectionResource extends DataResource {
     retrieve (query, authKey) {
         return(dispatch) => {
             dispatch({
-                type: COLLECTION,
+                type: STACKCITE_API,
                 method: GET,
                 status: REQUEST,
                 collection: this.name
@@ -395,7 +394,7 @@ export class CollectionResource extends DataResource {
                 .then(action => {
                     if (action.status === SUCCESS)
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: POST,
                             status: SUCCESS,
                             data: action.data,
@@ -404,7 +403,7 @@ export class CollectionResource extends DataResource {
                         })
                     else
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: POST,
                             status: FAILURE,
                             error: action.error,
@@ -417,7 +416,7 @@ export class CollectionResource extends DataResource {
     update (data, authKey) {
         return(dispatch) => {
             dispatch({
-                type: COLLECTION,
+                type: STACKCITE_API,
                 method: PUT,
                 status: REQUEST,
                 collection: this.name
@@ -426,7 +425,7 @@ export class CollectionResource extends DataResource {
                 .then(action => {
                     if (action.status === SUCCESS)
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: PUT,
                             status: SUCCESS,
                             data: action.data,
@@ -435,7 +434,7 @@ export class CollectionResource extends DataResource {
                         })
                     else
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: PUT,
                             status: FAILURE,
                             error: action.error,
@@ -448,7 +447,7 @@ export class CollectionResource extends DataResource {
     delete (query, authKey) {
         return(dispatch) => {
             dispatch({
-                type: COLLECTION,
+                type: STACKCITE_API,
                 method: DELETE,
                 status: REQUEST,
                 collection: this.name
@@ -457,7 +456,7 @@ export class CollectionResource extends DataResource {
                 .then(action => {
                     if (action.status === SUCCESS)
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: DELETE,
                             status: SUCCESS,
                             schema: this.schema,
@@ -465,7 +464,7 @@ export class CollectionResource extends DataResource {
                         })
                     else
                         return dispatch({
-                            type: COLLECTION,
+                            type: STACKCITE_API,
                             method: DELETE,
                             status: FAILURE,
                             error: action.error,
