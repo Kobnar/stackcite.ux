@@ -2,7 +2,7 @@
 // NavBar
 // ––––––––––––––––––––––––––––––––––––––––––––––––––
 
-$navbar-height: 66px
+$navbar-height: 6.6rem
 
 .navbar
     width: 100%
@@ -32,18 +32,66 @@ $navbar-height: 66px
     font-size: 150%
     display: inline-block
 
+    @media only screen and (max-width: $xs-device)
+        display: inline
+
+    .glyphicons
+        font-size: 2.4rem
+
+
+.navbar-collapse
+    display: inline
+
+    @media only screen and (max-width: $xs-device)
+        width: 100%
+        position: absolute
+        top: $navbar-height
+        left: 0px
+        z-index: 11
 
 .navbar-nav
-    display: inline-block
-
+    @media only screen and (min-width: $xs-device)
+        display: inline-block
 
 .navbar-list
     list-style: none
     margin: 0
     padding: 0
 
+    @media only screen and (max-width: $xs-device)
+        background: #fff
+        border-bottom: 0.1rem solid #eee
+
+    .glyphicons
+        font-size: 1.8rem
 
 .navbar-list > li
-    display: inline-block
     margin: 0
     padding: 0 0 0 20px
+    
+    @media only screen and (min-width: $xs-device)
+        display: inline-block
+
+.navbar-right
+    @media only screen and (min-width: $xs-device)
+        float: right
+
+.navbar-toggle
+    display: none
+
+    @media only screen and (max-width: $xs-device)
+        display: inline
+        float: right
+        padding: 0
+        margin: 0
+        line-height: 6rem
+
+.navbar-toggle button
+        width: 4.5rem
+        height: 4.5rem
+        padding: 0
+        margin: 0
+
+.hidden
+    @media only screen and (max-width: $xs-device)
+        display: none

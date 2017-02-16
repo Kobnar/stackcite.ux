@@ -6,8 +6,8 @@ import { Provider } from 'react-redux'
 import { store, history } from 'init'
 import routes from 'ux/routes'
 
-import 'css/milligram.css'
 import 'css/glyphicons.css'
+import 'css/milligram.css'
 
 ReactDOM.render(
   <Provider store={store}>
