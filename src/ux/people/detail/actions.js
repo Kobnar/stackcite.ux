@@ -64,7 +64,7 @@ export const updateDocument = (data, personId, authKey) => {
     }
 }
 
-export const deleteDocument = (data, personId, authKey) => {
+export const deleteDocument = (personId, authKey) => {
     return (dispatch) => {
         dispatch({
             type: PEOPLE_DOC,
