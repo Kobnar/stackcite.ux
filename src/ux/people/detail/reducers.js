@@ -4,14 +4,14 @@ import {
     loading as ldg,
     errors as err} from 'ux/utils'
 
-import { PEOPLE_DOC } from './actions'
+import { PEOPLE } from './actions'
 
 const loading = (state = false, action) => {
-    return ldg(PEOPLE_DOC, state, action)
+    return ldg(PEOPLE, state, action)
 }
 
 const errors = (state = {}, action) => {
-    return err(PEOPLE_DOC, state, action)
+    return err(PEOPLE, state, action)
 }
 
 export default combineReducers({
