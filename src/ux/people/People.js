@@ -1,81 +1,43 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
-import {
-    createPerson,
-    retrievePeopleCollection } from './actions'
-
-import Collection from './Collection'
-import CreateForm from './CreateForm'
-
+const AddButton = ({ onClick }) => {
+    return (
+        <button
+            className='button-outline float-right'
+            style={{margin: '0.5rem 0', padding: '0 1.5rem 0 0.5rem'}}
+            onClick={onClick}>
+            <span className='glyphicons glyphicons-plus' style={{fontSize: '1.6rem', lineHeight: '2.4rem'}} />
+            Add
+        </button>
+    )
+}
 
 class People extends Component {
 
-    constructor (props) {
-        super(props)
-
-        this.create = this.create.bind(this)
-        this.retrieveCollection = this.retrieveCollection.bind(this)
-    }
-
-    componentWillMount () {
-        var personId = this.props.routeParams.id
-        if (personId) {
-            // Not implemented
-        } else {
-            this.retrieveCollection({})
-        }
-    }
-
-    create = (data) => {
-        return this.props.dispatch(
-            createPerson(data, this.props.authKey))
-    }
-
-    retrieveCollection = (query) => {
-        return this.props.dispatch(
-            retrievePeopleCollection(query, this.props.authKey))
-    }
-
     render () {
-
-        // Handle detail view
-        var personId = this.props.routeParams.id
-        if (personId) {
-            var person = {}
-            if (this.props.cache.people)
-                person = this.props.cache.people[personId]
-        }
-
-        //Handle collection view
-        else {
-            var people = []
-            if (this.props.cache.people)
-                Object.entries(this.props.cache.people)
-                    .forEach(([key, value]) => people.push(value))
-            return (
-                <div>
-                        <Collection
-                            people={people} />
-
-                        <div className='container'>
-                            <h3>Create Person</h3>
-                            <CreateForm
-                                onSubmit={this.create}
-                                loading={this.props.loading}
-                                errors={this.props.errors} />
-                        </div>
+        return (
+            <div className='container'>
+                <div className='page-title'>
+                    <h1>People</h1>
+                    { this.props.authKey ?
+                        <AddButton
+                            onClick={() => this.props.dispatch(push('/people/add'))} />
+                        : null
+                    }
+                    <hr />
                 </div>
-            )
-        }
+                { this.props.children }
+            </div>
+        )
     }
 }
 
 const mapStateToProps = (state) => ({
     authKey: state.api.auth.token.key,
-    cache: state.api.cache,
-    loading: state.ux.people.loading,
-    errors: state.ux.people.errors
+    people: state.api.cache.people || {},
+    filter: state.ux.people.ids
 })
 
 export default connect(mapStateToProps)(People)
