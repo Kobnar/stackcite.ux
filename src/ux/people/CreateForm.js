@@ -1,21 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
 import { SUCCESS } from 'api/actions'
-
-import { getFormData } from 'ux/utils'
+import { truthy } from 'ux/utils'
 import { InputGroup, TextAreaGroup } from 'ux/Forms'
 
-const propTypes = {
-    onSubmit: React.PropTypes.func.isRequired,
-    loading: React.PropTypes.bool,
-    errors: React.PropTypes.object,
-    onCancel: React.PropTypes.func
-}
-
-const defaultProps = {
-    loading: false,
-    errors: {}
-}
+import { createDocument } from './actions'
 
 const emptyForm = {
     title: '',
@@ -41,22 +32,33 @@ class CreateForm extends Component {
         this.setState({ ...emptyForm })
     }
 
+    create (data) {
+        return this.props.dispatch(
+            createDocument(data, this.props.authKey))
+                .then(action => {
+                    if (action.status === SUCCESS)
+                        this.props.dispatch(
+                            push('/people/' + action.data.id)
+                        )
+                })
+    }
+
     onChangeFactory (field) {
         return (event) => { this.setState({ [field]: event.target.value })}
     }
 
     handleSubmission (event) {
         event.preventDefault()
-        var data = {
+        var data = truthy({
             name: {
                 title: this.state.title,
                 full: this.state.fullName
             },
-            birth: this.state.birth || null,
-            death: this.state.death || null,
+            birth: this.state.birth,
+            death: this.state.death,
             description: this.state.description
-        }
-        this.props.onSubmit(data)
+        })
+        this.create(data)
     }
 
     handleCancel (event) {
@@ -140,9 +142,12 @@ class CreateForm extends Component {
             </form>
         )
     }
-
-    static propTypes = propTypes
-    static defaultProps = defaultProps
 }
 
-export default CreateForm
+const mapStateToProps = (state) => ({
+    authKey: state.api.auth.token.key,
+    loading: state.ux.people.loading,
+    errors: state.ux.people.errors
+})
+
+export default connect(mapStateToProps)(CreateForm)
