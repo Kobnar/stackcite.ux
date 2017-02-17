@@ -30,9 +30,11 @@ class NavigationBar extends Component {
     }
 
     handleClickAway (event) {
-        const domNode = ReactDOM.findDOMNode(this)
-        if (!domNode || !domNode.contains(event.target))
-            this.props.dispatch(hideNav())
+        if (!this.props.hidden) {
+            const domNode = ReactDOM.findDOMNode(this)
+            if (!domNode || !domNode.contains(event.target))
+                this.props.dispatch(hideNav())
+        }
     }
 
     handleLogout (event) {
@@ -54,13 +56,13 @@ class NavigationBar extends Component {
                             className='navbar-brand'>
                             Stackcite
                         </IndexLink>
-                        <div className='navbar-toggle'>
-                            <button
-                                className='button-outline'
-                                onClick={() => this.props.dispatch(toggleNav())}>
-                                <span className='glyphicons glyphicons-menu-hamburger' />
-                            </button>
-                        </div>
+                    </div>
+                    <div className='navbar-toggle'>
+                        <button
+                            className='button-outline'
+                            onClick={() => this.props.dispatch(toggleNav())}>
+                            <span className='glyphicons glyphicons-menu-hamburger' />
+                        </button>
                     </div>
                     <div
                         className={'navbar-collapse' + (hidden ? ' hidden' : '')}>
