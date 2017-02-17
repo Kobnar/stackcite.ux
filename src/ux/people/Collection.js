@@ -2,14 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import {
-    createDocument,
-    retrieveCollection } from './actions'
-import {
-    filterCollection } from 'ux/utils'
-
+import { filterCollection } from 'ux/utils'
 import CollectionSearch from 'ux/CollectionSearch'
-import CreateForm from './CreateForm'
+
+import { retrieveCollection } from './actions'
 
 const CollectionRow = ({ person, onDelete }) => {
     var route = '/people/' + person.id
@@ -56,17 +52,11 @@ class Collection extends Component {
     constructor (props) {
         super(props)
 
-        this.create = this.create.bind(this)
         this.retrieve = this.retrieve.bind(this)
     }
 
     componentWillMount () {
         this.retrieve({})
-    }
-
-    create (data) {
-        return this.props.dispatch(
-            createDocument(data, this.props.authKey))
     }
 
     retrieve (query) {
@@ -75,36 +65,13 @@ class Collection extends Component {
     }
 
     render () {
+        var people = filterCollection(this.props.people, this.props.filter)
         return (
             <div id='collection'>
-                <div className='container'>
-                    <h1 className='page-title'>People</h1>
-
-                    <CollectionSearch
-                        retrieve={this.retrieve} />
-
-                    <CollectionTable
-                        people={this.props.people} />
-
-                    <div className='page-controls'>
-                        { this.props.page > 0 ? 
-                            <Link className='float-left'>Back</Link>
-                            : null
-                        }
-                        <Link className='float-right'>Forward</Link>
-                    </div>
-                </div>
-
-
-                <hr />
-
-                <div className='container'>
-                    <h3>Create Person</h3>
-                    <CreateForm
-                        onSubmit={this.create}
-                        loading={this.props.loading}
-                        errors={this.props.errors} />
-                </div>
+                <CollectionSearch
+                    retrieve={this.retrieve} />
+                <CollectionTable
+                    people={people} />
             </div>
         )
     }
@@ -112,8 +79,7 @@ class Collection extends Component {
 
 const mapStateToProps = (state) => ({
     authKey: state.api.auth.token.key,
-    people: filterCollection(state.api.cache.people, state.ux.people.ids),
-    page: state.ux.people.page
+    people: state.api.cache.people || {}
 })
 
 export default connect(mapStateToProps)(Collection)
