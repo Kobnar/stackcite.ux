@@ -1,11 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { push } from 'react-router-redux'
 
 import { filterCollection } from 'ux/utils'
 import CollectionSearch from 'ux/CollectionSearch'
 
 import { retrieveCollection } from './actions'
+
+const AddButton = ({ onClick }) => {
+    return (
+        <button
+            className='button-outline float-right'
+            style={{margin: '0.5rem 0', padding: '0 1.5rem 0 0.5rem'}}
+            onClick={onClick}>
+            <span className='glyphicons glyphicons-plus' style={{fontSize: '1.6rem', lineHeight: '2.4rem'}} />
+            Add
+        </button>
+    )
+}
 
 const CollectionRow = ({ person, onDelete }) => {
     var route = '/people/' + person.id
@@ -67,11 +80,22 @@ class Collection extends Component {
     render () {
         var people = filterCollection(this.props.people, this.props.filter)
         return (
-            <div id='collection'>
-                <CollectionSearch
-                    retrieve={this.retrieve} />
-                <CollectionTable
-                    people={people} />
+            <div className='container'>
+                <div className='page-title'>
+                    <h1>People</h1>
+                    { this.props.authKey ?
+                        <AddButton
+                            onClick={() => this.props.dispatch(push('/people/add'))} />
+                        : null
+                    }
+                    <hr />
+                </div>
+                <div id='collection'>
+                    <CollectionSearch
+                        retrieve={this.retrieve} />
+                    <CollectionTable
+                        people={people} />
+                </div>
             </div>
         )
     }

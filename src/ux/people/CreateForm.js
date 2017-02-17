@@ -63,83 +63,87 @@ class CreateForm extends Component {
 
     handleCancel (event) {
         event.preventDefault()
-        this.props.onCancel()
+        this.props.dispatch(push('/people'))
     }
 
     render () {
         var formErrors = this.props.errors
         var nameErrors = formErrors.name || {}
         return (
-            <form onSubmit={this.handleSubmission}>
-                <fieldset>
-                    <InputGroup
-                        id='title'
-                        type='text'
-                        label='Title'
-                        value={this.state.title}
-                        error={!!nameErrors.title}
-                        errorMsg={nameErrors.title}
-                        onChange={this.onChangeFactory('title')} />
+            <div className='container'>
+                <div className='page-title'>
+                    <h1>Add Person</h1>
+                    <hr />
+                </div>
 
-                    <InputGroup
-                        id='full-name'
-                        type='text'
-                        label='Full name'
-                        value={this.state.fullName}
-                        error={!!nameErrors.full}
-                        errorMsg={nameErrors.full}
-                        onChange={this.onChangeFactory('fullName')} />
-                    
-                    <div className='row'>
-                        <div className='column'>
-                            <InputGroup
-                                id='birth'
-                                type='number'
-                                label='Birth (year)'
-                                value={this.state.birth}
-                                error={!!formErrors.birth}
-                                errorMsg={formErrors.birth}
-                                onChange={this.onChangeFactory('birth')} />
+                <form onSubmit={this.handleSubmission}>
+                    <fieldset>
+                        <InputGroup
+                            id='title'
+                            type='text'
+                            label='Title'
+                            value={this.state.title}
+                            error={!!nameErrors.title}
+                            errorMsg={nameErrors.title}
+                            onChange={this.onChangeFactory('title')} />
+
+                        <InputGroup
+                            id='full-name'
+                            type='text'
+                            label='Full name'
+                            value={this.state.fullName}
+                            error={!!nameErrors.full}
+                            errorMsg={nameErrors.full}
+                            onChange={this.onChangeFactory('fullName')} />
+                        
+                        <div className='row'>
+                            <div className='column'>
+                                <InputGroup
+                                    id='birth'
+                                    type='number'
+                                    label='Birth (year)'
+                                    value={this.state.birth}
+                                    error={!!formErrors.birth}
+                                    errorMsg={formErrors.birth}
+                                    onChange={this.onChangeFactory('birth')} />
+                            </div>
+                            <div className='column'>
+                                <InputGroup
+                                    id='death'
+                                    type='number'
+                                    label='Death (year)'
+                                    value={this.state.death}
+                                    error={!!formErrors.death}
+                                    errorMsg={formErrors.death}
+                                    onChange={this.onChangeFactory('death')} />
+                            </div>
                         </div>
-                        <div className='column'>
-                            <InputGroup
-                                id='death'
-                                type='number'
-                                label='Death (year)'
-                                value={this.state.death}
-                                error={!!formErrors.death}
-                                errorMsg={formErrors.death}
-                                onChange={this.onChangeFactory('death')} />
-                        </div>
-                    </div>
 
-                    <TextAreaGroup
-                        id='description'
-                        label='Description'
-                        value={this.state.description}
-                        error={!!formErrors.description}
-                        errorMsg={formErrors.description}
-                        onChange={this.onChangeFactory('description')} />
-                    
-                    <div className='float-right'>
-                        <input
-                            type='submit'
-                            className='button-primary'
-                            disabled={this.props.loading}
-                            value='Create'/>
+                        <TextAreaGroup
+                            id='description'
+                            label='Description'
+                            value={this.state.description}
+                            error={!!formErrors.description}
+                            errorMsg={formErrors.description}
+                            onChange={this.onChangeFactory('description')} />
+                        
+                        <div className='float-right'>
+                            <input
+                                type='submit'
+                                className='button-primary'
+                                disabled={this.props.loading}
+                                value='Create'/>
 
-                        { this.props.onCancel ?
                             <input
                                 type='button'
                                 className='button-outline'
                                 onClick={this.handleCancel}
                                 value='Cancel'
                                 style={{marginLeft: '0.5rem'}} />
-                            : null
-                        }
-                    </div>
-                </fieldset>
-            </form>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
         )
     }
 }
