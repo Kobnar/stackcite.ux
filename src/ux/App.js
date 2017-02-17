@@ -5,8 +5,6 @@ import { init } from './actions'
 
 import NavigationBar from './NavigationBar'
 
-import './css/app.css'
-
 class App extends Component {
 
     componentWillMount () {
