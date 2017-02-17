@@ -79,7 +79,8 @@ class Collection extends Component {
 
 const mapStateToProps = (state) => ({
     authKey: state.api.auth.token.key,
-    people: state.api.cache.people || {}
+    people: state.api.cache.people || {},
+    filter: state.ux.people.ids
 })
 
 export default connect(mapStateToProps)(Collection)
