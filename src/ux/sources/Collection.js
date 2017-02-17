@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import * as bs from 'react-bootstrap'
 
 const propTypes = {
     sources: React.PropTypes.arrayOf(
@@ -10,15 +9,6 @@ const propTypes = {
 
 const defaultProps = {
     sources: []
-}
-
-const DeleteButton = ({ id, onDelete }) => {
-    return (
-        <bs.Glyphicon
-            glyph='remove'
-            className='pull-right'
-            onClick={() => onDelete(id)}/>
-    )
 }
 
 const CollectionRow = ({ source, onDelete }) => {
@@ -45,7 +35,7 @@ const CollectionTable = ({ sources, onDelete }) => {
             onDelete={onDelete} />)
 
     return (
-        <bs.Table>
+        <table>
             <thead>
                 <tr>
                     <th>Title</th>
@@ -55,7 +45,7 @@ const CollectionTable = ({ sources, onDelete }) => {
             <tbody>
                 { rows }
             </tbody>
-        </bs.Table>
+        </table>
     )
 }
 
