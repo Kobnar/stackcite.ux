@@ -103,6 +103,11 @@ class UpdateForm extends Component {
         var personId = this.props.params.id
         return this.props.dispatch(
             updateDocument(data, personId, this.props.authKey))
+                .then(action => {
+                    if (action.status === SUCCESS) {
+                        this.props.dispatch(push('/people/' + personId ))
+                    }
+                })
     }
 
     delete () {
@@ -127,7 +132,7 @@ class UpdateForm extends Component {
             death: this.state.death || null,
             description: this.state.description
         }
-        this.props.onSubmit(data)
+        this.update(data)
     }
 
     handleCancel (event) {
