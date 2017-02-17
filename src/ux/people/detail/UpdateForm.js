@@ -1,20 +1,14 @@
 import React, { Component } from 'react'
-
-import { InputGroup } from 'ux/Forms'
+import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 
 import { SUCCESS } from 'api/actions'
+import { InputGroup } from 'ux/Forms'
 
-const propTypes = {
-    person: React.PropTypes.object.isRequired,
-    onSubmit: React.PropTypes.func.isRequired,
-    loading: React.PropTypes.bool,
-    errors: React.PropTypes.object
-}
-
-const defaultProps = {
-    loading: false,
-    errors: {}
-}
+import {
+    retrieveDocument,
+    updateDocument,
+    deleteDocument } from './actions'
 
 const TitleInput = ({state, error, onChange}) => {
     return (
@@ -62,21 +56,60 @@ const DescriptionTextArea = ({state, error, onChange}) => {
     )
 }
 
+const emptyForm = {
+    title: '',
+    fullName: '',
+    birth: '',
+    death: '',
+    description: ''
+}
+
 class UpdateForm extends Component {
 
     constructor (props) {
         super(props)
 
-        this.state = {
-            title: this.props.person.name.title,
-            fullName: this.props.person.name.full,
-            birth: this.props.person.birth,
-            death: this.props.person.death,
-            description: this.props.person.description || ''
-        }
+        this.state = { ...emptyForm }
 
         this.onChangeFactory = this.onChangeFactory.bind(this)
         this.handleSubmission = this.handleSubmission.bind(this)
+        this.handleCancel = this.handleCancel.bind(this)
+    }
+
+    componentWillMount () {
+        this.retrieve()
+            .then(action => {
+                if (action.status === SUCCESS) {
+                    var personId = action.documentId
+                    var person = this.props.people[personId]
+                    this.setState({
+                        title: person.name.title,
+                        fullName: person.name.full,
+                        birth: person.birth || '',
+                        death: person.death || '',
+                        description: person.description || ''
+                    })
+                }
+            })
+    }
+
+    retrieve () {
+        var personId = this.props.params.id
+        return this.props.dispatch(
+            retrieveDocument(personId, this.props.authKey))
+    }
+
+    update (data) {
+        var personId = this.props.params.id
+        return this.props.dispatch(
+            updateDocument(data, personId, this.props.authKey))
+    }
+
+    delete () {
+        var personId = this.props.params.id
+        return this.props.dispatch(
+            deleteDocument(personId, this.props.authKey))
+                .then(this.props.dispatch(push('/people')))
     }
 
     onChangeFactory (field) {
@@ -97,64 +130,93 @@ class UpdateForm extends Component {
         this.props.onSubmit(data)
     }
 
+    handleCancel (event) {
+        event.preventDefault()
+        var personId = this.props.params.id
+        this.props.dispatch(push('/people/' + personId))
+    }
+
     render () {
         var formErrors = this.props.errors
         var nameErrors = formErrors.name || {}
-        return (
-            <form onSubmit={this.handleSubmission}>
-                <fieldset>
-                    <TitleInput
-                        state={this.state.title}
-                        error={nameErrors.title}
-                        onChange={this.onChangeFactory('title')} />
+        var personId = this.props.params.id
+        var person = this.props.people[personId]
+        if (person) {
+            return (
+                <div className='container'>
+                    <h1 className='page-title'>
+                        Edit Person ({ person.name.title })
+                    </h1>
+                    <form onSubmit={this.handleSubmission}>
+                        <fieldset>
+                            <TitleInput
+                                state={this.state.title}
+                                error={nameErrors.title}
+                                onChange={this.onChangeFactory('title')} />
 
-                    <FullNameInput
-                        state={this.state.fullName}
-                        error={nameErrors.full}
-                        onChange={this.onChangeFactory('fullName')} />
-                    
-                    <div className='row'>
-                        <div className='column'>
-                            <InputGroup
-                                id='birth'
-                                type='number'
-                                label='Birth (year)'
-                                value={this.state.birth}
-                                error={!!formErrors.birth}
-                                errorMsg={formErrors.birth}
-                                onChange={this.onChangeFactory('birth')}
-                                srOnly={false} />
-                        </div>
-                        <div className='column'>
-                            <InputGroup
-                                id='death'
-                                type='number'
-                                label='Death (year)'
-                                value={this.state.death}
-                                error={!!formErrors.death}
-                                errorMsg={formErrors.death}
-                                onChange={this.onChangeFactory('death')}
-                                srOnly={false} />
-                        </div>
-                    </div>
+                            <FullNameInput
+                                state={this.state.fullName}
+                                error={nameErrors.full}
+                                onChange={this.onChangeFactory('fullName')} />
+                            
+                            <div className='row'>
+                                <div className='column'>
+                                    <InputGroup
+                                        id='birth'
+                                        type='number'
+                                        label='Birth (year)'
+                                        value={this.state.birth}
+                                        error={!!formErrors.birth}
+                                        errorMsg={formErrors.birth}
+                                        onChange={this.onChangeFactory('birth')}
+                                        srOnly={false} />
+                                </div>
+                                <div className='column'>
+                                    <InputGroup
+                                        id='death'
+                                        type='number'
+                                        label='Death (year)'
+                                        value={this.state.death}
+                                        error={!!formErrors.death}
+                                        errorMsg={formErrors.death}
+                                        onChange={this.onChangeFactory('death')}
+                                        srOnly={false} />
+                                </div>
+                            </div>
 
-                    <DescriptionTextArea
-                        state={this.state.description}
-                        error={formErrors.description}
-                        onChange={this.onChangeFactory('description')} />
+                            <DescriptionTextArea
+                                state={this.state.description}
+                                error={formErrors.description}
+                                onChange={this.onChangeFactory('description')} />
                         
-                    <input
-                        type='submit'
-                        className='button-primary float-right'
-                        disabled={this.props.loading}
-                        value='Save'/>
-                </fieldset>
-            </form>
-        )
-    }
+                            <div className='float-right'>
+                                <input
+                                    type='submit'
+                                    className='button-primary'
+                                    disabled={this.props.loading}
+                                    value='Save'/>
 
-    static propTypes = propTypes
-    static defaultProps = defaultProps
+                                <input
+                                    type='button'
+                                    className='button-outline'
+                                    onClick={this.handleCancel}
+                                    value='Cancel'
+                                    style={{marginLeft: '0.5rem'}} />
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            )
+        } else
+            return <p>Loading...</p>
+    }
 }
 
-export default UpdateForm
+const mapStateToProps = (state) => ({
+    authKey: state.api.auth.token.key,
+    people: state.api.cache.people || {},
+    loading: state.ux.people.detail.loading,
+    errors: state.ux.people.detail.errors
+})
+
+export default connect(mapStateToProps)(UpdateForm)
