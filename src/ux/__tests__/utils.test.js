@@ -3,6 +3,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import { REQUEST, SUCCESS, FAILURE } from '../../api/actions'
 import {
     readDate,
+    truthy,
     getFormData,
     filterCollection,
     loading,
@@ -16,6 +17,33 @@ describe('readDate', () => {
     it('converts negative values to positive B.C.E.', () => {
         const expected = '399 B.C.E.'
         const result = readDate(-399)
+        expect(result).toEqual(expected)
+    })
+})
+
+describe('truthy', () => {
+
+    it('filters falsy values out of a nested object', () => {
+        const testData = {
+            someField: true,
+            otherField: 123,
+            falsyField: '',
+            nestedField: {
+                subField: true,
+                falseSubField: false,
+                nullSubField: null,
+                numSubField: 123
+            }
+        }
+        const expected = {
+            someField: true,
+            otherField: 123,
+            nestedField: {
+                subField: true,
+                numSubField: 123
+            }
+        }
+        const result = truthy(testData)
         expect(result).toEqual(expected)
     })
 })

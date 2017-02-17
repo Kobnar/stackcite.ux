@@ -1,3 +1,4 @@
+import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
 
 import { REQUEST, SUCCESS, FAILURE } from 'api/actions'
@@ -10,6 +11,22 @@ export const readDate = (date) => {
         return -date + ' B.C.E.'
     else
         return date
+}
+
+/**
+ * Clones a copy of a document that only contains truthy values.
+ */
+export const truthy = (data) => {
+    var newData = {}
+    Object.entries(data)
+        .forEach(([key, value]) => {
+            if (value)
+                if (typeof value === 'object')
+                    newData[key] = truthy(value)
+                else
+                    newData[key] = value
+        })
+    return newData
 }
 
 /**
