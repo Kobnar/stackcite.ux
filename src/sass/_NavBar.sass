@@ -5,6 +5,7 @@
 $navbar-height: 6.6rem
 
 .navbar
+    font-size: 1.4rem
     width: 100%
     position: fixed
     top: 0
@@ -19,17 +20,18 @@ $navbar-height: 6.6rem
     z-index: 10
     background-color: #fff
 
-.navbar a
-    color: $color-secondary
+    a
+        color: $color-secondary
 
-    &:hover
-        color: $color-primary
-    
-    &.active
-        color: $color-primary
+        &:hover
+            color: $color-primary
+        
+        &.active
+            color: $color-primary
 
 .navbar-header
-    font-size: 150%
+    float: left
+    font-size: 2rem
     display: inline-block
 
     @media only screen and (max-width: $xs-device)
@@ -47,20 +49,24 @@ $navbar-height: 6.6rem
         position: absolute
         top: $navbar-height
         left: 0px
-        z-index: 11
+        z-index: 9
 
 .navbar-nav
-    @media only screen and (min-width: $xs-device)
-        display: inline-block
+    display: inline-block
+
+    @media only screen and (max-width: $xs-device)
+        display: inline
 
 .navbar-list
     list-style: none
     margin: 0
     padding: 0
+    float: left
 
     @media only screen and (max-width: $xs-device)
         background: #fff
         border-bottom: 0.1rem solid #eee
+        float: none
 
     .glyphicons
         font-size: 1.8rem
@@ -68,13 +74,16 @@ $navbar-height: 6.6rem
 .navbar-list > li
     margin: 0
     padding: 0 0 0 20px
+    display: inline-block
     
-    @media only screen and (min-width: $xs-device)
-        display: inline-block
+    @media only screen and (max-width: $xs-device)
+        display: list-item
 
 .navbar-right
-    @media only screen and (min-width: $xs-device)
-        float: right
+    float: right
+
+    @media only screen and (max-width: $xs-device)
+        float: none
 
 .navbar-toggle
     display: none
@@ -85,12 +94,16 @@ $navbar-height: 6.6rem
         padding: 0
         margin: 0
         line-height: 6rem
+        z-index: 11
 
-.navbar-toggle button
+    button
         width: 4.5rem
         height: 4.5rem
         padding: 0
         margin: 0
+    
+    span
+        font-size: 24px
 
 .hidden
     @media only screen and (max-width: $xs-device)
