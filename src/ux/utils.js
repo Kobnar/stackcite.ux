@@ -30,19 +30,6 @@ export const truthy = (data) => {
 }
 
 /**
- * Copies truthy values from a given object to a new object.
- */
-export const getFormData = (data, fields) => {
-    var newData = {}
-    Object.entries(data).map(([key, value]) => {
-        if (value)
-            if (fields && fields.includes(key) || !fields)
-                newData[key] = value
-    })
-    return newData
-}
-
-/**
  * Filters cached collection object into a list of documents based on a list
  * of desired object ids.
  */
