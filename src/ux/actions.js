@@ -21,13 +21,11 @@ export const init = () => {
             dispatch(touchLogin(authKey))
                 .then(action => {
                     if (action.status === SUCCESS) {
-                        saveCookie(authKey)
                         dispatch({
                             type: INIT,
                             status: SUCCESS
                         })
                     } else {
-                        removeCookie()
                         dispatch({
                             type: INIT,
                             status: FAILURE
