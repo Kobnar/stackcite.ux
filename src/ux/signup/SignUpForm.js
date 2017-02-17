@@ -46,7 +46,7 @@ class SignUpForm extends Component
             emailError = 'This email is already registered.'
 
         return (
-            <div className='auth-container'>
+            <div>
                 <h1 className='page-title'>Sign up</h1>
                 <form onSubmit={this.handleSubmission}>
                     <fieldset>

@@ -30,7 +30,7 @@ class Login extends Component
 
     render () {
         return (
-            <div className="auth-container">
+            <div className="container narrow">
                 <LoginForm
                     loading={this.props.loading}
                     errors={this.props.errors}

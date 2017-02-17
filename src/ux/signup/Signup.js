@@ -85,7 +85,7 @@ class Signup extends Component {
         // Render signup form
         else
             return (
-                <div className='container'>
+                <div className='container narrow'>
                     <SignUpForm
                         loading={this.props.signup.loading}
                         success={this.props.signup.success}
