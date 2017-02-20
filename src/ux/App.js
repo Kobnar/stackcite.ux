@@ -15,7 +15,7 @@ class App extends Component {
         if (!this.props.init)
             return (
                 <div className='App'>
-                    <NavigationBar />
+                    <NavigationBar loginRedirect={this.props.location.pathname} />
 
                     <div className='main'>
                         { this.props.children }

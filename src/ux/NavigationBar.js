@@ -7,6 +7,10 @@ import { push } from 'react-router-redux'
 import { hideNav, toggleNav } from './actions'
 import { logout } from './login/actions'
 
+const propTypes = {
+    loginRedirect: React.PropTypes.string
+}
+
 const NavLink = React.createClass({
     render() {
         return <Link {...this.props} activeClassName='active' />
@@ -114,7 +118,9 @@ class NavigationBar extends Component {
                                     </li>
                                     <li>
                                         <NavLink
-                                            to='/login'>
+                                            to={ this.props.loginRedirect ?
+                                                '/login?redirect=' + this.props.loginRedirect
+                                                : '/login' }>
                                             Login
                                         </NavLink>
                                     </li>
