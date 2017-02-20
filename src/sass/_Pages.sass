@@ -3,13 +3,10 @@
 // ––––––––––––––––––––––––––––––––––––––––––––––––––
 
 .main
-    padding-top: $navbar-height * 1.5
+    padding: $navbar-height * 1.5 0 0 0
 
     @media only screen and (max-width: $xs-device)
-        padding-top: $navbar-height * 1.2
-
-// .page-title
-//     height: 5.5rem
+        padding: $navbar-height * 1.2 0 0 0
 
 .page-title h1
     display: inline-block
@@ -20,3 +17,19 @@
 
 .page-title hr
     margin: 1.5rem auto
+
+.page-control
+    max-width: 76.8rem
+    width: 100%
+    border-top: 0.1rem solid #eee
+    border-bottom: 0.1rem solid #eee
+    margin: 0 auto 2rem
+    padding: 0
+
+    button,
+    .button
+        margin: 0
+        padding: 0
+        height: 3rem
+        line-height: 2.8rem
+        font-size: 1.6rem

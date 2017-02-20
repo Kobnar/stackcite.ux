@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { push } from 'react-router-redux'
+import { push, goBack } from 'react-router-redux'
 
 import { readDate } from 'ux/utils'
 
 import { retrieveDocument } from './actions'
-import UpdateForm from './UpdateForm'
+import PageControl from './PageControl'
 
 class Detail extends Component {
 
@@ -32,23 +32,31 @@ class Detail extends Component {
         if (person) {
             var hasTitle = person.name.title !== person.name.full
             return (
-                <div className='container'>
-                    <h1 className='page-title'>
-                        { person.name.title }
-                        { person.birth || person.death ?
-                            <small style={{paddingLeft: '1rem'}}>
-                                ({ readDate(person.birth) || ' ?' }
-                                &nbsp;&ndash;&nbsp;
-                                { readDate(person.death) })
-                            </small>
+                <div>
+                    <PageControl
+                        loggedIn={!!this.props.authKey}
+                        permalink={this.props.location.pathname} />
+
+                    <div className='container'>
+                        <h1 className='page-title'>
+                            { person.name.title }
+                            { person.birth || person.death ?
+                                <small style={{paddingLeft: '1rem'}}>
+                                    ({ readDate(person.birth) || ' ?' }
+                                    &nbsp;&ndash;&nbsp;
+                                    { readDate(person.death) })
+                                </small>
+                                : null
+                            }
+                        </h1>
+                        { hasTitle ?
+                            <h4>{ person.name.full }</h4>
                             : null
                         }
-                    </h1>
-                    { hasTitle ?
-                        <h4>{ person.name.full }</h4>
-                        : null
-                    }
-                    <p>{ person.description }</p>
+                        <p>{ person.description }</p>
+
+                        <hr />
+                    </div>
                 </div>
             )
         } else
