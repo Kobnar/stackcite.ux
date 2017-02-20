@@ -127,19 +127,20 @@ class CreateForm extends Component {
                             errorMsg={formErrors.description}
                             onChange={this.onChangeFactory('description')} />
                         
-                        <div className='float-right'>
+                        <div className='form-group'>
                             <input
                                 type='submit'
-                                className='button-primary'
+                                className='button-primary button-span'
                                 disabled={this.props.loading}
                                 value='Create'/>
+                        </div>
 
+                        <div className='form-group'>
                             <input
                                 type='button'
-                                className='button-outline'
+                                className='button-outline button-span'
                                 onClick={this.handleCancel}
-                                value='Cancel'
-                                style={{marginLeft: '0.5rem'}} />
+                                value='Cancel' />
                         </div>
                     </fieldset>
                 </form>
