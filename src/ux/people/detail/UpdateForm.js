@@ -150,7 +150,7 @@ class UpdateForm extends Component {
             return (
                 <div className='container'>
                     <h1 className='page-title'>
-                        Edit Person ({ person.name.title })
+                        Edit Person
                     </h1>
                     <form onSubmit={this.handleSubmission}>
                         <fieldset>
