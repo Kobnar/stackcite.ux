@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { Link } from 'react-router'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
@@ -21,6 +22,10 @@ class PageControl extends Component {
 
     togglePermalink () {
         this.setState({permalinkVisible: !this.state.permalinkVisible})
+    }
+
+    hidePermalink () {
+        this.setState({permalinkVisible: false})
     }
 
     render() {
@@ -60,14 +65,14 @@ class PageControl extends Component {
                     <li>
                         <button
                             className='button button-clear'
-                            onClick={() => this.togglePermalink()}>
+                            onClick={this.togglePermalink}>
                             <span className='glyphicons glyphicons-link' />
                         </button>
                         <div
-                            className={this.state.permalinkVisible ? 'permalink' : 'hidden' }>
+                            className={this.state.permalinkVisible ? 'permalink' : ' hidden' }>
                             <CopyToClipboard
                                 text={permalink}
-                                onCopy={() => this.togglePermalink()}>
+                                onCopy={this.togglePermalink}>
                                 <button
                                     className='button button-clear'>
                                     <span className='glyphicons glyphicons-copy' />

@@ -30,9 +30,19 @@
         border: 0.1rem solid #eee
         position: absolute
         padding: 0.2rem
-        margin: 0.5rem 0 0 0
+        margin: 0
+        margin-top: -0.1rem
         right: 1rem
         z-index: 10
+
+        &:after
+            content: ' '
+            position: absolute
+            right: 0.5rem
+            bottom: 3.3rem
+            border: 0.5rem solid transparent
+            border-bottom-color: #eee
+            z-index: 11
 
         button,
         button:hover
